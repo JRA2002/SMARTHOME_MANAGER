@@ -5,7 +5,6 @@ from contextlib import asynccontextmanager
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-
 from app.core.database import engine, Base
 from app.api import routes_propiedades, routes_chat, routes_predict_valor
 from app.core.config import settings
