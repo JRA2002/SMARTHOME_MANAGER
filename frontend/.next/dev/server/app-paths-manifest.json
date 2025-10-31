@@ -1,0 +1,8 @@
+{
+  "/ai-assistant/page": "app/ai-assistant/page.js",
+  "/ai-valuation/page": "app/ai-valuation/page.js",
+  "/expenses/page": "app/expenses/page.js",
+  "/page": "app/page.js",
+  "/properties/page": "app/properties/page.js",
+  "/rentals/page": "app/rentals/page.js"
+}
