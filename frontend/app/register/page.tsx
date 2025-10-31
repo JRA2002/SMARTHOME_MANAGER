@@ -11,17 +11,19 @@ import { Label } from "@/components/ui/label"
 import { apiClient } from "@/lib/api"
 import { Building2, Loader2 } from "lucide-react"
 import Link from "next/link"
+import { useAuth } from "@/lib/auth-context"
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
     email: "",
     username: "",
     password: "",
-    full_name: "",
+    fullname: "",
   })
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const { login } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -30,12 +32,13 @@ export default function RegisterPage() {
 
     try {
       await apiClient.register(formData)
-      router.push("/login?registered=true")
     } catch (err) {
       setError("Error al registrar. El usuario o email ya existe.")
     } finally {
       setLoading(false)
     }
+    await login(formData.email, formData.password)
+    router.push("/dashboard")
   }
 
   return (
@@ -51,13 +54,13 @@ export default function RegisterPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="full_name">Nombre Completo</Label>
+              <Label htmlFor="fullname">Nombre Completo</Label>
               <Input
-                id="full_name"
+                id="fullname"
                 type="text"
                 placeholder="nombre completo"
-                value={formData.full_name}
-                onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                value={formData.fullname}
+                onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
                 className="h-11"
               />
             </div>

@@ -53,7 +53,7 @@ async def register(
     hashed_password = get_password_hash(user_data.password)
     new_user = Usuario(
         email=user_data.email,
-        nombre=user_data.nombre,
+        fullname=user_data.fullname,
         hashed_password=hashed_password
     )
     

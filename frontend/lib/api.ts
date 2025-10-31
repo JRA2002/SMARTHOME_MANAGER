@@ -9,14 +9,14 @@ export interface RegisterData {
   email: string
   username: string
   password: string
-  full_name?: string
+  fullname?: string
 }
 
 export interface User {
   id: number
   email: string
   username: string
-  full_name?: string
+  fullname?: string
   is_active: boolean
 }
 
@@ -141,10 +141,7 @@ class ApiClient {
   }
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const formData = new URLSearchParams()
-    formData.append("email", credentials.email)
-    formData.append("password", credentials.password)
-
+  
     const response = await fetch(`${API_BASE_URL}/api/v1/propiedades/auth/login`, {
       method: "POST",
       headers: {
@@ -175,7 +172,6 @@ class ApiClient {
     if (!response.ok) {
       throw new Error("Registration failed")
     }
-
     return response.json()
   }
 

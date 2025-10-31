@@ -22,9 +22,6 @@ class ApiClient {
         return headers;
     }
     async login(credentials) {
-        const formData = new URLSearchParams();
-        formData.append("email", credentials.email);
-        formData.append("password", credentials.password);
         const response = await fetch(`${API_BASE_URL}/api/v1/propiedades/auth/login`, {
             method: "POST",
             headers: {
