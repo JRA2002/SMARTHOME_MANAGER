@@ -5,7 +5,6 @@ from typing import List, Optional
 
 from app.core.database import get_db
 from app.core.security import get_current_user
-from app.models.usuario import Usuario
 from app.models.user import User
 from app.utils.chat_engine import ChatEngine
 from slowapi import Limiter

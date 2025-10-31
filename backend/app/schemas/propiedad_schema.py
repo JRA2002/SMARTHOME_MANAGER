@@ -2,99 +2,99 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Optional, List
 from app.models.propiedad import TipoPropiedad, EstadoPropiedad
+from app.models.property import PropertyType, PropertyStatus
 
 # Propiedad Schemas
-class PropiedadBase(BaseModel):
-    titulo: str
-    direccion: str
-    tipo: TipoPropiedad
-    precio: float = Field(gt=0)
+class PropertyBase(BaseModel):
+    title: str
+    address: str
+    property_type: PropertyType
+    price: float = Field(gt=0)
     area: float = Field(gt=0)
-    habitaciones: int = Field(ge=0)
-    banos: int = Field(ge=0)
-    descripcion: Optional[str] = None
-    imagen_url: Optional[str] = None
+    bedrooms: int = Field(ge=0)
+    bathrooms: int = Field(ge=0)
+    description: Optional[str] = None
+    image_url: Optional[str] = None
 
-class PropiedadCreate(PropiedadBase):
+class PropertyCreate(PropertyBase):
     pass
 
-class PropiedadUpdate(BaseModel):
-    titulo: Optional[str] = None
-    direccion: Optional[str] = None
-    tipo: Optional[TipoPropiedad] = None
-    estado: Optional[EstadoPropiedad] = None
-    precio: Optional[float] = Field(None, gt=0)
+class PropertyUpdate(BaseModel):
+    title: Optional[str] = None
+    address: Optional[str] = None
+    property_type: Optional[PropertyType] = None
+    price: Optional[float] = Field(None, gt=0)
     area: Optional[float] = Field(None, gt=0)
-    habitaciones: Optional[int] = Field(None, ge=0)
-    banos: Optional[int] = Field(None, ge=0)
-    descripcion: Optional[str] = None
-    imagen_url: Optional[str] = None
+    bedrooms: Optional[int] = Field(None, ge=0)
+    bathrooms: Optional[int] = Field(None, ge=0)
+    description: Optional[str] = None
+    image_url: Optional[str] = None
 
-class PropiedadResponse(PropiedadBase):
+class PropertyResponse(PropertyBase):
     id: int
     user_id: int
-    estado: EstadoPropiedad
+    property_status: PropertyStatus
     created_at: datetime
     updated_at: datetime
     
     class Config:
         from_attributes = True
 
-# Alquiler Schemas
-class AlquilerBase(BaseModel):
-    inquilino_nombre: str
-    inquilino_email: str
-    inquilino_telefono: Optional[str] = None
-    monto_mensual: float = Field(gt=0)
-    fecha_inicio: datetime
-    fecha_fin: Optional[datetime] = None
-    deposito: float = Field(ge=0, default=0)
+# Rental Schemas
+class RentalBase(BaseModel):
+    tenant_name: str
+    tenant_email: str
+    tenant_phone: Optional[str] = None
+    monthly_rent: float = Field(gt=0)
+    start_date: datetime
+    end_date: Optional[datetime] = None
+    deposit: float = Field(ge=0, default=0)
 
-class AlquilerCreate(AlquilerBase):
-    propiedad_id: int
+class RentalCreate(RentalBase):
+    property_id: int
 
-class AlquilerResponse(AlquilerBase):
+class RentalResponse(RentalBase):
     id: int
-    propiedad_id: int
-    estado: str
+    property_id: int
+    status: str
     created_at: datetime
     
     class Config:
         from_attributes = True
 
-# Pago Schemas
-class PagoBase(BaseModel):
-    monto: float = Field(gt=0)
-    fecha_pago: datetime
-    metodo_pago: Optional[str] = None
-    notas: Optional[str] = None
+# Payment Schemas
+class PaymentBase(BaseModel):
+    amount: float = Field(gt=0)
+    payment_date: datetime
+    payment_method: Optional[str] = None
+    notes: Optional[str] = None
 
-class PagoCreate(PagoBase):
-    alquiler_id: int
+class PaymentCreate(PaymentBase):
+    rental_id: int
 
-class PagoResponse(PagoBase):
+class PaymentResponse(PaymentBase):
     id: int
-    alquiler_id: int
-    estado: str
+    rental_id: int
+    status: str
     created_at: datetime
     
     class Config:
         from_attributes = True
 
-# Gasto Schemas
-class GastoBase(BaseModel):
-    categoria: str
-    descripcion: str
-    monto: float = Field(gt=0)
-    fecha: datetime
-    recibo_url: Optional[str] = None
+# Expense Schemas
+class ExpenseBase(BaseModel):
+    category: str
+    description: str
+    amount: float = Field(gt=0)
+    date: datetime
+    receipt_url: Optional[str] = None
 
-class GastoCreate(GastoBase):
-    propiedad_id: int
+class ExpenseCreate(ExpenseBase):
+    property_id: int
 
-class GastoResponse(GastoBase):
+class ExpenseResponse(ExpenseBase):
     id: int
-    propiedad_id: int
+    property_id: int
     created_at: datetime
     
     class Config:

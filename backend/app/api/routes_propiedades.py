@@ -11,20 +11,17 @@ from app.core.security import (
     verify_password,
     create_access_token
 )
-from app.models.usuario import Usuario
 from app.models.user import User
 from app.models.propiedad import Propiedad, Alquiler, Pago, Gasto
-from app.schemas.usuario_schema import UsuarioCreate, UsuarioLogin, UsuarioResponse, Token
+from app.schemas.user_schema import UsuarioCreate, UsuarioLogin, UsuarioResponse, Token
 from app.schemas.propiedad_schema import (
-    PropiedadCreate,
-    PropiedadUpdate,
-    PropiedadResponse,
-    AlquilerCreate,
-    AlquilerResponse,
-    PagoCreate,
-    PagoResponse,
-    GastoCreate,
-    GastoResponse
+    PropertyCreate,
+    PropertyUpdate,
+    PropertyResponse,
+    RentalResponse,
+    RentalCreate,
+    ExpenseCreate,
+    ExpenseResponse
 )
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -106,11 +103,11 @@ async def get_current_user_info(
 
 # ============= PROPIEDADES ENDPOINTS =============
 
-@router.post("/", response_model=PropiedadResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=PropertyResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("20/minute")
 async def create_propiedad(
     request: Request,
-    propiedad_data: PropiedadCreate,
+    propiedad_data: PropertyCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -157,7 +154,7 @@ async def get_propiedades(
         "total_pages": total_pages
     }
 
-@router.get("/{propiedad_id}", response_model=PropiedadResponse)
+@router.get("/{propiedad_id}", response_model=PropertyResponse)
 @limiter.limit("60/minute")
 async def get_propiedad(
     request: Request,
@@ -179,12 +176,12 @@ async def get_propiedad(
     
     return propiedad
 
-@router.put("/{propiedad_id}", response_model=PropiedadResponse)
+@router.put("/{propiedad_id}", response_model=PropertyResponse)
 @limiter.limit("30/minute")
 async def update_propiedad(
     request: Request,
     propiedad_id: int,
-    propiedad_data: PropiedadUpdate,
+    propiedad_data: PropertyUpdate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -241,11 +238,11 @@ async def delete_propiedad(
 
 # ============= ALQUILERES ENDPOINTS =============
 
-@router.post("/alquileres", response_model=AlquilerResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/alquileres", response_model=RentalResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("20/minute")
 async def create_alquiler(
     request: Request,
-    alquiler_data: AlquilerCreate,
+    alquiler_data: RentalCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -308,11 +305,11 @@ async def get_alquileres(
 
 # ============= GASTOS ENDPOINTS =============
 
-@router.post("/gastos", response_model=GastoResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/gastos", response_model=ExpenseResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("20/minute")
 async def create_gasto(
     request: Request,
-    gasto_data: GastoCreate,
+    gasto_data: ExpenseCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
