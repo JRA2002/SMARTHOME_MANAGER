@@ -6,6 +6,7 @@ from typing import Optional
 from app.core.database import get_db
 from app.core.security import get_current_user
 from app.models.usuario import Usuario
+from app.models.user import User
 from app.ml.predictor import PropertyValuePredictor
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -35,7 +36,7 @@ class ValuationResponse(BaseModel):
 async def predict_valor(
     request: Request,
     valuation_data: ValuationRequest,
-    current_user: Usuario = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Predecir valor de propiedad usando ML"""

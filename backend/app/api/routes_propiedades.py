@@ -12,6 +12,7 @@ from app.core.security import (
     create_access_token
 )
 from app.models.usuario import Usuario
+from app.models.user import User
 from app.models.propiedad import Propiedad, Alquiler, Pago, Gasto
 from app.schemas.usuario_schema import UsuarioCreate, UsuarioLogin, UsuarioResponse, Token
 from app.schemas.propiedad_schema import (
@@ -42,7 +43,7 @@ async def register(
 ):
     """Registrar nuevo usuario"""
     # Check if user exists
-    existing_user = db.query(Usuario).filter(Usuario.email == user_data.email).first()
+    existing_user = db.query(User).filter(User.email == user_data.email).first()
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -51,7 +52,7 @@ async def register(
     
     # Create new user
     hashed_password = get_password_hash(user_data.password)
-    new_user = Usuario(
+    new_user = User(
         email=user_data.email,
         fullname=user_data.fullname,
         hashed_password=hashed_password
@@ -71,7 +72,7 @@ async def login(
     db: Session = Depends(get_db)
 ):
     """Iniciar sesión"""
-    user = db.query(Usuario).filter(Usuario.email == credentials.email).first()
+    user = db.query(User).filter(User.email == credentials.email).first()
     
     if not user or not verify_password(credentials.password, user.hashed_password):
         raise HTTPException(
@@ -98,7 +99,7 @@ async def login(
 @limiter.limit("30/minute")
 async def get_current_user_info(
     request: Request,
-    current_user: Usuario = Depends(get_current_user)
+    current_user: User = Depends(get_current_user)
 ):
     """Obtener información del usuario actual"""
     return current_user
@@ -110,7 +111,7 @@ async def get_current_user_info(
 async def create_propiedad(
     request: Request,
     propiedad_data: PropiedadCreate,
-    current_user: Usuario = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Crear nueva propiedad"""
@@ -131,7 +132,7 @@ async def get_propiedades(
     request: Request,
     skip: int = Query(0, ge=0, description="Número de registros a saltar"),
     limit: int = Query(10, ge=1, le=100, description="Número de registros a retornar"),
-    current_user: Usuario = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Obtener propiedades del usuario con paginación"""
@@ -161,7 +162,7 @@ async def get_propiedades(
 async def get_propiedad(
     request: Request,
     propiedad_id: int,
-    current_user: Usuario = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Obtener propiedad por ID"""
@@ -184,7 +185,7 @@ async def update_propiedad(
     request: Request,
     propiedad_id: int,
     propiedad_data: PropiedadUpdate,
-    current_user: Usuario = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Actualizar propiedad"""
@@ -215,7 +216,7 @@ async def update_propiedad(
 async def delete_propiedad(
     request: Request,
     propiedad_id: int,
-    current_user: Usuario = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Eliminar propiedad"""
@@ -245,7 +246,7 @@ async def delete_propiedad(
 async def create_alquiler(
     request: Request,
     alquiler_data: AlquilerCreate,
-    current_user: Usuario = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Crear nuevo alquiler"""
@@ -274,7 +275,7 @@ async def get_alquileres(
     request: Request,
     skip: int = Query(0, ge=0),
     limit: int = Query(10, ge=1, le=100),
-    current_user: Usuario = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Obtener alquileres del usuario con paginación"""
@@ -312,7 +313,7 @@ async def get_alquileres(
 async def create_gasto(
     request: Request,
     gasto_data: GastoCreate,
-    current_user: Usuario = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Crear nuevo gasto"""
@@ -341,7 +342,7 @@ async def get_gastos(
     request: Request,
     skip: int = Query(0, ge=0),
     limit: int = Query(10, ge=1, le=100),
-    current_user: Usuario = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Obtener gastos del usuario con paginación"""

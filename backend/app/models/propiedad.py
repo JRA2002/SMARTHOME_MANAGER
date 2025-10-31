@@ -21,7 +21,7 @@ class Propiedad(Base):
     __tablename__ = "propiedades"
     
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("usuarios.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     titulo = Column(String, nullable=False)
     direccion = Column(String, nullable=False)
     tipo = Column(SQLEnum(TipoPropiedad), nullable=False)

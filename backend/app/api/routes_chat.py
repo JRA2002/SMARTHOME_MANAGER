@@ -6,6 +6,7 @@ from typing import List, Optional
 from app.core.database import get_db
 from app.core.security import get_current_user
 from app.models.usuario import Usuario
+from app.models.user import User
 from app.utils.chat_engine import ChatEngine
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -31,7 +32,9 @@ class ChatResponse(BaseModel):
 async def chat(
     request: Request,
     chat_data: ChatRequest,
-    current_user: Usuario = Depends(get_current_user),
+    # current_user: Usuario = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
+
     db: Session = Depends(get_db)
 ):
     """Chat con asistente IA"""
@@ -54,7 +57,7 @@ async def chat(
 @limiter.limit("30/minute")
 async def get_insights(
     request: Request,
-    current_user: Usuario = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Obtener insights automáticos del portfolio"""
