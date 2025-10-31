@@ -1,8 +1,10 @@
 {
-  "/ai-assistant/page": "app/ai-assistant/page.js",
-  "/ai-valuation/page": "app/ai-valuation/page.js",
-  "/expenses/page": "app/expenses/page.js",
-  "/page": "app/page.js",
-  "/properties/page": "app/properties/page.js",
-  "/rentals/page": "app/rentals/page.js"
+  "/dashboard/chat/page": "app/dashboard/chat/page.js",
+  "/dashboard/expenses/page": "app/dashboard/expenses/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/properties/page": "app/dashboard/properties/page.js",
+  "/dashboard/rentals/page": "app/dashboard/rentals/page.js",
+  "/dashboard/valuation/page": "app/dashboard/valuation/page.js",
+  "/login/page": "app/login/page.js",
+  "/register/page": "app/register/page.js"
 }
