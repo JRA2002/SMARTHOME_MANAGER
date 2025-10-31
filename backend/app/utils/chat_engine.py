@@ -2,8 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import List, Dict
 from datetime import datetime, timedelta
-
-from app.models.propiedad import Propiedad, Alquiler, Gasto
+from app.models.property import Property, Rental, Expense
 
 class ChatEngine:
     """Motor de chat IA para asistencia en gestión de propiedades"""
@@ -54,8 +53,8 @@ class ChatEngine:
     
     def _get_property_count(self) -> Dict:
         """Obtiene el conteo de propiedades"""
-        count = self.db.query(func.count(Propiedad.id)).filter(
-            Propiedad.user_id == self.user_id
+        count = self.db.query(func.count(Property.id)).filter(
+            Property.user_id == self.user_id
         ).scalar()
         
         return {
@@ -69,13 +68,13 @@ class ChatEngine:
     
     def _get_rental_count(self) -> Dict:
         """Obtiene el conteo de alquileres activos"""
-        property_ids = [p[0] for p in self.db.query(Propiedad.id).filter(
-            Propiedad.user_id == self.user_id
+        property_ids = [p[0] for p in self.db.query(Property.id).filter(
+            Property.user_id == self.user_id
         ).all()]
         
-        count = self.db.query(func.count(Alquiler.id)).filter(
-            Alquiler.propiedad_id.in_(property_ids),
-            Alquiler.estado == "activo"
+        count = self.db.query(func.count(Rental.id)).filter(
+            Rental.propiedad_id.in_(property_ids),
+            Rental.estado == "activo"
         ).scalar()
         
         return {
@@ -89,13 +88,13 @@ class ChatEngine:
     
     def _get_income_summary(self) -> Dict:
         """Obtiene resumen de ingresos"""
-        property_ids = [p[0] for p in self.db.query(Propiedad.id).filter(
-            Propiedad.user_id == self.user_id
+        property_ids = [p[0] for p in self.db.query(Property.id).filter(
+            Property.user_id == self.user_id
         ).all()]
         
-        total_mensual = self.db.query(func.sum(Alquiler.monto_mensual)).filter(
-            Alquiler.propiedad_id.in_(property_ids),
-            Alquiler.estado == "activo"
+        total_mensual = self.db.query(func.sum(Rental.monto_mensual)).filter(
+            Rental.propiedad_id.in_(property_ids),
+            Rental.estado == "activo"
         ).scalar() or 0
         
         return {
@@ -109,15 +108,15 @@ class ChatEngine:
     
     def _get_expense_summary(self) -> Dict:
         """Obtiene resumen de gastos"""
-        property_ids = [p[0] for p in self.db.query(Propiedad.id).filter(
-            Propiedad.user_id == self.user_id
+        property_ids = [p[0] for p in self.db.query(Property.id).filter(
+            Property.user_id == self.user_id
         ).all()]
         
         # Gastos del último mes
         fecha_inicio = datetime.utcnow() - timedelta(days=30)
-        total_gastos = self.db.query(func.sum(Gasto.monto)).filter(
-            Gasto.propiedad_id.in_(property_ids),
-            Gasto.fecha >= fecha_inicio
+        total_gastos = self.db.query(func.sum(Expense.monto)).filter(
+            Expense.propiedad_id.in_(property_ids),
+            Expense.fecha >= fecha_inicio
         ).scalar() or 0
         
         return {
@@ -132,9 +131,9 @@ class ChatEngine:
     def _get_best_property(self) -> Dict:
         """Identifica la propiedad más rentable"""
         # Simplificado - en producción calcular ROI real
-        propiedad = self.db.query(Propiedad).filter(
-            Propiedad.user_id == self.user_id
-        ).order_by(Propiedad.precio.desc()).first()
+        propiedad = self.db.query(Property).filter(
+            Property.user_id == self.user_id
+        ).order_by(Property.precio.desc()).first()
         
         if not propiedad:
             return {
@@ -156,8 +155,8 @@ class ChatEngine:
         insights = []
         
         # Total de propiedades
-        total_props = self.db.query(func.count(Propiedad.id)).filter(
-            Propiedad.user_id == self.user_id
+        total_props = self.db.query(func.count(Property.id)).filter(
+            Property.user_id == self.user_id
         ).scalar()
         
         insights.append({
@@ -167,14 +166,14 @@ class ChatEngine:
         })
         
         # Ingresos mensuales
-        property_ids = [p[0] for p in self.db.query(Propiedad.id).filter(
-            Propiedad.user_id == self.user_id
+        property_ids = [p[0] for p in self.db.query(Property.id).filter(
+            Property.user_id == self.user_id
         ).all()]
         
         if property_ids:
-            ingresos = self.db.query(func.sum(Alquiler.monto_mensual)).filter(
-                Alquiler.propiedad_id.in_(property_ids),
-                Alquiler.estado == "activo"
+            ingresos = self.db.query(func.sum(Rental.monto_mensual)).filter(
+                Rental.propiedad_id.in_(property_ids),
+                Rental.estado == "activo"
             ).scalar() or 0
             
             insights.append({

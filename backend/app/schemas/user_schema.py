@@ -6,14 +6,14 @@ class UserBase(BaseModel):
     email: EmailStr
     fullname: str
 
-class UsuarioCreate(UserBase):
+class UserCreate(UserBase):
     password: str
 
-class UsuarioLogin(BaseModel):
+class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
-class UsuarioResponse(UserBase):
+class UserResponse(UserBase):
     id: int
     is_active: bool
     created_at: datetime

@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Optional, List
-from app.models.propiedad import TipoPropiedad, EstadoPropiedad
 from app.models.property import PropertyType, PropertyStatus
 
 # Propiedad Schemas

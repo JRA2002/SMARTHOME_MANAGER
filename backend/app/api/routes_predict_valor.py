@@ -14,21 +14,21 @@ router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
 
 class ValuationRequest(BaseModel):
-    direccion: str
-    tipo: str
+    address: str
+    property_type: str
     area: float = Field(gt=0)
-    habitaciones: int = Field(ge=0)
-    banos: int = Field(ge=0)
-    antiguedad: Optional[int] = Field(None, ge=0)
-    ubicacion_score: Optional[float] = Field(None, ge=0, le=10)
+    rooms: int = Field(ge=0)
+    bathrooms: int = Field(ge=0)
+    age: Optional[int] = Field(None, ge=0)
+    location_score: Optional[float] = Field(None, ge=0, le=10)
 
 class ValuationResponse(BaseModel):
     success: bool = True
-    valor_estimado: float
-    rango_minimo: float
-    rango_maximo: float
-    confianza: float
-    factores: dict
+    estimated_value: float
+    minimum_range: float
+    maximum_range: float
+    confidence: float
+    factors: dict
 
 @router.post("/", response_model=ValuationResponse)
 @limiter.limit("10/minute")
@@ -41,9 +41,9 @@ async def predict_valor(
     """Predecir valor de propiedad usando ML"""
     try:
         predictor = PropertyValuePredictor()
-        resultado = predictor.predict(valuation_data.model_dump())
+        result = predictor.predict(valuation_data.model_dump())
         
-        return ValuationResponse(**resultado)
+        return ValuationResponse(**result)
     
     except Exception as e:
         raise HTTPException(

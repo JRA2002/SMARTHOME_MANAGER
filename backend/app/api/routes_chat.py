@@ -31,7 +31,6 @@ class ChatResponse(BaseModel):
 async def chat(
     request: Request,
     chat_data: ChatRequest,
-    # current_user: Usuario = Depends(get_current_user),
     current_user: User = Depends(get_current_user),
 
     db: Session = Depends(get_db)

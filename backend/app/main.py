@@ -1,3 +1,4 @@
+from app.api import routes_property
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -6,7 +7,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from app.core.database import engine, Base
-from app.api import routes_propiedades, routes_chat, routes_predict_valor
+from app.api import routes_chat, routes_predict_valor
 from app.core.config import settings
 
 limiter = Limiter(key_func=get_remote_address)
@@ -49,7 +50,7 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 app.include_router(
-    routes_propiedades.router,
+    routes_property.router,
     prefix="/api/v1/propiedades",
     tags=["Propiedades"]
 )

@@ -12,9 +12,9 @@ from app.core.security import (
     create_access_token
 )
 from app.models.user import User
-from app.models.propiedad import Propiedad, Alquiler, Pago, Gasto
-from app.schemas.user_schema import UsuarioCreate, UsuarioLogin, UsuarioResponse, Token
-from app.schemas.propiedad_schema import (
+from app.models.property import Property, Rental, Expense
+from app.schemas.user_schema import Token, UserResponse, UserLogin, UserCreate
+from app.schemas.property_schema import (
     PropertyCreate,
     PropertyUpdate,
     PropertyResponse,
@@ -31,11 +31,11 @@ limiter = Limiter(key_func=get_remote_address)
 
 # ============= AUTH ENDPOINTS =============
 
-@router.post("/auth/register", response_model=UsuarioResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/auth/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("5/minute")
 async def register(
     request: Request,
-    user_data: UsuarioCreate,
+    user_data: UserCreate,
     db: Session = Depends(get_db)
 ):
     """Registrar nuevo usuario"""
@@ -65,7 +65,7 @@ async def register(
 @limiter.limit("10/minute")
 async def login(
     request: Request,
-    credentials: UsuarioLogin,
+    credentials: UserLogin,
     db: Session = Depends(get_db)
 ):
     """Iniciar sesión"""
@@ -92,7 +92,7 @@ async def login(
     
     return {"access_token": access_token, "token_type": "bearer"}
 
-@router.get("/auth/me", response_model=UsuarioResponse)
+@router.get("/auth/me", response_model=UserResponse)
 @limiter.limit("30/minute")
 async def get_current_user_info(
     request: Request,
@@ -105,198 +105,198 @@ async def get_current_user_info(
 
 @router.post("/", response_model=PropertyResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("20/minute")
-async def create_propiedad(
+async def create_property(
     request: Request,
-    propiedad_data: PropertyCreate,
+    property_data: PropertyCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Crear nueva propiedad"""
-    nueva_propiedad = Propiedad(
-        **propiedad_data.model_dump(),
+    """Create new property"""
+    new_property = Property(
+        **property_data.model_dump(),
         user_id=current_user.id
     )
     
-    db.add(nueva_propiedad)
+    db.add(new_property)
     db.commit()
-    db.refresh(nueva_propiedad)
+    db.refresh(new_property)
     
-    return nueva_propiedad
+    return new_property
 
 @router.get("/", response_model=dict)
 @limiter.limit("60/minute")
-async def get_propiedades(
+async def get_properties(
     request: Request,
-    skip: int = Query(0, ge=0, description="Número de registros a saltar"),
-    limit: int = Query(10, ge=1, le=100, description="Número de registros a retornar"),
+    skip: int = Query(0, ge=0, description="Number of records to skip"),
+    limit: int = Query(10, ge=1, le=100, description="Number of records to return"),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Obtener propiedades del usuario con paginación"""
+    """Get user's properties with pagination"""
     # Get total count
-    total = db.query(func.count(Propiedad.id)).filter(
-        Propiedad.user_id == current_user.id
+    total = db.query(func.count(Property.id)).filter(
+        Property.user_id == current_user.id
     ).scalar()
     
     # Get paginated results
-    propiedades = db.query(Propiedad).filter(
-        Propiedad.user_id == current_user.id
+    properties = db.query(Property).filter(
+        Property.user_id == current_user.id
     ).offset(skip).limit(limit).all()
     
     total_pages = (total + limit - 1) // limit
     
     return {
         "success": True,
-        "data": propiedades,
+        "data": properties,
         "total": total,
         "page": (skip // limit) + 1,
         "page_size": limit,
         "total_pages": total_pages
     }
 
-@router.get("/{propiedad_id}", response_model=PropertyResponse)
+@router.get("/{property_id}", response_model=PropertyResponse)
 @limiter.limit("60/minute")
-async def get_propiedad(
+async def get_property(
     request: Request,
-    propiedad_id: int,
+    property_id: int,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Obtener propiedad por ID"""
-    propiedad = db.query(Propiedad).filter(
-        Propiedad.id == propiedad_id,
-        Propiedad.user_id == current_user.id
+    """Get property by ID"""
+    property = db.query(Property).filter(
+        Property.id == property_id,
+        Property.user_id == current_user.id
     ).first()
     
-    if not propiedad:
+    if not property:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Propiedad no encontrada"
+            detail="Property not found"
         )
     
-    return propiedad
+    return property
 
-@router.put("/{propiedad_id}", response_model=PropertyResponse)
+@router.put("/{property_id}", response_model=PropertyResponse)
 @limiter.limit("30/minute")
-async def update_propiedad(
+async def update_property(
     request: Request,
-    propiedad_id: int,
-    propiedad_data: PropertyUpdate,
+    property_id: int,
+    property_data: PropertyUpdate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Actualizar propiedad"""
-    propiedad = db.query(Propiedad).filter(
-        Propiedad.id == propiedad_id,
-        Propiedad.user_id == current_user.id
+    """Update property"""
+    property = db.query(Property).filter(
+        Property.id == property_id,
+        Property.user_id == current_user.id
     ).first()
     
-    if not propiedad:
+    if not property:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Propiedad no encontrada"
+            detail="Property not found"
         )
     
     # Update only provided fields
-    update_data = propiedad_data.model_dump(exclude_unset=True)
+    update_data = property_data.model_dump(exclude_unset=True)
     for field, value in update_data.items():
-        setattr(propiedad, field, value)
+        setattr(property, field, value)
     
-    propiedad.updated_at = datetime.utcnow()
+    property.updated_at = datetime.utcnow()
     db.commit()
-    db.refresh(propiedad)
+    db.refresh(property)
     
-    return propiedad
+    return property
 
-@router.delete("/{propiedad_id}", status_code=status.HTTP_200_OK)
+@router.delete("/{property_id}", status_code=status.HTTP_200_OK)
 @limiter.limit("20/minute")
-async def delete_propiedad(
+async def delete_property(
     request: Request,
-    propiedad_id: int,
+    property_id: int,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Eliminar propiedad"""
-    propiedad = db.query(Propiedad).filter(
-        Propiedad.id == propiedad_id,
-        Propiedad.user_id == current_user.id
+    """Delete property"""
+    property = db.query(Property).filter(
+        Property.id == property_id,
+        Property.user_id == current_user.id
     ).first()
     
-    if not propiedad:
+    if not property:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Propiedad no encontrada"
+            detail="Property not found"
         )
     
-    db.delete(propiedad)
+    db.delete(property)
     db.commit()
     
     return {
         "success": True,
-        "message": "Propiedad eliminada exitosamente"
+        "message": "Property deleted successfully"
     }
 
 # ============= ALQUILERES ENDPOINTS =============
 
-@router.post("/alquileres", response_model=RentalResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/rentals", response_model=RentalResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("20/minute")
-async def create_alquiler(
+async def create_rental(
     request: Request,
-    alquiler_data: RentalCreate,
+    rental_data: RentalCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Crear nuevo alquiler"""
+    """Create new rental"""
     # Verify property belongs to user
-    propiedad = db.query(Propiedad).filter(
-        Propiedad.id == alquiler_data.propiedad_id,
-        Propiedad.user_id == current_user.id
+    property = db.query(Property).filter(
+        Property.id == rental_data.property_id,
+        Property.user_id == current_user.id
     ).first()
     
-    if not propiedad:
+    if not property:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Propiedad no encontrada"
+            detail="Property not found"
         )
     
-    nuevo_alquiler = Alquiler(**alquiler_data.model_dump())
-    db.add(nuevo_alquiler)
+    new_rental = Rental(**rental_data.model_dump())
+    db.add(new_rental)
     db.commit()
-    db.refresh(nuevo_alquiler)
+    db.refresh(new_rental)
     
-    return nuevo_alquiler
+    return new_rental
 
-@router.get("/alquileres", response_model=dict)
+@router.get("/rentals", response_model=dict)
 @limiter.limit("60/minute")
-async def get_alquileres(
+async def get_rentals(
     request: Request,
     skip: int = Query(0, ge=0),
     limit: int = Query(10, ge=1, le=100),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Obtener alquileres del usuario con paginación"""
+    """Get user's rentals with pagination"""
     # Get user's property IDs
-    property_ids = db.query(Propiedad.id).filter(
-        Propiedad.user_id == current_user.id
+    property_ids = db.query(Property.id).filter(
+        Property.user_id == current_user.id
     ).all()
     property_ids = [p[0] for p in property_ids]
     
     # Get total count
-    total = db.query(func.count(Alquiler.id)).filter(
-        Alquiler.propiedad_id.in_(property_ids)
+    total = db.query(func.count(Rental.id)).filter(
+        Rental.property_id.in_(property_ids)
     ).scalar()
     
     # Get paginated results
-    alquileres = db.query(Alquiler).filter(
-        Alquiler.propiedad_id.in_(property_ids)
+    rentals = db.query(Rental).filter(
+        Rental.property_id.in_(property_ids)
     ).offset(skip).limit(limit).all()
     
     total_pages = (total + limit - 1) // limit
     
     return {
         "success": True,
-        "data": alquileres,
+        "data": rentals,
         "total": total,
         "page": (skip // limit) + 1,
         "page_size": limit,
@@ -305,65 +305,65 @@ async def get_alquileres(
 
 # ============= GASTOS ENDPOINTS =============
 
-@router.post("/gastos", response_model=ExpenseResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/expense", response_model=ExpenseResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("20/minute")
-async def create_gasto(
+async def create_expense(
     request: Request,
-    gasto_data: ExpenseCreate,
+    expense_data: ExpenseCreate,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Crear nuevo gasto"""
+    """Create new expense"""
     # Verify property belongs to user
-    propiedad = db.query(Propiedad).filter(
-        Propiedad.id == gasto_data.propiedad_id,
-        Propiedad.user_id == current_user.id
+    property = db.query(Property).filter(
+        Property.id == expense_data.property_id,
+        Property.user_id == current_user.id
     ).first()
     
-    if not propiedad:
+    if not property:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Propiedad no encontrada"
+            detail="Property not found"
         )
     
-    nuevo_gasto = Gasto(**gasto_data.model_dump())
-    db.add(nuevo_gasto)
+    new_expense = Expense(**expense_data.model_dump())
+    db.add(new_expense)
     db.commit()
-    db.refresh(nuevo_gasto)
+    db.refresh(new_expense)
     
-    return nuevo_gasto
+    return new_expense
 
-@router.get("/gastos", response_model=dict)
+@router.get("/expense", response_model=dict)
 @limiter.limit("60/minute")
-async def get_gastos(
+async def get_expenses(
     request: Request,
     skip: int = Query(0, ge=0),
     limit: int = Query(10, ge=1, le=100),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Obtener gastos del usuario con paginación"""
+    """Get user's expenses with pagination"""
     # Get user's property IDs
-    property_ids = db.query(Propiedad.id).filter(
-        Propiedad.user_id == current_user.id
+    property_ids = db.query(Property.id).filter(
+        Property.user_id == current_user.id
     ).all()
     property_ids = [p[0] for p in property_ids]
     
     # Get total count
-    total = db.query(func.count(Gasto.id)).filter(
-        Gasto.propiedad_id.in_(property_ids)
+    total = db.query(func.count(Expense.id)).filter(
+        Expense.property_id.in_(property_ids)
     ).scalar()
     
     # Get paginated results
-    gastos = db.query(Gasto).filter(
-        Gasto.propiedad_id.in_(property_ids)
+    expenses = db.query(Expense).filter(
+        Expense.property_id.in_(property_ids)
     ).offset(skip).limit(limit).all()
     
     total_pages = (total + limit - 1) // limit
     
     return {
         "success": True,
-        "data": gastos,
+        "data": expenses,
         "total": total,
         "page": (skip // limit) + 1,
         "page_size": limit,
