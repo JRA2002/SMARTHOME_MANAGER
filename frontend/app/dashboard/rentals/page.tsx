@@ -159,7 +159,8 @@ export default function RentalsPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {rentals.map((rental) => (
+                    {Array.isArray(rentals) &&
+                    rentals.map((rental) => (
                       <TableRow key={rental.id}>
                         <TableCell>
                           <div className="flex items-center gap-2">

@@ -48,7 +48,7 @@ class ApiClient {
         const formData = new URLSearchParams();
         formData.append("email", credentials.email);
         formData.append("password", credentials.password);
-        const response = await fetch(`${API_BASE_URL}/api/v1/properties/auth/login`, {
+        const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -66,7 +66,7 @@ class ApiClient {
         return data;
     }
     async register(data) {
-        const response = await fetch(`${API_BASE_URL}/api/v1/properties/auth/register`, {
+        const response = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
             method: "POST",
             headers: this.getHeaders(false),
             body: JSON.stringify(data)
@@ -77,7 +77,7 @@ class ApiClient {
         return response.json();
     }
     async getCurrentUser() {
-        const response = await fetch(`${API_BASE_URL}/api/v1/properties/auth/me`, {
+        const response = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
             headers: this.getHeaders()
         });
         if (!response.ok) {
@@ -109,7 +109,8 @@ class ApiClient {
         if (!response.ok) {
             throw new Error("Failed to fetch properties");
         }
-        return response.json();
+        const result = await response.json();
+        return result.data;
     }
     async createProperty(data) {
         const response = await this.fetchWithAuth("/api/v1/properties", {
@@ -140,7 +141,9 @@ class ApiClient {
         }
     }
     async getRentals() {
+        console.log("Fetching rentals from API...");
         const response = await this.fetchWithAuth("/api/v1/rentals");
+        console.log("Rentals response:", response);
         if (!response.ok) {
             throw new Error("Failed to fetch rentals");
         }

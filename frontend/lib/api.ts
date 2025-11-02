@@ -154,7 +154,7 @@ class ApiClient {
     formData.append("email", credentials.email)
     formData.append("password", credentials.password)
 
-    const response = await fetch(`${API_BASE_URL}/api/v1/properties/auth/login`, {
+    const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -175,7 +175,7 @@ class ApiClient {
   }
 
   async register(data: RegisterData): Promise<User> {
-    const response = await fetch(`${API_BASE_URL}/api/v1/properties/auth/register`, {
+    const response = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
       method: "POST",
       headers: this.getHeaders(false),
       body: JSON.stringify(data),
@@ -189,7 +189,7 @@ class ApiClient {
   }
 
   async getCurrentUser(): Promise<User> {
-    const response = await fetch(`${API_BASE_URL}/api/v1/properties/auth/me`, {
+    const response = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
       headers: this.getHeaders(),
     })
 
@@ -228,7 +228,8 @@ class ApiClient {
     if (!response.ok) {
       throw new Error("Failed to fetch properties")
     }
-    return response.json()
+    const result = await response.json();
+    return result.data;
   }
 
   async createProperty(data: PropertyCreate): Promise<Property> {
@@ -263,7 +264,9 @@ class ApiClient {
   }
 
   async getRentals(): Promise<Rental[]> {
+    console.log("Fetching rentals from API...");
     const response = await this.fetchWithAuth("/api/v1/rentals")
+    console.log("Rentals response:", response);
     if (!response.ok) {
       throw new Error("Failed to fetch rentals")
     }

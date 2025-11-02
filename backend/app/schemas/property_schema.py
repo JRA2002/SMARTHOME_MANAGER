@@ -47,12 +47,15 @@ class PaginatedProperties(BaseModel):
     page_size: int
     total_pages: int
 
+    class Config:
+        from_attributes = True
+
 # Rental Schemas
 class RentalBase(BaseModel):
     tenant_name: str
     tenant_email: str
     tenant_phone: Optional[str] = None
-    monthly_rent: float = Field(gt=0)
+    monthly_amount: float = Field(gt=0)
     start_date: datetime
     end_date: Optional[datetime] = None
     deposit: float = Field(ge=0, default=0)
@@ -66,6 +69,17 @@ class RentalResponse(RentalBase):
     status: str
     created_at: datetime
     
+    class Config:
+        from_attributes = True
+
+class PaginatedRentals(BaseModel):
+    success: bool
+    data: List[RentalResponse]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+
     class Config:
         from_attributes = True
 

@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
     DATABASE_URL: str
-    ALLOWED_ORIGINS: str
+    ALLOWED_ORIGINS: str = "*"
     RATE_LIMIT_PER_MINUTE: int
     
     class Config:

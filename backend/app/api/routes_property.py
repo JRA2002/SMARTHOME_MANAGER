@@ -22,7 +22,8 @@ from app.schemas.property_schema import (
     RentalCreate,
     ExpenseCreate,
     ExpenseResponse,
-    PaginatedProperties
+    PaginatedProperties,
+    PaginatedRentals
 )
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -104,7 +105,7 @@ async def get_current_user_info(
 
 # ============= PROPIEDADES ENDPOINTS =============
 
-@router.post("/", response_model=PropertyResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/properties", response_model=PropertyResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("20/minute")
 async def create_property(
     request: Request,
@@ -121,10 +122,10 @@ async def create_property(
     db.add(new_property)
     db.commit()
     db.refresh(new_property)
-    print("New property created:", new_property)
+    
     return new_property
 
-@router.get("/", response_model=PaginatedProperties)
+@router.get("/properties", response_model=PaginatedProperties)
 @limiter.limit("60/minute")
 async def get_properties(
     request: Request,
@@ -148,19 +149,16 @@ async def get_properties(
     total_pages = (total + limit - 1) // limit
     current_page = (skip // limit) + 1
 
-    # Convertir objetos SQLAlchemy a Pydantic
-    properties_data = [PropertyResponse.model_validate(p) for p in properties]
-    print(f"aqui estan las propiedades: {properties_data[2:3]}")
     return PaginatedProperties(
         success=True,
-        data=properties_data,
+        data=properties,
         total=total,
         page=current_page,
         page_size=limit,
         total_pages=total_pages
     )
 
-@router.get("/{property_id}", response_model=PropertyResponse)
+@router.get("/properties/{property_id}", response_model=PropertyResponse)
 @limiter.limit("60/minute")
 async def get_property(
     request: Request,
@@ -182,7 +180,7 @@ async def get_property(
     
     return property
 
-@router.put("/{property_id}", response_model=PropertyResponse)
+@router.put("/properties/{property_id}", response_model=PropertyResponse)
 @limiter.limit("30/minute")
 async def update_property(
     request: Request,
@@ -214,7 +212,7 @@ async def update_property(
     
     return property
 
-@router.delete("/{property_id}", status_code=status.HTTP_200_OK)
+@router.delete("/properties/{property_id}", status_code=status.HTTP_200_OK)
 @limiter.limit("20/minute")
 async def delete_property(
     request: Request,
@@ -269,11 +267,11 @@ async def create_rental(
     db.add(new_rental)
     db.commit()
     db.refresh(new_rental)
-    
+    print("New rental created:", new_rental)
     return new_rental
 
-@router.get("/rentals", response_model=dict)
-@limiter.limit("60/minute")
+@router.get("/rentals", response_model=PaginatedRentals)
+@limiter.limit("600/minute")
 async def get_rentals(
     request: Request,
     skip: int = Query(0, ge=0),
@@ -297,17 +295,17 @@ async def get_rentals(
     rentals = db.query(Rental).filter(
         Rental.property_id.in_(property_ids)
     ).offset(skip).limit(limit).all()
-    
+    print("Fetched rentals:", rentals)
     total_pages = (total + limit - 1) // limit
     
-    return {
-        "success": True,
-        "data": rentals,
-        "total": total,
-        "page": (skip // limit) + 1,
-        "page_size": limit,
-        "total_pages": total_pages
-    }
+    return PaginatedRentals(
+        success=True,
+        data=rentals,
+        total=total,
+        page=(skip // limit) + 1,
+        page_size=limit,
+        total_pages=total_pages
+    )
 
 # ============= GASTOS ENDPOINTS =============
 

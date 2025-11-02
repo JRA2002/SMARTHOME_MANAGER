@@ -1,10 +1,8 @@
 {
-  "/dashboard/chat/page": "app/dashboard/chat/page.js",
   "/dashboard/expenses/page": "app/dashboard/expenses/page.js",
   "/dashboard/page": "app/dashboard/page.js",
   "/dashboard/properties/page": "app/dashboard/properties/page.js",
   "/dashboard/rentals/page": "app/dashboard/rentals/page.js",
-  "/dashboard/valuation/page": "app/dashboard/valuation/page.js",
   "/login/page": "app/login/page.js",
   "/page": "app/page.js"
 }
