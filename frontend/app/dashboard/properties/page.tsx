@@ -143,24 +143,24 @@ export default function PropertiesPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {properties.map((property) => (
+                    
+                    {Array.isArray(properties) &&
+                    properties.map((property) => (
                       <TableRow key={property.id}>
                         <TableCell>
                           <div className="flex items-start gap-2">
                             <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
                             <div>
-                              <div className="font-medium">{property.direccion}</div>
-                              {property.ciudad && (
-                                <div className="text-sm text-muted-foreground">{property.ciudad}</div>
+                              <div className="font-medium">{property.address}</div>
+                              {property.address&& (
+                                <div className="text-sm text-muted-foreground">{property.address}</div>
                               )}
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="capitalize">{property.tipo}</TableCell>
-                        <TableCell className="font-semibold">
-                          ${property.precio_alquiler?.toLocaleString() || "N/A"}
-                        </TableCell>
-                        <TableCell>{getStatusBadge(property.estado)}</TableCell>
+                        <TableCell className="capitalize">{property.type}</TableCell>
+                        <TableCell className="font-semibold">${property.price?.toLocaleString() || "N/A"}</TableCell>
+                        <TableCell>{getStatusBadge(property.status)}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             <Button variant="ghost" size="icon" onClick={() => handleEdit(property)}>
@@ -192,9 +192,10 @@ export default function PropertiesPage() {
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
         title="Eliminar Propiedad"
-        description={`¿Estás seguro de que deseas eliminar la propiedad "${selectedProperty?.direccion}"? Esta acción no se puede deshacer.`}
+        description={`¿Estás seguro de que deseas eliminar la propiedad "${selectedProperty?.address}"? Esta acción no se puede deshacer.`}
         onConfirm={confirmDelete}
       />
     </DashboardLayout>
   )
 }
+

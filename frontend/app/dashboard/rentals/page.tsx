@@ -165,29 +165,29 @@ export default function RentalsPage() {
                           <div className="flex items-center gap-2">
                             <User className="h-4 w-4 text-muted-foreground" />
                             <div>
-                              <div className="font-medium">{rental.nombre_inquilino}</div>
-                              {rental.email_inquilino && (
-                                <div className="text-sm text-muted-foreground">{rental.email_inquilino}</div>
+                              <div className="font-medium">{rental.tenant_name}</div>
+                              {rental.tenant_email && (
+                                <div className="text-sm text-muted-foreground">{rental.tenant_email}</div>
                               )}
                             </div>
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="text-sm">
-                            {rental.propiedad?.direccion || `Propiedad #${rental.propiedad_id}`}
+                            {rental.property?.address || `Propiedad #${rental.property_id}`}
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2 text-sm">
                             <Calendar className="h-4 w-4 text-muted-foreground" />
                             <div>
-                              <div>{formatDate(rental.fecha_inicio)}</div>
-                              <div className="text-muted-foreground">{formatDate(rental.fecha_fin)}</div>
+                              <div>{formatDate(rental.start_date)}</div>
+                              <div className="text-muted-foreground">{formatDate(rental.created_at)}</div>
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="font-semibold">${rental.monto_mensual?.toLocaleString()}</TableCell>
-                        <TableCell>{getStatusBadge(rental.estado)}</TableCell>
+                        <TableCell className="font-semibold">${rental.monthly_amount?.toLocaleString()}</TableCell>
+                        <TableCell>{getStatusBadge(rental.status)}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             <Button variant="ghost" size="icon" onClick={() => handleEdit(rental)}>
@@ -219,9 +219,10 @@ export default function RentalsPage() {
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
         title="Eliminar Alquiler"
-        description={`¿Estás seguro de que deseas eliminar el contrato de alquiler con ${selectedRental?.nombre_inquilino}? Esta acción no se puede deshacer.`}
+        description={`¿Estás seguro de que deseas eliminar el contrato de alquiler con ${selectedRental?.tenant_name}? Esta acción no se puede deshacer.`}
         onConfirm={confirmDelete}
       />
     </DashboardLayout>
   )
 }
+

@@ -119,7 +119,7 @@ export default function ExpensesPage() {
     }
   }
 
-  const totalExpenses = expenses.reduce((sum, expense) => sum + (expense.monto || 0), 0)
+  const totalExpenses = expenses.reduce((sum, expense) => sum + (expense.amount || 0), 0)
 
   return (
     <DashboardLayout>
@@ -157,11 +157,11 @@ export default function ExpensesPage() {
                 $
                 {expenses
                   .filter((e) => {
-                    const expenseDate = new Date(e.fecha)
+                    const expenseDate = new Date(e.date)
                     const now = new Date()
                     return expenseDate.getMonth() === now.getMonth() && expenseDate.getFullYear() === now.getFullYear()
                   })
-                  .reduce((sum, e) => sum + (e.monto || 0), 0)
+                  .reduce((sum, e) => sum + (e.amount || 0), 0)
                   .toLocaleString()}
               </div>
               <p className="text-xs text-muted-foreground mt-1">Gastos del mes actual</p>
@@ -219,17 +219,17 @@ export default function ExpensesPage() {
                     {expenses.map((expense) => (
                       <TableRow key={expense.id}>
                         <TableCell>
-                          <div className="font-medium">{expense.descripcion}</div>
+                          <div className="font-medium">{expense.description}</div>
                         </TableCell>
                         <TableCell>
                           <div className="text-sm">
-                            {expense.propiedad?.direccion || `Propiedad #${expense.propiedad_id}`}
+                            {expense.property?.address || `Propiedad #${expense.property_id}`}
                           </div>
                         </TableCell>
-                        <TableCell>{getCategoryBadge(expense.categoria)}</TableCell>
-                        <TableCell className="text-sm text-muted-foreground">{formatDate(expense.fecha)}</TableCell>
+                        <TableCell>{getCategoryBadge(expense.category)}</TableCell>
+                        <TableCell className="text-sm text-muted-foreground">{formatDate(expense.date)}</TableCell>
                         <TableCell className="font-semibold text-destructive">
-                          -${expense.monto?.toLocaleString()}
+                          -${expense.amount?.toLocaleString()}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
@@ -262,9 +262,10 @@ export default function ExpensesPage() {
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
         title="Eliminar Gasto"
-        description={`¿Estás seguro de que deseas eliminar el gasto "${selectedExpense?.descripcion}"? Esta acción no se puede deshacer.`}
+        description={`¿Estás seguro de que deseas eliminar el gasto "${selectedExpense?.description}"? Esta acción no se puede deshacer.`}
         onConfirm={confirmDelete}
       />
     </DashboardLayout>
   )
 }
+

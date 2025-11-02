@@ -22,15 +22,14 @@ export function RentalDialog({ open, onOpenChange, rental, onSave }: RentalDialo
   const [loading, setLoading] = useState(false)
   const [properties, setProperties] = useState<Property[]>([])
   const [formData, setFormData] = useState({
-    propiedad_id: "",
-    nombre_inquilino: "",
-    email_inquilino: "",
-    telefono_inquilino: "",
-    fecha_inicio: "",
-    fecha_fin: "",
-    monto_mensual: "",
-    deposito: "",
-    estado: "activo",
+    property_id: "",
+    tenant_name: "",
+    tenant_email: "",
+    tenant_phone: "",
+    start_date: "",
+    end_date: "",
+    monthly_amount: "",
+    deposit: "",
   })
 
   useEffect(() => {
@@ -42,27 +41,25 @@ export function RentalDialog({ open, onOpenChange, rental, onSave }: RentalDialo
   useEffect(() => {
     if (rental) {
       setFormData({
-        propiedad_id: rental.propiedad_id.toString(),
-        nombre_inquilino: rental.nombre_inquilino,
-        email_inquilino: rental.email_inquilino || "",
-        telefono_inquilino: rental.telefono_inquilino || "",
-        fecha_inicio: rental.fecha_inicio.split("T")[0],
-        fecha_fin: rental.fecha_fin.split("T")[0],
-        monto_mensual: rental.monto_mensual?.toString() || "",
-        deposito: rental.deposito?.toString() || "",
-        estado: rental.estado,
+        property_id: rental.property_id.toString(),
+        tenant_name: rental.tenant_name,
+        tenant_email: rental.tenant_email,
+        tenant_phone: rental.tenant_phone || "",
+        start_date: rental.start_date.split("T")[0],
+        end_date: rental.end_date ? rental.end_date.split("T")[0] : "",
+        monthly_amount: rental.monthly_amount.toString(),
+        deposit: rental.deposit.toString(),
       })
     } else {
       setFormData({
-        propiedad_id: "",
-        nombre_inquilino: "",
-        email_inquilino: "",
-        telefono_inquilino: "",
-        fecha_inicio: "",
-        fecha_fin: "",
-        monto_mensual: "",
-        deposito: "",
-        estado: "activo",
+        property_id: "",
+        tenant_name: "",
+        tenant_email: "",
+        tenant_phone: "",
+        start_date: "",
+        end_date: "",
+        monthly_amount: "",
+        deposit: "",
       })
     }
   }, [rental, open])
@@ -82,15 +79,14 @@ export function RentalDialog({ open, onOpenChange, rental, onSave }: RentalDialo
 
     try {
       const data = {
-        propiedad_id: Number.parseInt(formData.propiedad_id),
-        nombre_inquilino: formData.nombre_inquilino,
-        email_inquilino: formData.email_inquilino || undefined,
-        telefono_inquilino: formData.telefono_inquilino || undefined,
-        fecha_inicio: formData.fecha_inicio,
-        fecha_fin: formData.fecha_fin,
-        monto_mensual: Number.parseFloat(formData.monto_mensual) || 0,
-        deposito: Number.parseFloat(formData.deposito) || 0,
-        estado: formData.estado,
+        property_id: Number.parseInt(formData.property_id),
+        tenant_name: formData.tenant_name,
+        tenant_email: formData.tenant_email,
+        tenant_phone: formData.tenant_phone || undefined,
+        monthly_amount: Number.parseFloat(formData.monthly_amount),
+        start_date: formData.start_date,
+        end_date: formData.end_date || undefined,
+        deposit: Number.parseFloat(formData.deposit),
       }
 
       if (rental) {
@@ -119,18 +115,18 @@ export function RentalDialog({ open, onOpenChange, rental, onSave }: RentalDialo
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="propiedad_id">Propiedad *</Label>
+            <Label htmlFor="property_id">Propiedad *</Label>
             <Select
-              value={formData.propiedad_id}
-              onValueChange={(value) => setFormData({ ...formData, propiedad_id: value })}
+              value={formData.property_id}
+              onValueChange={(value) => setFormData({ ...formData, property_id: value })}
             >
-              <SelectTrigger id="propiedad_id">
+              <SelectTrigger id="property_id">
                 <SelectValue placeholder="Selecciona una propiedad" />
               </SelectTrigger>
               <SelectContent>
                 {properties.map((property) => (
                   <SelectItem key={property.id} value={property.id.toString()}>
-                    {property.direccion} - {property.ciudad}
+                    {property.title} - {property.address}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -139,101 +135,88 @@ export function RentalDialog({ open, onOpenChange, rental, onSave }: RentalDialo
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="nombre_inquilino">Nombre del Inquilino *</Label>
+              <Label htmlFor="tenant_name">Nombre del Inquilino *</Label>
               <Input
-                id="nombre_inquilino"
-                value={formData.nombre_inquilino}
-                onChange={(e) => setFormData({ ...formData, nombre_inquilino: e.target.value })}
+                id="tenant_name"
+                value={formData.tenant_name}
+                onChange={(e) => setFormData({ ...formData, tenant_name: e.target.value })}
                 placeholder="Juan Pérez"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email_inquilino">Email</Label>
+              <Label htmlFor="tenant_email">Email *</Label>
               <Input
-                id="email_inquilino"
+                id="tenant_email"
                 type="email"
-                value={formData.email_inquilino}
-                onChange={(e) => setFormData({ ...formData, email_inquilino: e.target.value })}
+                value={formData.tenant_email}
+                onChange={(e) => setFormData({ ...formData, tenant_email: e.target.value })}
                 placeholder="inquilino@email.com"
+                required
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="telefono_inquilino">Teléfono</Label>
+            <Label htmlFor="tenant_phone">Teléfono</Label>
             <Input
-              id="telefono_inquilino"
-              value={formData.telefono_inquilino}
-              onChange={(e) => setFormData({ ...formData, telefono_inquilino: e.target.value })}
+              id="tenant_phone"
+              value={formData.tenant_phone}
+              onChange={(e) => setFormData({ ...formData, tenant_phone: e.target.value })}
               placeholder="+34 600 000 000"
             />
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="fecha_inicio">Fecha de Inicio *</Label>
+              <Label htmlFor="start_date">Fecha de Inicio *</Label>
               <Input
-                id="fecha_inicio"
+                id="start_date"
                 type="date"
-                value={formData.fecha_inicio}
-                onChange={(e) => setFormData({ ...formData, fecha_inicio: e.target.value })}
+                value={formData.start_date}
+                onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="fecha_fin">Fecha de Fin *</Label>
+              <Label htmlFor="end_date">Fecha de Fin</Label>
               <Input
-                id="fecha_fin"
+                id="end_date"
                 type="date"
-                value={formData.fecha_fin}
-                onChange={(e) => setFormData({ ...formData, fecha_fin: e.target.value })}
-                required
+                value={formData.end_date}
+                onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
               />
             </div>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="monto_mensual">Monto Mensual *</Label>
+              <Label htmlFor="monthly_amount">Monto Mensual *</Label>
               <Input
-                id="monto_mensual"
+                id="monthly_amount"
                 type="number"
                 step="0.01"
-                value={formData.monto_mensual}
-                onChange={(e) => setFormData({ ...formData, monto_mensual: e.target.value })}
+                value={formData.monthly_amount}
+                onChange={(e) => setFormData({ ...formData, monthly_amount: e.target.value })}
                 placeholder="1200.00"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="deposito">Depósito</Label>
+              <Label htmlFor="deposit">Depósito *</Label>
               <Input
-                id="deposito"
+                id="deposit"
                 type="number"
                 step="0.01"
-                value={formData.deposito}
-                onChange={(e) => setFormData({ ...formData, deposito: e.target.value })}
+                value={formData.deposit}
+                onChange={(e) => setFormData({ ...formData, deposit: e.target.value })}
                 placeholder="2400.00"
+                required
               />
             </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="estado">Estado *</Label>
-            <Select value={formData.estado} onValueChange={(value) => setFormData({ ...formData, estado: value })}>
-              <SelectTrigger id="estado">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="activo">Activo</SelectItem>
-                <SelectItem value="pendiente">Pendiente</SelectItem>
-                <SelectItem value="finalizado">Finalizado</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
 
           <div className="flex justify-end gap-3 pt-4">
@@ -258,3 +241,4 @@ export function RentalDialog({ open, onOpenChange, rental, onSave }: RentalDialo
     </Dialog>
   )
 }
+

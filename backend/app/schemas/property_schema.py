@@ -7,7 +7,7 @@ from app.models.property import PropertyType, PropertyStatus
 class PropertyBase(BaseModel):
     title: str
     address: str
-    property_type: PropertyType
+    type: PropertyType
     price: float = Field(gt=0)
     area: float = Field(gt=0)
     bedrooms: int = Field(ge=0)
@@ -21,7 +21,7 @@ class PropertyCreate(PropertyBase):
 class PropertyUpdate(BaseModel):
     title: Optional[str] = None
     address: Optional[str] = None
-    property_type: Optional[PropertyType] = None
+    type: Optional[PropertyType] = None
     price: Optional[float] = Field(None, gt=0)
     area: Optional[float] = Field(None, gt=0)
     bedrooms: Optional[int] = Field(None, ge=0)
@@ -32,12 +32,20 @@ class PropertyUpdate(BaseModel):
 class PropertyResponse(PropertyBase):
     id: int
     user_id: int
-    property_status: PropertyStatus
+    status: PropertyStatus
     created_at: datetime
     updated_at: datetime
     
     class Config:
         from_attributes = True
+
+class PaginatedProperties(BaseModel):
+    success: bool
+    data: List[PropertyResponse]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
 
 # Rental Schemas
 class RentalBase(BaseModel):

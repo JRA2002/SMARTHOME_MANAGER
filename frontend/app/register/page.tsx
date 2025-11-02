@@ -16,14 +16,12 @@ import { useAuth } from "@/lib/auth-context"
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
     email: "",
-    username: "",
-    password: "",
     fullname: "",
+    password: "",
   })
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const { login } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -32,13 +30,12 @@ export default function RegisterPage() {
 
     try {
       await apiClient.register(formData)
+      router.push("/login?registered=true")
     } catch (err) {
       setError("Error al registrar. El usuario o email ya existe.")
     } finally {
       setLoading(false)
     }
-    await login(formData.email, formData.password)
-    router.push("/dashboard")
   }
 
   return (
@@ -49,18 +46,19 @@ export default function RegisterPage() {
             <Building2 className="w-10 h-10 text-primary-foreground" />
           </div>
           <CardTitle className="text-3xl font-bold text-balance">Crear Cuenta</CardTitle>
-          <CardDescription className="text-base">Únete a SmartHome Manager hoy</CardDescription>
+          <CardDescription className="text-base">Únete a PropManager AI hoy</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="fullname">Nombre Completo</Label>
+              <Label htmlFor="name">Nombre Completo</Label>
               <Input
-                id="fullname"
+                id="name"
                 type="text"
-                placeholder="nombre completo"
+                placeholder="Juan Pérez"
                 value={formData.fullname}
                 onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
+                required
                 className="h-11"
               />
             </div>
@@ -69,21 +67,9 @@ export default function RegisterPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="email"
+                placeholder="tu@email.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-                className="h-11"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="username">Usuario</Label>
-              <Input
-                id="username"
-                type="text"
-                placeholder="usuario"
-                value={formData.username}
-                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                 required
                 className="h-11"
               />
@@ -123,3 +109,4 @@ export default function RegisterPage() {
     </div>
   )
 }
+

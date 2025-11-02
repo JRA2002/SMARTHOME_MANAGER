@@ -23,12 +23,12 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
   const [loading, setLoading] = useState(false)
   const [properties, setProperties] = useState<Property[]>([])
   const [formData, setFormData] = useState({
-    propiedad_id: "",
-    descripcion: "",
-    monto: "",
-    fecha: "",
-    categoria: "mantenimiento",
-    notas: "",
+    property_id: "",
+    category: "mantenimiento",
+    description: "",
+    amount: "",
+    date: "",
+    receipt_url: "",
   })
 
   useEffect(() => {
@@ -40,22 +40,22 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
   useEffect(() => {
     if (expense) {
       setFormData({
-        propiedad_id: expense.propiedad_id.toString(),
-        descripcion: expense.descripcion,
-        monto: expense.monto?.toString() || "",
-        fecha: expense.fecha.split("T")[0],
-        categoria: expense.categoria,
-        notas: expense.notas || "",
+        property_id: expense.property_id.toString(),
+        category: expense.category,
+        description: expense.description,
+        amount: expense.amount.toString(),
+        date: expense.date.split("T")[0],
+        receipt_url: expense.receipt_url || "",
       })
     } else {
       const today = new Date().toISOString().split("T")[0]
       setFormData({
-        propiedad_id: "",
-        descripcion: "",
-        monto: "",
-        fecha: today,
-        categoria: "mantenimiento",
-        notas: "",
+        property_id: "",
+        category: "mantenimiento",
+        description: "",
+        amount: "",
+        date: today,
+        receipt_url: "",
       })
     }
   }, [expense, open])
@@ -75,12 +75,12 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
 
     try {
       const data = {
-        propiedad_id: Number.parseInt(formData.propiedad_id),
-        descripcion: formData.descripcion,
-        monto: Number.parseFloat(formData.monto) || 0,
-        fecha: formData.fecha,
-        categoria: formData.categoria,
-        notas: formData.notas || undefined,
+        property_id: Number.parseInt(formData.property_id),
+        category: formData.category,
+        description: formData.description,
+        amount: Number.parseFloat(formData.amount),
+        date: formData.date,
+        receipt_url: formData.receipt_url || undefined,
       }
 
       if (expense) {
@@ -109,18 +109,18 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="propiedad_id">Propiedad *</Label>
+            <Label htmlFor="property_id">Propiedad *</Label>
             <Select
-              value={formData.propiedad_id}
-              onValueChange={(value) => setFormData({ ...formData, propiedad_id: value })}
+              value={formData.property_id}
+              onValueChange={(value) => setFormData({ ...formData, property_id: value })}
             >
-              <SelectTrigger id="propiedad_id">
+              <SelectTrigger id="property_id">
                 <SelectValue placeholder="Selecciona una propiedad" />
               </SelectTrigger>
               <SelectContent>
                 {properties.map((property) => (
                   <SelectItem key={property.id} value={property.id.toString()}>
-                    {property.direccion} - {property.ciudad}
+                    {property.title} - {property.address}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -128,49 +128,9 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="descripcion">Descripción *</Label>
-            <Input
-              id="descripcion"
-              value={formData.descripcion}
-              onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
-              placeholder="Reparación de tubería"
-              required
-            />
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="monto">Monto *</Label>
-              <Input
-                id="monto"
-                type="number"
-                step="0.01"
-                value={formData.monto}
-                onChange={(e) => setFormData({ ...formData, monto: e.target.value })}
-                placeholder="150.00"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="fecha">Fecha *</Label>
-              <Input
-                id="fecha"
-                type="date"
-                value={formData.fecha}
-                onChange={(e) => setFormData({ ...formData, fecha: e.target.value })}
-                required
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="categoria">Categoría *</Label>
-            <Select
-              value={formData.categoria}
-              onValueChange={(value) => setFormData({ ...formData, categoria: value })}
-            >
-              <SelectTrigger id="categoria">
+            <Label htmlFor="category">Categoría *</Label>
+            <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
+              <SelectTrigger id="category">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -185,13 +145,51 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="notas">Notas</Label>
+            <Label htmlFor="description">Descripción *</Label>
             <Textarea
-              id="notas"
-              value={formData.notas}
-              onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
-              placeholder="Notas adicionales sobre el gasto..."
+              id="description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              placeholder="Reparación de tubería en el baño principal"
               rows={3}
+              required
+            />
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="amount">Monto *</Label>
+              <Input
+                id="amount"
+                type="number"
+                step="0.01"
+                value={formData.amount}
+                onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                placeholder="150.00"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="date">Fecha *</Label>
+              <Input
+                id="date"
+                type="date"
+                value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="receipt_url">URL del Recibo</Label>
+            <Input
+              id="receipt_url"
+              type="url"
+              value={formData.receipt_url}
+              onChange={(e) => setFormData({ ...formData, receipt_url: e.target.value })}
+              placeholder="https://ejemplo.com/recibo.pdf"
             />
           </div>
 
@@ -217,3 +215,4 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
     </Dialog>
   )
 }
+

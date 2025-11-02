@@ -21,7 +21,8 @@ from app.schemas.property_schema import (
     RentalResponse,
     RentalCreate,
     ExpenseCreate,
-    ExpenseResponse
+    ExpenseResponse,
+    PaginatedProperties
 )
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -120,10 +121,10 @@ async def create_property(
     db.add(new_property)
     db.commit()
     db.refresh(new_property)
-    
+    print("New property created:", new_property)
     return new_property
 
-@router.get("/", response_model=dict)
+@router.get("/", response_model=PaginatedProperties)
 @limiter.limit("60/minute")
 async def get_properties(
     request: Request,
@@ -133,26 +134,31 @@ async def get_properties(
     db: Session = Depends(get_db)
 ):
     """Get user's properties with pagination"""
-    # Get total count
+
+    # Total de propiedades del usuario
     total = db.query(func.count(Property.id)).filter(
         Property.user_id == current_user.id
     ).scalar()
-    
-    # Get paginated results
+
+    # Resultados paginados
     properties = db.query(Property).filter(
         Property.user_id == current_user.id
     ).offset(skip).limit(limit).all()
-    
+
     total_pages = (total + limit - 1) // limit
-    
-    return {
-        "success": True,
-        "data": properties,
-        "total": total,
-        "page": (skip // limit) + 1,
-        "page_size": limit,
-        "total_pages": total_pages
-    }
+    current_page = (skip // limit) + 1
+
+    # Convertir objetos SQLAlchemy a Pydantic
+    properties_data = [PropertyResponse.model_validate(p) for p in properties]
+    print(f"aqui estan las propiedades: {properties_data[2:3]}")
+    return PaginatedProperties(
+        success=True,
+        data=properties_data,
+        total=total,
+        page=current_page,
+        page_size=limit,
+        total_pages=total_pages
+    )
 
 @router.get("/{property_id}", response_model=PropertyResponse)
 @limiter.limit("60/minute")

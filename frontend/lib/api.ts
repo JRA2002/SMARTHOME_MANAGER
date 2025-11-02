@@ -7,17 +7,16 @@ export interface LoginCredentials {
 
 export interface RegisterData {
   email: string
-  username: string
+  fullname: string
   password: string
-  fullname?: string
 }
 
 export interface User {
   id: number
   email: string
-  username: string
-  fullname?: string
+  fullname: string
   is_active: boolean
+  created_at: string
 }
 
 export interface AuthResponse {
@@ -27,101 +26,111 @@ export interface AuthResponse {
 
 export interface Property {
   id: number
-  direccion: string
-  ciudad?: string
-  tipo: string
-  precio_alquiler?: number
-  estado: string
-  descripcion?: string
-  propietario_id: number
+  title: string
+  address: string
+  type: "house" | "apartment" | "comercial" | "office" | "land"
+  price: number
+  area: number
+  bedrooms: number
+  bathrooms: number
+  description?: string
+  image_url?: string
+  user_id: number
+  status: "available"| "rented" | "maintenance" | "sold"
+  created_at: string
+  updated_at: string
 }
 
 export interface PropertyCreate {
-  direccion: string
-  ciudad?: string
-  tipo: string
-  precio_alquiler?: number
-  estado: string
-  descripcion?: string
+  title: string
+  address: string
+  type: "house" | "apartment" | "comercial" | "office" | "land"
+  price: number
+  area: number
+  bedrooms: number
+  bathrooms: number
+  description?: string
+  image_url?: string
 }
 
 export interface Rental {
   id: number
-  propiedad_id: number
-  nombre_inquilino: string
-  email_inquilino?: string
-  telefono_inquilino?: string
-  fecha_inicio: string
-  fecha_fin: string
-  monto_mensual?: number
-  deposito?: number
-  estado: string
-  propiedad?: Property
+  property_id: number
+  tenant_name: string
+  tenant_email: string
+  tenant_phone?: string
+  monthly_amount: number
+  start_date: string
+  end_date?: string | null
+  deposit: number
+  status: string
+  created_at: string
+  property?: Property
 }
 
 export interface RentalCreate {
-  propiedad_id: number
-  nombre_inquilino: string
-  email_inquilino?: string
-  telefono_inquilino?: string
-  fecha_inicio: string
-  fecha_fin: string
-  monto_mensual?: number
-  deposito?: number
-  estado: string
+  property_id: number
+  tenant_name: string
+  tenant_email: string
+  tenant_phone?: string
+  monthly_amount: number
+  start_date: string
+  end_date?: string
+  deposit: number
 }
 
 export interface Expense {
   id: number
-  propiedad_id: number
-  descripcion: string
-  monto?: number
-  fecha: string
-  categoria: string
-  notas?: string
-  propiedad?: Property
+  property_id: number
+  category: string
+  description: string
+  amount: number
+  date: string
+  receipt_url?: string
+  created_at: string
+  property?: Property
 }
 
 export interface ExpenseCreate {
-  propiedad_id: number
-  descripcion: string
-  monto?: number
-  fecha: string
-  categoria: string
-  notas?: string
+  property_id: number
+  category: string
+  description: string
+  amount: number
+  date: string
+  receipt_url?: string
 }
 
 export interface ValuationRequest {
-  direccion: string
-  ciudad: string
-  tipo: string
-  metros_cuadrados: number
-  habitaciones: number
-  banos: number
-  ano_construccion: number
+  address: string
+  city: string
+  type: string
+  square_meters: number
+  bedrooms: number
+  bathrooms: number
+  construction_year: number
 }
 
 export interface ValuationResponse {
-  valor_estimado: number
-  rango_minimo: number
-  rango_maximo: number
-  precio_por_m2: number
-  direccion: string
-  ciudad: string
-  tipo: string
-  metros_cuadrados: number
-  habitaciones: number
-  banos: number
-  ano_construccion: number
-  factores?: string[]
+  estimated_value: number
+  min_range: number
+  max_range: number
+  price_per_sqm: number
+  address: string
+  city: string
+  type: string
+  square_meters: number
+  bedrooms: number
+  bathrooms: number
+  construction_year: number
+  factors?: string[]
 }
 
 export interface ChatMessage {
-  mensaje: string
+  message: string
 }
 
 export interface ChatResponse {
-  respuesta: string
+  response: string
 }
 
 class ApiClient {
@@ -141,8 +150,11 @@ class ApiClient {
   }
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-  
-    const response = await fetch(`${API_BASE_URL}/api/v1/propiedades/auth/login`, {
+    const formData = new URLSearchParams()
+    formData.append("email", credentials.email)
+    formData.append("password", credentials.password)
+
+    const response = await fetch(`${API_BASE_URL}/api/v1/properties/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -163,7 +175,7 @@ class ApiClient {
   }
 
   async register(data: RegisterData): Promise<User> {
-    const response = await fetch(`${API_BASE_URL}/api/v1/propiedades/auth/register`, {
+    const response = await fetch(`${API_BASE_URL}/api/v1/properties/auth/register`, {
       method: "POST",
       headers: this.getHeaders(false),
       body: JSON.stringify(data),
@@ -172,11 +184,12 @@ class ApiClient {
     if (!response.ok) {
       throw new Error("Registration failed")
     }
+
     return response.json()
   }
 
   async getCurrentUser(): Promise<User> {
-    const response = await fetch(`${API_BASE_URL}/api/v1/propiedades/auth/me`, {
+    const response = await fetch(`${API_BASE_URL}/api/v1/properties/auth/me`, {
       headers: this.getHeaders(),
     })
 
@@ -211,7 +224,7 @@ class ApiClient {
   }
 
   async getProperties(): Promise<Property[]> {
-    const response = await this.fetchWithAuth("/api/v1/propiedades/propiedades")
+    const response = await this.fetchWithAuth("/api/v1/properties")
     if (!response.ok) {
       throw new Error("Failed to fetch properties")
     }
@@ -219,7 +232,7 @@ class ApiClient {
   }
 
   async createProperty(data: PropertyCreate): Promise<Property> {
-    const response = await this.fetchWithAuth("/api/v1/propiedades/propiedades", {
+    const response = await this.fetchWithAuth("/api/v1/properties", {
       method: "POST",
       body: JSON.stringify(data),
     })
@@ -230,7 +243,7 @@ class ApiClient {
   }
 
   async updateProperty(id: number, data: Partial<PropertyCreate>): Promise<Property> {
-    const response = await this.fetchWithAuth(`/api/v1/propiedades/propiedades/${id}`, {
+    const response = await this.fetchWithAuth(`/api/v1/properties/${id}`, {
       method: "PUT",
       body: JSON.stringify(data),
     })
@@ -241,7 +254,7 @@ class ApiClient {
   }
 
   async deleteProperty(id: number): Promise<void> {
-    const response = await this.fetchWithAuth(`/api/v1/propiedades/propiedades/${id}`, {
+    const response = await this.fetchWithAuth(`/api/v1/properties/${id}`, {
       method: "DELETE",
     })
     if (!response.ok) {
@@ -250,7 +263,7 @@ class ApiClient {
   }
 
   async getRentals(): Promise<Rental[]> {
-    const response = await this.fetchWithAuth("/api/v1/propiedades/alquileres")
+    const response = await this.fetchWithAuth("/api/v1/rentals")
     if (!response.ok) {
       throw new Error("Failed to fetch rentals")
     }
@@ -258,7 +271,7 @@ class ApiClient {
   }
 
   async createRental(data: RentalCreate): Promise<Rental> {
-    const response = await this.fetchWithAuth("/api/v1/propiedades/alquileres", {
+    const response = await this.fetchWithAuth("/api/v1/rentals", {
       method: "POST",
       body: JSON.stringify(data),
     })
@@ -269,7 +282,7 @@ class ApiClient {
   }
 
   async updateRental(id: number, data: Partial<RentalCreate>): Promise<Rental> {
-    const response = await this.fetchWithAuth(`/api/v1/propiedades/alquileres/${id}`, {
+    const response = await this.fetchWithAuth(`/api/v1/rentals/${id}`, {
       method: "PUT",
       body: JSON.stringify(data),
     })
@@ -280,7 +293,7 @@ class ApiClient {
   }
 
   async deleteRental(id: number): Promise<void> {
-    const response = await this.fetchWithAuth(`/api/v1/propiedades/alquileres/${id}`, {
+    const response = await this.fetchWithAuth(`/api/v1/rentals/${id}`, {
       method: "DELETE",
     })
     if (!response.ok) {
@@ -289,7 +302,7 @@ class ApiClient {
   }
 
   async getExpenses(): Promise<Expense[]> {
-    const response = await this.fetchWithAuth("/api/v1/propiedades/gastos")
+    const response = await this.fetchWithAuth("/api/v1/expenses")
     if (!response.ok) {
       throw new Error("Failed to fetch expenses")
     }
@@ -297,7 +310,7 @@ class ApiClient {
   }
 
   async createExpense(data: ExpenseCreate): Promise<Expense> {
-    const response = await this.fetchWithAuth("/api/v1/propiedades/gastos", {
+    const response = await this.fetchWithAuth("/api/v1/expenses", {
       method: "POST",
       body: JSON.stringify(data),
     })
@@ -308,7 +321,7 @@ class ApiClient {
   }
 
   async updateExpense(id: number, data: Partial<ExpenseCreate>): Promise<Expense> {
-    const response = await this.fetchWithAuth(`/api/v1/propiedades/gastos/${id}`, {
+    const response = await this.fetchWithAuth(`/api/v1/expenses/${id}`, {
       method: "PUT",
       body: JSON.stringify(data),
     })
@@ -319,7 +332,7 @@ class ApiClient {
   }
 
   async deleteExpense(id: number): Promise<void> {
-    const response = await this.fetchWithAuth(`/api/v1/propiedades/gastos/${id}`, {
+    const response = await this.fetchWithAuth(`/api/v1/expenses/${id}`, {
       method: "DELETE",
     })
     if (!response.ok) {
@@ -328,7 +341,7 @@ class ApiClient {
   }
 
   async getPropertyValuation(data: ValuationRequest): Promise<ValuationResponse> {
-    const response = await this.fetchWithAuth("/api/v1/propiedades/ia/valoracion", {
+    const response = await this.fetchWithAuth("/api/v1/predict-value", {
       method: "POST",
       body: JSON.stringify(data),
     })
@@ -338,10 +351,10 @@ class ApiClient {
     return response.json()
   }
 
-  async sendChatMessage(mensaje: string): Promise<ChatResponse> {
-    const response = await this.fetchWithAuth("/api/v1/propiedades/ia/chat", {
+  async sendChatMessage(message: string): Promise<ChatResponse> {
+    const response = await this.fetchWithAuth("/api/v1/chat", {
       method: "POST",
-      body: JSON.stringify({ mensaje }),
+      body: JSON.stringify({ message }),
     })
     if (!response.ok) {
       throw new Error("Failed to send chat message")

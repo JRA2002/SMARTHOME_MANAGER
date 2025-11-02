@@ -51,7 +51,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 app.include_router(
     routes_property.router,
-    prefix="/api/v1/propiedades",
+    prefix="/api/v1/properties",
     tags=["Propiedades"]
 )
 app.include_router(

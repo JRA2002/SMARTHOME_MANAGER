@@ -56,7 +56,7 @@ export default function ChatPage() {
       const response = await apiClient.sendChatMessage(input)
       const assistantMessage: Message = {
         role: "assistant",
-        content: response.respuesta,
+        content: response.response,
         timestamp: new Date(),
       }
       setMessages((prev) => [...prev, assistantMessage])
@@ -185,3 +185,4 @@ export default function ChatPage() {
     </DashboardLayout>
   )
 }
+

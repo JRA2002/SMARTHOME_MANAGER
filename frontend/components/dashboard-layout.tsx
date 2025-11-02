@@ -44,12 +44,12 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const userInitials =
-    user?.full_name
+    user?.fullname
       ?.split(" ")
       .map((n) => n[0])
       .join("")
       .toUpperCase() ||
-    user?.username?.substring(0, 2).toUpperCase() ||
+    user?.email?.substring(0, 2).toUpperCase() ||
     "U"
 
   return (
@@ -112,7 +112,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
                     <AvatarFallback className="bg-primary text-primary-foreground">{userInitials}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col items-start text-sm">
-                    <span className="font-semibold">{user?.full_name || user?.username}</span>
+                    <span className="font-semibold">{user?.fullname || user?.email}</span>
                     <span className="text-xs text-muted-foreground">{user?.email}</span>
                   </div>
                 </Button>

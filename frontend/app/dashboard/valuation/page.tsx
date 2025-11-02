@@ -17,13 +17,13 @@ export default function ValuationPage() {
   const [loading, setLoading] = useState(false)
   const [valuation, setValuation] = useState<any>(null)
   const [formData, setFormData] = useState({
-    direccion: "",
-    ciudad: "",
-    tipo: "casa",
-    metros_cuadrados: "",
-    habitaciones: "",
-    banos: "",
-    ano_construccion: "",
+    address: "",
+    city: "",
+    type: "casa",
+    square_meters: "",
+    bedrooms: "",
+    bathrooms: "",
+    construction_year: "",
   })
   const { toast } = useToast()
 
@@ -34,10 +34,10 @@ export default function ValuationPage() {
     try {
       const data = {
         ...formData,
-        metros_cuadrados: Number.parseFloat(formData.metros_cuadrados) || 0,
-        habitaciones: Number.parseInt(formData.habitaciones) || 0,
-        banos: Number.parseInt(formData.banos) || 0,
-        ano_construccion: Number.parseInt(formData.ano_construccion) || 0,
+        square_meters: Number.parseFloat(formData.square_meters) || 0,
+        bedrooms: Number.parseInt(formData.bedrooms) || 0,
+        bathrooms: Number.parseInt(formData.bathrooms) || 0,
+        construction_year: Number.parseInt(formData.construction_year) || 0,
       }
 
       const result = await apiClient.getPropertyValuation(data)
@@ -79,31 +79,31 @@ export default function ValuationPage() {
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="direccion">Dirección *</Label>
+                  <Label htmlFor="address">Dirección *</Label>
                   <Input
-                    id="direccion"
-                    value={formData.direccion}
-                    onChange={(e) => setFormData({ ...formData, direccion: e.target.value })}
+                    id="address"
+                    value={formData.address}
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                     placeholder="Calle Principal 123"
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="ciudad">Ciudad *</Label>
+                  <Label htmlFor="city">Ciudad *</Label>
                   <Input
-                    id="ciudad"
-                    value={formData.ciudad}
-                    onChange={(e) => setFormData({ ...formData, ciudad: e.target.value })}
+                    id="city"
+                    value={formData.city}
+                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     placeholder="Madrid"
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="tipo">Tipo de Propiedad *</Label>
-                  <Select value={formData.tipo} onValueChange={(value) => setFormData({ ...formData, tipo: value })}>
-                    <SelectTrigger id="tipo">
+                  <Label htmlFor="type">Tipo de Propiedad *</Label>
+                  <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
+                    <SelectTrigger id="type">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -118,24 +118,24 @@ export default function ValuationPage() {
 
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="metros_cuadrados">Metros Cuadrados *</Label>
+                    <Label htmlFor="square_meters">Metros Cuadrados *</Label>
                     <Input
-                      id="metros_cuadrados"
+                      id="square_meters"
                       type="number"
-                      value={formData.metros_cuadrados}
-                      onChange={(e) => setFormData({ ...formData, metros_cuadrados: e.target.value })}
+                      value={formData.square_meters}
+                      onChange={(e) => setFormData({ ...formData, square_meters: e.target.value })}
                       placeholder="120"
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="habitaciones">Habitaciones *</Label>
+                    <Label htmlFor="bedrooms">Habitaciones *</Label>
                     <Input
-                      id="habitaciones"
+                      id="bedrooms"
                       type="number"
-                      value={formData.habitaciones}
-                      onChange={(e) => setFormData({ ...formData, habitaciones: e.target.value })}
+                      value={formData.bedrooms}
+                      onChange={(e) => setFormData({ ...formData, bedrooms: e.target.value })}
                       placeholder="3"
                       required
                     />
@@ -144,24 +144,24 @@ export default function ValuationPage() {
 
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="banos">Baños *</Label>
+                    <Label htmlFor="bathrooms">Baños *</Label>
                     <Input
-                      id="banos"
+                      id="bathrooms"
                       type="number"
-                      value={formData.banos}
-                      onChange={(e) => setFormData({ ...formData, banos: e.target.value })}
+                      value={formData.bathrooms}
+                      onChange={(e) => setFormData({ ...formData, bathrooms: e.target.value })}
                       placeholder="2"
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="ano_construccion">Año de Construcción *</Label>
+                    <Label htmlFor="construction_year">Año de Construcción *</Label>
                     <Input
-                      id="ano_construccion"
+                      id="construction_year"
                       type="number"
-                      value={formData.ano_construccion}
-                      onChange={(e) => setFormData({ ...formData, ano_construccion: e.target.value })}
+                      value={formData.construction_year}
+                      onChange={(e) => setFormData({ ...formData, construction_year: e.target.value })}
                       placeholder="2015"
                       required
                     />
@@ -198,20 +198,20 @@ export default function ValuationPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-5xl font-bold text-primary mb-4">
-                      ${valuation.valor_estimado?.toLocaleString()}
+                      ${valuation.estimated_value?.toLocaleString()}
                     </div>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between p-3 bg-background rounded-lg">
                         <span className="text-sm text-muted-foreground">Rango Mínimo</span>
-                        <span className="font-semibold">${valuation.rango_minimo?.toLocaleString()}</span>
+                        <span className="font-semibold">${valuation.min_range?.toLocaleString()}</span>
                       </div>
                       <div className="flex items-center justify-between p-3 bg-background rounded-lg">
                         <span className="text-sm text-muted-foreground">Rango Máximo</span>
-                        <span className="font-semibold">${valuation.rango_maximo?.toLocaleString()}</span>
+                        <span className="font-semibold">${valuation.max_range?.toLocaleString()}</span>
                       </div>
                       <div className="flex items-center justify-between p-3 bg-background rounded-lg">
                         <span className="text-sm text-muted-foreground">Precio por m²</span>
-                        <span className="font-semibold">${valuation.precio_por_m2?.toLocaleString()}</span>
+                        <span className="font-semibold">${valuation.price_per_sqm?.toLocaleString()}</span>
                       </div>
                     </div>
                   </CardContent>
@@ -228,33 +228,33 @@ export default function ValuationPage() {
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-muted-foreground">Ubicación</span>
                       <span className="font-medium">
-                        {valuation.direccion}, {valuation.ciudad}
+                        {valuation.address}, {valuation.city}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-muted-foreground">Tipo</span>
-                      <span className="font-medium capitalize">{valuation.tipo}</span>
+                      <span className="font-medium capitalize">{valuation.type}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-muted-foreground">Superficie</span>
-                      <span className="font-medium">{valuation.metros_cuadrados} m²</span>
+                      <span className="font-medium">{valuation.square_meters} m²</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-muted-foreground">Habitaciones</span>
-                      <span className="font-medium">{valuation.habitaciones}</span>
+                      <span className="font-medium">{valuation.bedrooms}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-muted-foreground">Baños</span>
-                      <span className="font-medium">{valuation.banos}</span>
+                      <span className="font-medium">{valuation.bathrooms}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-muted-foreground">Año</span>
-                      <span className="font-medium">{valuation.ano_construccion}</span>
+                      <span className="font-medium">{valuation.construction_year}</span>
                     </div>
                   </CardContent>
                 </Card>
 
-                {valuation.factores && (
+                {valuation.factors && (
                   <Card className="border-2">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
@@ -264,7 +264,7 @@ export default function ValuationPage() {
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2 text-sm">
-                        {valuation.factores.map((factor: string, index: number) => (
+                        {valuation.factors.map((factor: string, index: number) => (
                           <li key={index} className="flex items-start gap-2">
                             <span className="text-primary mt-1">•</span>
                             <span className="text-muted-foreground">{factor}</span>
@@ -294,3 +294,4 @@ export default function ValuationPage() {
     </DashboardLayout>
   )
 }
+

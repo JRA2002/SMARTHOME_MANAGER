@@ -22,7 +22,10 @@ class ApiClient {
         return headers;
     }
     async login(credentials) {
-        const response = await fetch(`${API_BASE_URL}/api/v1/propiedades/auth/login`, {
+        const formData = new URLSearchParams();
+        formData.append("email", credentials.email);
+        formData.append("password", credentials.password);
+        const response = await fetch(`${API_BASE_URL}/api/v1/properties/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -40,7 +43,7 @@ class ApiClient {
         return data;
     }
     async register(data) {
-        const response = await fetch(`${API_BASE_URL}/api/v1/propiedades/auth/register`, {
+        const response = await fetch(`${API_BASE_URL}/api/v1/properties/auth/register`, {
             method: "POST",
             headers: this.getHeaders(false),
             body: JSON.stringify(data)
@@ -51,7 +54,7 @@ class ApiClient {
         return response.json();
     }
     async getCurrentUser() {
-        const response = await fetch(`${API_BASE_URL}/api/v1/propiedades/auth/me`, {
+        const response = await fetch(`${API_BASE_URL}/api/v1/properties/auth/me`, {
             headers: this.getHeaders()
         });
         if (!response.ok) {
@@ -79,14 +82,14 @@ class ApiClient {
         window.location.href = "/login";
     }
     async getProperties() {
-        const response = await this.fetchWithAuth("/api/v1/propiedades/propiedades");
+        const response = await this.fetchWithAuth("/api/v1/properties");
         if (!response.ok) {
             throw new Error("Failed to fetch properties");
         }
         return response.json();
     }
     async createProperty(data) {
-        const response = await this.fetchWithAuth("/api/v1/propiedades/propiedades", {
+        const response = await this.fetchWithAuth("/api/v1/properties", {
             method: "POST",
             body: JSON.stringify(data)
         });
@@ -96,7 +99,7 @@ class ApiClient {
         return response.json();
     }
     async updateProperty(id, data) {
-        const response = await this.fetchWithAuth(`/api/v1/propiedades/propiedades/${id}`, {
+        const response = await this.fetchWithAuth(`/api/v1/properties/${id}`, {
             method: "PUT",
             body: JSON.stringify(data)
         });
@@ -106,7 +109,7 @@ class ApiClient {
         return response.json();
     }
     async deleteProperty(id) {
-        const response = await this.fetchWithAuth(`/api/v1/propiedades/propiedades/${id}`, {
+        const response = await this.fetchWithAuth(`/api/v1/properties/${id}`, {
             method: "DELETE"
         });
         if (!response.ok) {
@@ -114,14 +117,14 @@ class ApiClient {
         }
     }
     async getRentals() {
-        const response = await this.fetchWithAuth("/api/v1/propiedades/alquileres");
+        const response = await this.fetchWithAuth("/api/v1/rentals");
         if (!response.ok) {
             throw new Error("Failed to fetch rentals");
         }
         return response.json();
     }
     async createRental(data) {
-        const response = await this.fetchWithAuth("/api/v1/propiedades/alquileres", {
+        const response = await this.fetchWithAuth("/api/v1/rentals", {
             method: "POST",
             body: JSON.stringify(data)
         });
@@ -131,7 +134,7 @@ class ApiClient {
         return response.json();
     }
     async updateRental(id, data) {
-        const response = await this.fetchWithAuth(`/api/v1/propiedades/alquileres/${id}`, {
+        const response = await this.fetchWithAuth(`/api/v1/rentals/${id}`, {
             method: "PUT",
             body: JSON.stringify(data)
         });
@@ -141,7 +144,7 @@ class ApiClient {
         return response.json();
     }
     async deleteRental(id) {
-        const response = await this.fetchWithAuth(`/api/v1/propiedades/alquileres/${id}`, {
+        const response = await this.fetchWithAuth(`/api/v1/rentals/${id}`, {
             method: "DELETE"
         });
         if (!response.ok) {
@@ -149,14 +152,14 @@ class ApiClient {
         }
     }
     async getExpenses() {
-        const response = await this.fetchWithAuth("/api/v1/propiedades/gastos");
+        const response = await this.fetchWithAuth("/api/v1/expenses");
         if (!response.ok) {
             throw new Error("Failed to fetch expenses");
         }
         return response.json();
     }
     async createExpense(data) {
-        const response = await this.fetchWithAuth("/api/v1/propiedades/gastos", {
+        const response = await this.fetchWithAuth("/api/v1/expenses", {
             method: "POST",
             body: JSON.stringify(data)
         });
@@ -166,7 +169,7 @@ class ApiClient {
         return response.json();
     }
     async updateExpense(id, data) {
-        const response = await this.fetchWithAuth(`/api/v1/propiedades/gastos/${id}`, {
+        const response = await this.fetchWithAuth(`/api/v1/expenses/${id}`, {
             method: "PUT",
             body: JSON.stringify(data)
         });
@@ -176,7 +179,7 @@ class ApiClient {
         return response.json();
     }
     async deleteExpense(id) {
-        const response = await this.fetchWithAuth(`/api/v1/propiedades/gastos/${id}`, {
+        const response = await this.fetchWithAuth(`/api/v1/expenses/${id}`, {
             method: "DELETE"
         });
         if (!response.ok) {
@@ -184,7 +187,7 @@ class ApiClient {
         }
     }
     async getPropertyValuation(data) {
-        const response = await this.fetchWithAuth("/api/v1/propiedades/ia/valoracion", {
+        const response = await this.fetchWithAuth("/api/v1/predict-value", {
             method: "POST",
             body: JSON.stringify(data)
         });
@@ -193,11 +196,11 @@ class ApiClient {
         }
         return response.json();
     }
-    async sendChatMessage(mensaje) {
-        const response = await this.fetchWithAuth("/api/v1/propiedades/ia/chat", {
+    async sendChatMessage(message) {
+        const response = await this.fetchWithAuth("/api/v1/chat", {
             method: "POST",
             body: JSON.stringify({
-                mensaje
+                message
             })
         });
         if (!response.ok) {

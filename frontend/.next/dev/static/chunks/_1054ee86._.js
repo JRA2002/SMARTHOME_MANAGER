@@ -530,7 +530,7 @@ function DashboardLayout({ children }) {
     const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"])();
     const { user, logout } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$auth$2d$context$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
     const [sidebarOpen, setSidebarOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const userInitials = user?.full_name?.split(" ").map((n)=>n[0]).join("").toUpperCase() || user?.username?.substring(0, 2).toUpperCase() || "U";
+    const userInitials = user?.fullname?.split(" ").map((n)=>n[0]).join("").toUpperCase() || user?.email?.substring(0, 2).toUpperCase() || "U";
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "min-h-screen bg-background",
         children: [
@@ -664,7 +664,7 @@ function DashboardLayout({ children }) {
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             className: "font-semibold",
-                                                            children: user?.full_name || user?.username
+                                                            children: user?.fullname || user?.email
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/dashboard-layout.tsx",
                                                             lineNumber: 115,
@@ -1496,13 +1496,13 @@ function ValuationPage() {
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [valuation, setValuation] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [formData, setFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
-        direccion: "",
-        ciudad: "",
-        tipo: "casa",
-        metros_cuadrados: "",
-        habitaciones: "",
-        banos: "",
-        ano_construccion: ""
+        address: "",
+        city: "",
+        type: "casa",
+        square_meters: "",
+        bedrooms: "",
+        bathrooms: "",
+        construction_year: ""
     });
     const { toast } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$hooks$2f$use$2d$toast$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useToast"])();
     const handleSubmit = async (e)=>{
@@ -1511,10 +1511,10 @@ function ValuationPage() {
         try {
             const data = {
                 ...formData,
-                metros_cuadrados: Number.parseFloat(formData.metros_cuadrados) || 0,
-                habitaciones: Number.parseInt(formData.habitaciones) || 0,
-                banos: Number.parseInt(formData.banos) || 0,
-                ano_construccion: Number.parseInt(formData.ano_construccion) || 0
+                square_meters: Number.parseFloat(formData.square_meters) || 0,
+                bedrooms: Number.parseInt(formData.bedrooms) || 0,
+                bathrooms: Number.parseInt(formData.bathrooms) || 0,
+                construction_year: Number.parseInt(formData.construction_year) || 0
             };
             const result = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].getPropertyValuation(data);
             setValuation(result);
@@ -1607,7 +1607,7 @@ function ValuationPage() {
                                                 className: "space-y-2",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                        htmlFor: "direccion",
+                                                        htmlFor: "address",
                                                         children: "Dirección *"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/dashboard/valuation/page.tsx",
@@ -1615,11 +1615,11 @@ function ValuationPage() {
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                                        id: "direccion",
-                                                        value: formData.direccion,
+                                                        id: "address",
+                                                        value: formData.address,
                                                         onChange: (e)=>setFormData({
                                                                 ...formData,
-                                                                direccion: e.target.value
+                                                                address: e.target.value
                                                             }),
                                                         placeholder: "Calle Principal 123",
                                                         required: true
@@ -1638,7 +1638,7 @@ function ValuationPage() {
                                                 className: "space-y-2",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                        htmlFor: "ciudad",
+                                                        htmlFor: "city",
                                                         children: "Ciudad *"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/dashboard/valuation/page.tsx",
@@ -1646,11 +1646,11 @@ function ValuationPage() {
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                                        id: "ciudad",
-                                                        value: formData.ciudad,
+                                                        id: "city",
+                                                        value: formData.city,
                                                         onChange: (e)=>setFormData({
                                                                 ...formData,
-                                                                ciudad: e.target.value
+                                                                city: e.target.value
                                                             }),
                                                         placeholder: "Madrid",
                                                         required: true
@@ -1669,7 +1669,7 @@ function ValuationPage() {
                                                 className: "space-y-2",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                        htmlFor: "tipo",
+                                                        htmlFor: "type",
                                                         children: "Tipo de Propiedad *"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/dashboard/valuation/page.tsx",
@@ -1677,14 +1677,14 @@ function ValuationPage() {
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
-                                                        value: formData.tipo,
+                                                        value: formData.type,
                                                         onValueChange: (value)=>setFormData({
                                                                 ...formData,
-                                                                tipo: value
+                                                                type: value
                                                             }),
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
-                                                                id: "tipo",
+                                                                id: "type",
                                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                     fileName: "[project]/app/dashboard/valuation/page.tsx",
                                                                     lineNumber: 107,
@@ -1762,7 +1762,7 @@ function ValuationPage() {
                                                         className: "space-y-2",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                                htmlFor: "metros_cuadrados",
+                                                                htmlFor: "square_meters",
                                                                 children: "Metros Cuadrados *"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/valuation/page.tsx",
@@ -1770,12 +1770,12 @@ function ValuationPage() {
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                                                id: "metros_cuadrados",
+                                                                id: "square_meters",
                                                                 type: "number",
-                                                                value: formData.metros_cuadrados,
+                                                                value: formData.square_meters,
                                                                 onChange: (e)=>setFormData({
                                                                         ...formData,
-                                                                        metros_cuadrados: e.target.value
+                                                                        square_meters: e.target.value
                                                                     }),
                                                                 placeholder: "120",
                                                                 required: true
@@ -1794,7 +1794,7 @@ function ValuationPage() {
                                                         className: "space-y-2",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                                htmlFor: "habitaciones",
+                                                                htmlFor: "bedrooms",
                                                                 children: "Habitaciones *"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/valuation/page.tsx",
@@ -1802,12 +1802,12 @@ function ValuationPage() {
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                                                id: "habitaciones",
+                                                                id: "bedrooms",
                                                                 type: "number",
-                                                                value: formData.habitaciones,
+                                                                value: formData.bedrooms,
                                                                 onChange: (e)=>setFormData({
                                                                         ...formData,
-                                                                        habitaciones: e.target.value
+                                                                        bedrooms: e.target.value
                                                                     }),
                                                                 placeholder: "3",
                                                                 required: true
@@ -1835,7 +1835,7 @@ function ValuationPage() {
                                                         className: "space-y-2",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                                htmlFor: "banos",
+                                                                htmlFor: "bathrooms",
                                                                 children: "Baños *"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/valuation/page.tsx",
@@ -1843,12 +1843,12 @@ function ValuationPage() {
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                                                id: "banos",
+                                                                id: "bathrooms",
                                                                 type: "number",
-                                                                value: formData.banos,
+                                                                value: formData.bathrooms,
                                                                 onChange: (e)=>setFormData({
                                                                         ...formData,
-                                                                        banos: e.target.value
+                                                                        bathrooms: e.target.value
                                                                     }),
                                                                 placeholder: "2",
                                                                 required: true
@@ -1867,7 +1867,7 @@ function ValuationPage() {
                                                         className: "space-y-2",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                                htmlFor: "ano_construccion",
+                                                                htmlFor: "construction_year",
                                                                 children: "Año de Construcción *"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/valuation/page.tsx",
@@ -1875,12 +1875,12 @@ function ValuationPage() {
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                                                id: "ano_construccion",
+                                                                id: "construction_year",
                                                                 type: "number",
-                                                                value: formData.ano_construccion,
+                                                                value: formData.construction_year,
                                                                 onChange: (e)=>setFormData({
                                                                         ...formData,
-                                                                        ano_construccion: e.target.value
+                                                                        construction_year: e.target.value
                                                                     }),
                                                                 placeholder: "2015",
                                                                 required: true
@@ -1996,7 +1996,7 @@ function ValuationPage() {
                                                         className: "text-5xl font-bold text-primary mb-4",
                                                         children: [
                                                             "$",
-                                                            valuation.valor_estimado?.toLocaleString()
+                                                            valuation.estimated_value?.toLocaleString()
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/dashboard/valuation/page.tsx",
@@ -2021,7 +2021,7 @@ function ValuationPage() {
                                                                         className: "font-semibold",
                                                                         children: [
                                                                             "$",
-                                                                            valuation.rango_minimo?.toLocaleString()
+                                                                            valuation.min_range?.toLocaleString()
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/dashboard/valuation/page.tsx",
@@ -2049,7 +2049,7 @@ function ValuationPage() {
                                                                         className: "font-semibold",
                                                                         children: [
                                                                             "$",
-                                                                            valuation.rango_maximo?.toLocaleString()
+                                                                            valuation.max_range?.toLocaleString()
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/dashboard/valuation/page.tsx",
@@ -2077,7 +2077,7 @@ function ValuationPage() {
                                                                         className: "font-semibold",
                                                                         children: [
                                                                             "$",
-                                                                            valuation.precio_por_m2?.toLocaleString()
+                                                                            valuation.price_per_sqm?.toLocaleString()
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/dashboard/valuation/page.tsx",
@@ -2151,9 +2151,9 @@ function ValuationPage() {
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "font-medium",
                                                                 children: [
-                                                                    valuation.direccion,
+                                                                    valuation.address,
                                                                     ", ",
-                                                                    valuation.ciudad
+                                                                    valuation.city
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/dashboard/valuation/page.tsx",
@@ -2179,7 +2179,7 @@ function ValuationPage() {
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "font-medium capitalize",
-                                                                children: valuation.tipo
+                                                                children: valuation.type
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/valuation/page.tsx",
                                                                 lineNumber: 236,
@@ -2205,7 +2205,7 @@ function ValuationPage() {
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "font-medium",
                                                                 children: [
-                                                                    valuation.metros_cuadrados,
+                                                                    valuation.square_meters,
                                                                     " m²"
                                                                 ]
                                                             }, void 0, true, {
@@ -2232,7 +2232,7 @@ function ValuationPage() {
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "font-medium",
-                                                                children: valuation.habitaciones
+                                                                children: valuation.bedrooms
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/valuation/page.tsx",
                                                                 lineNumber: 244,
@@ -2257,7 +2257,7 @@ function ValuationPage() {
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "font-medium",
-                                                                children: valuation.banos
+                                                                children: valuation.bathrooms
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/valuation/page.tsx",
                                                                 lineNumber: 248,
@@ -2282,7 +2282,7 @@ function ValuationPage() {
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "font-medium",
-                                                                children: valuation.ano_construccion
+                                                                children: valuation.construction_year
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/valuation/page.tsx",
                                                                 lineNumber: 252,
@@ -2306,7 +2306,7 @@ function ValuationPage() {
                                         lineNumber: 220,
                                         columnNumber: 17
                                     }, this),
-                                    valuation.factores && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                                    valuation.factors && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
                                         className: "border-2",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
@@ -2335,7 +2335,7 @@ function ValuationPage() {
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
                                                     className: "space-y-2 text-sm",
-                                                    children: valuation.factores.map((factor, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                                    children: valuation.factors.map((factor, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                             className: "flex items-start gap-2",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2439,7 +2439,7 @@ function ValuationPage() {
         columnNumber: 5
     }, this);
 }
-_s(ValuationPage, "wFMdQOknWfwUvoMBBrO1V7DA5vg=", false, function() {
+_s(ValuationPage, "qmh49iH2W59Ma+gw61Gw9klvpTc=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$hooks$2f$use$2d$toast$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useToast"]
     ];

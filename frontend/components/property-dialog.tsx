@@ -22,32 +22,41 @@ interface PropertyDialogProps {
 export function PropertyDialog({ open, onOpenChange, property, onSave }: PropertyDialogProps) {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    direccion: "",
-    ciudad: "",
-    tipo: "casa",
-    precio_alquiler: "",
-    estado: "disponible",
-    descripcion: "",
+    title: "",
+    address: "",
+    type: "house" as "house" | "apartment" | "comercial" | "office" | "land",
+    price: "",
+    area: "",
+    bedrooms: "",
+    bathrooms: "",
+    description: "",
+    image_url: "",
   })
 
   useEffect(() => {
     if (property) {
       setFormData({
-        direccion: property.direccion,
-        ciudad: property.ciudad || "",
-        tipo: property.tipo,
-        precio_alquiler: property.precio_alquiler?.toString() || "",
-        estado: property.estado,
-        descripcion: property.descripcion || "",
+        title: property.title,
+        address: property.address,
+        type: property.type,
+        price: property.price.toString(),
+        area: property.area.toString(),
+        bedrooms: property.bedrooms.toString(),
+        bathrooms: property.bathrooms.toString(),
+        description: property.description || "",
+        image_url: property.image_url || "",
       })
     } else {
       setFormData({
-        direccion: "",
-        ciudad: "",
-        tipo: "casa",
-        precio_alquiler: "",
-        estado: "disponible",
-        descripcion: "",
+        title: "",
+        address: "",
+        type: "house",
+        price: "",
+        area: "",
+        bedrooms: "",
+        bathrooms: "",
+        description: "",
+        image_url: "",
       })
     }
   }, [property, open])
@@ -58,8 +67,15 @@ export function PropertyDialog({ open, onOpenChange, property, onSave }: Propert
 
     try {
       const data = {
-        ...formData,
-        precio_alquiler: Number.parseFloat(formData.precio_alquiler) || 0,
+        title: formData.title,
+        address: formData.address,
+        type: formData.type,
+        price: Number.parseFloat(formData.price),
+        area: Number.parseFloat(formData.area),
+        bedrooms: Number.parseInt(formData.bedrooms),
+        bathrooms: Number.parseInt(formData.bathrooms),
+        description: formData.description || undefined,
+        image_url: formData.image_url || undefined,
       }
 
       if (property) {
@@ -87,82 +103,117 @@ export function PropertyDialog({ open, onOpenChange, property, onSave }: Propert
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="direccion">Dirección *</Label>
-              <Input
-                id="direccion"
-                value={formData.direccion}
-                onChange={(e) => setFormData({ ...formData, direccion: e.target.value })}
-                placeholder="Calle Principal 123"
-                required
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="title">Título *</Label>
+            <Input
+              id="title"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              placeholder="Apartamento moderno en el centro"
+              required
+            />
+          </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="ciudad">Ciudad</Label>
-              <Input
-                id="ciudad"
-                value={formData.ciudad}
-                onChange={(e) => setFormData({ ...formData, ciudad: e.target.value })}
-                placeholder="Madrid"
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="address">Dirección *</Label>
+            <Input
+              id="address"
+              value={formData.address}
+              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+              placeholder="Calle Principal 123, Madrid"
+              required
+            />
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="tipo">Tipo de Propiedad *</Label>
-              <Select value={formData.tipo} onValueChange={(value) => setFormData({ ...formData, tipo: value })}>
-                <SelectTrigger id="tipo">
+              <Label htmlFor="type">Tipo de Propiedad *</Label>
+              <Select value={formData.type} onValueChange={(value: any) => setFormData({ ...formData, type: value })}>
+                <SelectTrigger id="type">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="casa">Casa</SelectItem>
-                  <SelectItem value="apartamento">Apartamento</SelectItem>
-                  <SelectItem value="local">Local Comercial</SelectItem>
-                  <SelectItem value="oficina">Oficina</SelectItem>
-                  <SelectItem value="terreno">Terreno</SelectItem>
+                  <SelectItem value="house">Casa</SelectItem>
+                  <SelectItem value="apartment">Apartamento</SelectItem>
+                  <SelectItem value="comercial">Local Comercial</SelectItem>
+                  <SelectItem value="office">Oficina</SelectItem>
+                  <SelectItem value="land">Terreno</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="precio_alquiler">Precio de Alquiler *</Label>
+              <Label htmlFor="price">Precio *</Label>
               <Input
-                id="precio_alquiler"
+                id="price"
                 type="number"
                 step="0.01"
-                value={formData.precio_alquiler}
-                onChange={(e) => setFormData({ ...formData, precio_alquiler: e.target.value })}
-                placeholder="1200.00"
+                value={formData.price}
+                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                placeholder="250000.00"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="space-y-2">
+              <Label htmlFor="area">Área (m²) *</Label>
+              <Input
+                id="area"
+                type="number"
+                step="0.01"
+                value={formData.area}
+                onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+                placeholder="120.50"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="bedrooms">Habitaciones *</Label>
+              <Input
+                id="bedrooms"
+                type="number"
+                value={formData.bedrooms}
+                onChange={(e) => setFormData({ ...formData, bedrooms: e.target.value })}
+                placeholder="3"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="bathrooms">Baños *</Label>
+              <Input
+                id="bathrooms"
+                type="number"
+                value={formData.bathrooms}
+                onChange={(e) => setFormData({ ...formData, bathrooms: e.target.value })}
+                placeholder="2"
                 required
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="estado">Estado *</Label>
-            <Select value={formData.estado} onValueChange={(value) => setFormData({ ...formData, estado: value })}>
-              <SelectTrigger id="estado">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="disponible">Disponible</SelectItem>
-                <SelectItem value="alquilada">Alquilada</SelectItem>
-                <SelectItem value="mantenimiento">En Mantenimiento</SelectItem>
-              </SelectContent>
-            </Select>
+            <Label htmlFor="description">Descripción</Label>
+            <Textarea
+              id="description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              placeholder="Descripción detallada de la propiedad..."
+              rows={4}
+            />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="descripcion">Descripción</Label>
-            <Textarea
-              id="descripcion"
-              value={formData.descripcion}
-              onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
-              placeholder="Descripción detallada de la propiedad..."
-              rows={4}
+            <Label htmlFor="image_url">URL de Imagen</Label>
+            <Input
+              id="image_url"
+              type="url"
+              value={formData.image_url}
+              onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+              placeholder="https://ejemplo.com/imagen.jpg"
             />
           </div>
 
@@ -188,3 +239,4 @@ export function PropertyDialog({ open, onOpenChange, property, onSave }: Propert
     </Dialog>
   )
 }
+
