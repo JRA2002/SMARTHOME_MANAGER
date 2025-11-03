@@ -72,6 +72,16 @@ class RentalResponse(RentalBase):
     class Config:
         from_attributes = True
 
+class RentalUpdate(BaseModel):
+    tenant_name: Optional[str] = None
+    tenant_email: Optional[str] = None
+    tenant_phone: Optional[str] = None
+    monthly_amount: Optional[float] = Field(None, gt=0)
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    deposit: Optional[float] = Field(None, ge=0)
+    status: Optional[str] = None
+
 class PaginatedRentals(BaseModel):
     success: bool
     data: List[RentalResponse]

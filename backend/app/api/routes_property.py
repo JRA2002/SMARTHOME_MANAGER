@@ -20,6 +20,7 @@ from app.schemas.property_schema import (
     PropertyResponse,
     RentalResponse,
     RentalCreate,
+    RentalUpdate,
     ExpenseCreate,
     ExpenseResponse,
     PaginatedProperties,
@@ -297,7 +298,7 @@ async def get_rentals(
     ).offset(skip).limit(limit).all()
     print("Fetched rentals:", rentals)
     total_pages = (total + limit - 1) // limit
-    
+    print("Total rentals:", rentals)
     return PaginatedRentals(
         success=True,
         data=rentals,
@@ -306,6 +307,66 @@ async def get_rentals(
         page_size=limit,
         total_pages=total_pages
     )
+
+
+@router.put("/rentals/{rental_id}", response_model=RentalResponse)
+@limiter.limit("30/minute")
+async def update_rental(
+    request: Request,
+    rental_id: int,
+    rental_data: RentalUpdate,
+    db: Session = Depends(get_db)
+):
+    """Update rental"""
+    print("Updating rental with data:", rental_id)
+    print("rental data aqui:", rental_data),
+    rental = db.query(Rental).filter(
+        Rental.id == rental_id,
+    ).first()
+    print("Rental to update:", rental)
+    if not rental:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Rental not found"
+        )
+    
+    # Update only provided fields
+    update_data = rental_data.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(rental, field, value)
+    
+    rental.updated_at = datetime.utcnow()
+    db.commit()
+    db.refresh(rental)
+    
+    return rental
+
+@router.delete("/rentals/{rental_id}", status_code=status.HTTP_200_OK)
+@limiter.limit("20/minute")
+async def delete_rental(
+    request: Request,
+    rental_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Delete rental"""
+    rental = db.query(Rental).filter(
+        Rental.id == rental_id,
+    ).first()
+    
+    if not rental:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Rental not found"
+        )
+    
+    db.delete(rental)
+    db.commit()
+    
+    return {
+        "success": True,
+        "message": "Rental deleted successfully"
+    }
 
 # ============= GASTOS ENDPOINTS =============
 

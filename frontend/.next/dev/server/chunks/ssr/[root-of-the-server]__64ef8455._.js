@@ -141,13 +141,13 @@ class ApiClient {
         }
     }
     async getRentals() {
-        console.log("Fetching rentals from API...");
         const response = await this.fetchWithAuth("/api/v1/rentals");
-        console.log("Rentals response:", response);
         if (!response.ok) {
             throw new Error("Failed to fetch rentals");
         }
-        return response.json();
+        const result = await response.json();
+        console.log("Rentals fetched:", result.data);
+        return result.data;
     }
     async createRental(data) {
         const response = await this.fetchWithAuth("/api/v1/rentals", {
