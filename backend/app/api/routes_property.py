@@ -24,7 +24,9 @@ from app.schemas.property_schema import (
     ExpenseCreate,
     ExpenseResponse,
     PaginatedProperties,
-    PaginatedRentals
+    PaginatedRentals,
+    PaginatedExpenses,
+    ExpenseUpdate
 )
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -296,9 +298,8 @@ async def get_rentals(
     rentals = db.query(Rental).filter(
         Rental.property_id.in_(property_ids)
     ).offset(skip).limit(limit).all()
-    print("Fetched rentals:", rentals)
     total_pages = (total + limit - 1) // limit
-    print("Total rentals:", rentals)
+   
     return PaginatedRentals(
         success=True,
         data=rentals,
@@ -346,7 +347,6 @@ async def update_rental(
 async def delete_rental(
     request: Request,
     rental_id: int,
-    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Delete rental"""
@@ -370,7 +370,7 @@ async def delete_rental(
 
 # ============= GASTOS ENDPOINTS =============
 
-@router.post("/expense", response_model=ExpenseResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/expenses", response_model=ExpenseResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("20/minute")
 async def create_expense(
     request: Request,
@@ -398,7 +398,7 @@ async def create_expense(
     
     return new_expense
 
-@router.get("/expense", response_model=dict)
+@router.get("/expenses", response_model=PaginatedExpenses)
 @limiter.limit("60/minute")
 async def get_expenses(
     request: Request,
@@ -426,11 +426,65 @@ async def get_expenses(
     
     total_pages = (total + limit - 1) // limit
     
+    return PaginatedExpenses(
+        success=True,
+        data=expenses,
+        total=total,
+        page=(skip // limit) + 1,
+        page_size=limit,
+        total_pages=total_pages
+    )
+
+@router.put("/expenses/{expense_id}", response_model=ExpenseResponse)
+@limiter.limit("30/minute")
+async def update_expense(
+    request: Request,
+    expense_id: int,
+    expense_data: ExpenseUpdate,
+    db: Session = Depends(get_db)
+):
+    expense = db.query(Expense).filter(
+        Expense.id == expense_id,
+    ).first()
+    if not expense:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Rental not found"
+        )
+    
+    # Update only provided fields
+    update_data = expense_data.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(expense, field, value)
+    
+    expense.updated_at = datetime.utcnow()
+    db.commit()
+    db.refresh(expense)
+    
+    return expense
+
+@router.delete("/expenses/{expense_id}", status_code=status.HTTP_200_OK)
+@limiter.limit("20/minute")
+async def delete_expense(
+    request: Request,
+    expense_id: int,
+    db: Session = Depends(get_db)
+):
+    
+    expense = db.query(Expense).filter(
+        Expense.id == expense_id,
+    ).first()
+    
+    if not expense:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Expense not found"
+        )
+    
+    db.delete(expense)
+    db.commit()
+    
     return {
         "success": True,
-        "data": expenses,
-        "total": total,
-        "page": (skip // limit) + 1,
-        "page_size": limit,
-        "total_pages": total_pages
+        "message": "Expense deleted successfully"
     }

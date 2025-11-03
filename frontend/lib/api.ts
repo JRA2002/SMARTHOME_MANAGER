@@ -269,7 +269,6 @@ class ApiClient {
       throw new Error("Failed to fetch rentals")
     }
     const result = await response.json();
-    console.log("Rentals fetched:", result.data);
     return result.data;
   }
 
@@ -309,7 +308,8 @@ class ApiClient {
     if (!response.ok) {
       throw new Error("Failed to fetch expenses")
     }
-    return response.json()
+    const result = await response.json();
+    return result.data;
   }
 
   async createExpense(data: ExpenseCreate): Promise<Expense> {

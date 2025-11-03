@@ -131,6 +131,24 @@ class ExpenseResponse(ExpenseBase):
     class Config:
         from_attributes = True
 
+class PaginatedExpenses(BaseModel):
+    success: bool
+    data: List[ExpenseResponse]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+
+    class Config:
+        from_attributes = True
+
+class ExpenseUpdate(BaseModel):
+    category: Optional[str] = None
+    description: Optional[str] = None
+    amount: Optional[float] = Field(None, gt=0)
+    date: Optional[datetime] = None
+    receipt_url: Optional[str] = None
+
 # Pagination
 class PaginatedResponse(BaseModel):
     success: bool = True
