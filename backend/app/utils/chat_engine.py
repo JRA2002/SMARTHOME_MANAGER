@@ -3,66 +3,48 @@ from sqlalchemy import func
 from typing import List, Dict
 from datetime import datetime, timedelta
 from app.models.property import Property, Rental, Expense
-
+from openai import OpenAI
+from app.core.config import settings
 class ChatEngine:
-    """Motor de chat IA para asistencia en gestión de propiedades"""
     
     def __init__(self, db: Session, user_id: int):
         self.db = db
         self.user_id = user_id
     
     def process_message(self, message: str, history: List[Dict]) -> Dict:
-        """
-        Procesa un mensaje del usuario y genera respuesta
+
+        client = OpenAI(
+                    base_url=settings.BASE_URL_API_GROQ,
+                    api_key=settings.SECRET_KEY_API_GROQ
+                )
+        if message.lower() in ["salir", "exit", "quit", "adiós", "goodbye"]:
+            return {"response": "¡Hasta luego!", "suggestions": []}
+
+        history.append({"role": "user", "content": message})
+
+        response = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=history,
+            temperature=0.7,
+        )
+        ai_message = response.choices[0].message.content
+        history.append({"role": "assistant", "content": ai_message})
+        print("aqui esta el historial de messages:", history)
+        return {"response": ai_message, "suggestions": []}
+
         
-        Args:
-            message: Mensaje del usuario
-            history: Historial de conversación
-            
-        Returns:
-            Diccionario con respuesta y sugerencias
-        """
-        message_lower = message.lower()
-        
-        # Análisis simple de intención (en producción usar NLP/LLM real)
-        if any(word in message_lower for word in ['cuántas', 'cuantas', 'número', 'total']):
-            if 'propiedad' in message_lower:
-                return self._get_property_count()
-            elif 'alquiler' in message_lower or 'inquilino' in message_lower:
-                return self._get_rental_count()
-        
-        elif any(word in message_lower for word in ['ingreso', 'ganancia', 'dinero']):
-            return self._get_income_summary()
-        
-        elif any(word in message_lower for word in ['gasto', 'costo']):
-            return self._get_expense_summary()
-        
-        elif any(word in message_lower for word in ['mejor', 'rentable', 'más']):
-            return self._get_best_property()
-        
-        else:
-            return {
-                "response": "Puedo ayudarte con información sobre tus propiedades, alquileres, ingresos y gastos. ¿Qué te gustaría saber?",
-                "suggestions": [
-                    "¿Cuántas propiedades tengo?",
-                    "¿Cuál es mi ingreso mensual?",
-                    "¿Cuáles son mis gastos este mes?",
-                    "¿Cuál es mi propiedad más rentable?"
-                ]
-            }
-    
     def _get_property_count(self) -> Dict:
         """Obtiene el conteo de propiedades"""
         count = self.db.query(func.count(Property.id)).filter(
             Property.user_id == self.user_id
         ).scalar()
-        
+                
         return {
             "response": f"Actualmente tienes {count} propiedad{'es' if count != 1 else ''} registrada{'s' if count != 1 else ''}.",
             "suggestions": [
-                "¿Cuántas están alquiladas?",
-                "Muéstrame mis ingresos totales",
-                "¿Cuál es la más rentable?"
+            "¿Cuántas están alquiladas?",
+            "Muéstrame mis ingresos totales",
+            "¿Cuál es la más rentable?"
             ]
         }
     

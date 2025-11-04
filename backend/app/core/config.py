@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: str = "*"
     RATE_LIMIT_PER_MINUTE: int
     
+    BASE_URL_API_GROQ: str
+    SECRET_KEY_API_GROQ: str
+    
     class Config:
         env_file = ".env"
         case_sensitive = True

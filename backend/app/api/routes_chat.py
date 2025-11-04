@@ -24,7 +24,6 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     success: bool = True
     response: str
-    suggestions: Optional[List[str]] = None
 
 @router.post("/", response_model=ChatResponse)
 @limiter.limit("20/minute")
@@ -32,18 +31,15 @@ async def chat(
     request: Request,
     chat_data: ChatRequest,
     current_user: User = Depends(get_current_user),
-
     db: Session = Depends(get_db)
 ):
-    """Chat con asistente IA"""
     try:
         chat_engine = ChatEngine(db, current_user.id)
         response = chat_engine.process_message(
             chat_data.message,
             chat_data.history
         )
-        
-        return ChatResponse(**response)
+        return response
     
     except Exception as e:
         raise HTTPException(
