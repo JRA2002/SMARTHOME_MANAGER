@@ -30,7 +30,7 @@ __turbopack_context__.s([
     "apiClient",
     ()=>apiClient
 ]);
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_BASE_URL = ("TURBOPACK compile-time value", "http://localhost:8000");
 class ApiClient {
     getHeaders(includeAuth = true) {
         const headers = {
@@ -45,9 +45,6 @@ class ApiClient {
         return headers;
     }
     async login(credentials) {
-        const formData = new URLSearchParams();
-        formData.append("email", credentials.email);
-        formData.append("password", credentials.password);
         const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
             method: "POST",
             headers: {
@@ -291,7 +288,7 @@ function AuthProvider({ children }) {
         children: children
     }, void 0, false, {
         fileName: "[project]/lib/auth-context.tsx",
-        lineNumber: 47,
+        lineNumber: 48,
         columnNumber: 5
     }, this);
 }

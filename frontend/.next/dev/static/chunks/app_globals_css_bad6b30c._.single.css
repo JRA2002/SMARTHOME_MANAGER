@@ -73,9 +73,6 @@
     --color-red-300: #ffa3a3;
     --color-red-400: #ff6568;
     --color-red-600: #e40014;
-    --color-green-700: #008138;
-    --color-blue-500: #3080ff;
-    --color-blue-600: #155dfc;
     --color-black: #000;
     --color-white: #fff;
     --spacing: .25rem;
@@ -127,9 +124,6 @@
       --color-red-300: lab(76.5514% 36.422 15.5335);
       --color-red-400: lab(63.7053% 60.745 31.3109);
       --color-red-600: lab(48.4493% 77.4328 61.5452);
-      --color-green-700: lab(47.0329% -47.0239 31.4788);
-      --color-blue-500: lab(54.1736% 13.3369 -74.6839);
-      --color-blue-600: lab(44.0605% 29.0279 -86.0352);
     }
   }
 }
@@ -874,10 +868,6 @@
     height: calc(var(--spacing) * 16);
   }
 
-  .h-80 {
-    height: calc(var(--spacing) * 80);
-  }
-
   .h-\[1\.15rem\] {
     height: 1.15rem;
   }
@@ -1466,10 +1456,6 @@
     overflow-y: auto;
   }
 
-  .rounded {
-    border-radius: .25rem;
-  }
-
   .rounded-2xl {
     border-radius: var(--radius-2xl);
   }
@@ -1668,10 +1654,6 @@
     .bg-black\/80 {
       background-color: color-mix(in oklab, var(--color-black) 80%, transparent);
     }
-  }
-
-  .bg-blue-500 {
-    background-color: var(--color-blue-500);
   }
 
   .bg-border {
@@ -2214,10 +2196,6 @@
     color: var(--background);
   }
 
-  .text-blue-600 {
-    color: var(--color-blue-600);
-  }
-
   .text-card-foreground {
     color: var(--card-foreground);
   }
@@ -2262,10 +2240,6 @@
     .text-foreground\/50 {
       color: color-mix(in oklab, var(--foreground) 50%, transparent);
     }
-  }
-
-  .text-green-700 {
-    color: var(--color-green-700);
   }
 
   .text-muted-foreground {

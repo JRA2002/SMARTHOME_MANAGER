@@ -103,7 +103,6 @@ async def get_current_user_info(
     request: Request,
     current_user: User = Depends(get_current_user)
 ):
-    """Obtener información del usuario actual"""
     return current_user
 
 # ============= PROPIEDADES ENDPOINTS =============

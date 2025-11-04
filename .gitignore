@@ -19,9 +19,6 @@ migrations/*.py
 *.swp
 *.bak
 
-### Static and Media (If served by a separate server in production) ###
-
-
 ### OS Specific ###
 .DS_Store
 Thumbs.db

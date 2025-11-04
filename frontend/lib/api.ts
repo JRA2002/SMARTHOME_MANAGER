@@ -1,145 +1,17 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+import type { Property, PropertyCreate } from "@/types/Property"
+import type { Rental, RentalCreate } from "@/types/rental"
+import type { ValuationRequest, ValuationResponse } from "@/types/valuation"
+import type { ChatResponse } from "@/types/chat"
+import type { User, LoginCredentials, AuthResponse, RegisterData } from "@/types/auth"
+import type { Expense, ExpenseCreate } from "@/types/expense"
 
-export interface LoginCredentials {
-  email: string
-  password: string
-}
-
-export interface RegisterData {
-  email: string
-  fullname: string
-  password: string
-}
-
-export interface User {
-  id: number
-  email: string
-  fullname: string
-  is_active: boolean
-  created_at: string
-}
-
-export interface AuthResponse {
-  access_token: string
-  token_type: string
-}
-
-export interface Property {
-  id: number
-  title: string
-  address: string
-  type: "house" | "apartment" | "comercial" | "office" | "land"
-  price: number
-  area: number
-  bedrooms: number
-  bathrooms: number
-  description?: string
-  image_url?: string
-  user_id: number
-  status: "available"| "rented" | "maintenance" | "sold"
-  created_at: string
-  updated_at: string
-}
-
-export interface PropertyCreate {
-  title: string
-  address: string
-  type: "house" | "apartment" | "comercial" | "office" | "land"
-  price: number
-  area: number
-  bedrooms: number
-  bathrooms: number
-  description?: string
-  image_url?: string
-}
-
-export interface Rental {
-  id: number
-  property_id: number
-  tenant_name: string
-  tenant_email: string
-  tenant_phone?: string
-  monthly_amount: number
-  start_date: string
-  end_date?: string | null
-  deposit: number
-  status: string
-  created_at: string
-  property?: Property
-}
-
-export interface RentalCreate {
-  property_id: number
-  tenant_name: string
-  tenant_email: string
-  tenant_phone?: string
-  monthly_amount: number
-  start_date: string
-  end_date?: string
-  deposit: number
-}
-
-export interface Expense {
-  id: number
-  property_id: number
-  category: string
-  description: string
-  amount: number
-  date: string
-  receipt_url?: string
-  created_at: string
-  property?: Property
-}
-
-export interface ExpenseCreate {
-  property_id: number
-  category: string
-  description: string
-  amount: number
-  date: string
-  receipt_url?: string
-}
-
-export interface ValuationRequest {
-  address: string
-  city: string
-  type: string
-  square_meters: number
-  bedrooms: number
-  bathrooms: number
-  construction_year: number
-}
-
-export interface ValuationResponse {
-  estimated_value: number
-  min_range: number
-  max_range: number
-  price_per_sqm: number
-  address: string
-  city: string
-  type: string
-  square_meters: number
-  bedrooms: number
-  bathrooms: number
-  construction_year: number
-  factors?: string[]
-}
-
-export interface ChatMessage {
-  message: string
-}
-
-export interface ChatResponse {
-  response: string
-}
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 class ApiClient {
   private getHeaders(includeAuth = true): HeadersInit {
     const headers: HeadersInit = {
       "Content-Type": "application/json",
     }
-
     if (includeAuth) {
       const token = localStorage.getItem("access_token")
       if (token) {
@@ -151,9 +23,6 @@ class ApiClient {
   }
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const formData = new URLSearchParams()
-    formData.append("email", credentials.email)
-    formData.append("password", credentials.password)
 
     const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
       method: "POST",
