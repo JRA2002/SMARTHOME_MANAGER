@@ -34,7 +34,7 @@ async def chat(
     db: Session = Depends(get_db)
 ):
     try:
-        chat_engine = ChatEngine(db, current_user.id)
+        chat_engine = ChatEngine()
         response = chat_engine.process_message(
             chat_data.message,
             chat_data.history

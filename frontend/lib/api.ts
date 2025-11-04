@@ -133,6 +133,7 @@ export interface ChatResponse {
   response: string
 }
 
+
 class ApiClient {
   private getHeaders(includeAuth = true): HeadersInit {
     const headers: HeadersInit = {
@@ -354,10 +355,10 @@ class ApiClient {
     return response.json()
   }
 
-  async sendChatMessage(message: string): Promise<ChatResponse> {
+  async sendChatMessage(message: string, history: { role: string; content: string }[]): Promise<ChatResponse> {
     const response = await this.fetchWithAuth("/api/v1/chat", {
       method: "POST",
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({ message, history }),
     })
     if (!response.ok) {
       throw new Error("Failed to send chat message")

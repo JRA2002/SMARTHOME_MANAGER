@@ -21,7 +21,8 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hola! Soy tu asistente de IA para gestión de propiedades. ¿En qué puedo ayudarte hoy?",
+      content:
+        "Hola! Soy tu asistente de IA para gestión de propiedades. ¿En qué puedo ayudarte hoy?",
       timestamp: new Date(),
     },
   ])
@@ -29,6 +30,13 @@ export default function ChatPage() {
   const [loading, setLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const { toast } = useToast()
+
+  // 👇 El historial se genera automáticamente desde `messages`
+  const getHistory = () =>
+    messages.map((msg) => ({
+      role: msg.role,
+      content: msg.content,
+    }))
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -48,29 +56,41 @@ export default function ChatPage() {
       timestamp: new Date(),
     }
 
+    // 1️⃣ Mostrar mensaje del usuario en el chat
     setMessages((prev) => [...prev, userMessage])
     setInput("")
     setLoading(true)
 
     try {
-      const response = await apiClient.sendChatMessage(input)
+      // 2️⃣ Crear historial actualizado
+      const history = [...getHistory(), { role: "user", content: input }]
+
+      // 3️⃣ Enviar mensaje + historial al backend
+      const response = await apiClient.sendChatMessage(input, history)
+
+      // 4️⃣ Agregar respuesta del asistente
       const assistantMessage: Message = {
         role: "assistant",
         content: response.response,
         timestamp: new Date(),
       }
+
       setMessages((prev) => [...prev, assistantMessage])
     } catch (error) {
+      console.error("Chat error:", error)
       toast({
         title: "Error",
         description: "No se pudo enviar el mensaje",
         variant: "destructive",
       })
+
       const errorMessage: Message = {
         role: "assistant",
-        content: "Lo siento, hubo un error al procesar tu mensaje. Por favor, intenta de nuevo.",
+        content:
+          "Lo siento, hubo un error al procesar tu mensaje. Por favor, intenta de nuevo.",
         timestamp: new Date(),
       }
+
       setMessages((prev) => [...prev, errorMessage])
     } finally {
       setLoading(false)

@@ -222,11 +222,12 @@ class ApiClient {
         }
         return response.json();
     }
-    async sendChatMessage(message) {
+    async sendChatMessage(message, history) {
         const response = await this.fetchWithAuth("/api/v1/chat", {
             method: "POST",
             body: JSON.stringify({
-                message
+                message,
+                history
             })
         });
         if (!response.ok) {
