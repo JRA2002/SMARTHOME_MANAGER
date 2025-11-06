@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/javier/Desktop/FAST_API/SMARTHOME_MANAGER/frontend/components/property-value.tsx"],"sourcesContent":["\"use client\"\nimport { useEffect } from \"react\"\n\nexport default function IdealistaWidget() {\n  useEffect(() => {\n    // Evita cargar el script más de una vez\n    const scriptId = \"idealista-widget-loader\"\n    if (!document.getElementById(scriptId)) {\n      const script = document.createElement(\"script\")\n      script.id = scriptId\n      script.src =\"https://st3.idealista.com/static/common/release/mavericks/legacy/js/didomi/didomi-embed.js\"\n      script.async = true\n      document.body.appendChild(script)\n    }\n  }, [])\n\n  return (\n    <div className=\"w-full flex justify-center mt-6\">\n      <div id=\"idealista-widget\" className=\"w-[400px] h-[500px]\" />\n    </div>\n  )\n}\n"],"names":[],"mappings":";;;;;AACA;;;AADA;;AAGe,SAAS;;IACtB,IAAA,0KAAS;qCAAC;YACR,wCAAwC;YACxC,MAAM,WAAW;YACjB,IAAI,CAAC,SAAS,cAAc,CAAC,WAAW;gBACtC,MAAM,SAAS,SAAS,aAAa,CAAC;gBACtC,OAAO,EAAE,GAAG;gBACZ,OAAO,GAAG,GAAE;gBACZ,OAAO,KAAK,GAAG;gBACf,SAAS,IAAI,CAAC,WAAW,CAAC;YAC5B;QACF;oCAAG,EAAE;IAEL,qBACE,6LAAC;QAAI,WAAU;kBACb,cAAA,6LAAC;YAAI,IAAG;YAAmB,WAAU;;;;;;;;;;;AAG3C;GAlBwB;KAAA","debugId":null}}]
+}

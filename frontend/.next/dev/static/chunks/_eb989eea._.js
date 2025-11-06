@@ -36,6 +36,7 @@ class ApiClient {
             throw new Error("Login failed");
         }
         const data = await response.json();
+        console.log("Login response data:", data);
         localStorage.setItem("access_token", data.access_token);
         return data;
     }
@@ -48,7 +49,10 @@ class ApiClient {
         if (!response.ok) {
             throw new Error("Registration failed");
         }
-        return response.json();
+        await this.login({
+            email: data.email,
+            password: data.password
+        });
     }
     async getCurrentUser() {
         const response = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {

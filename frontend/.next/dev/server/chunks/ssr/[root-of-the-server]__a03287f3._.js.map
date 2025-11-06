@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 14, "column": 0}, "map": {"version":3,"sources":["file:///Users/javier/Desktop/FAST_API/SMARTHOME_MANAGER/frontend/components/property-value.tsx"],"sourcesContent":["export default function ValuationWidget() {\n    return (\n      <iframe\n        src=\"https://st1.idealista.com/data/static/valuation-widget/?clientId=46000881-bb63-4432-99dc-f9d8af00fde5&language=es\"\n        width=\"100%\"\n        height=\"600\"\n        style={{ border: \"none\", borderRadius: \"12px\" }}\n        title=\"Valuador Idealista\"\n      ></iframe>\n    )\n  }\n  \n"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACpB,qBACE,8OAAC;QACC,KAAI;QACJ,OAAM;QACN,QAAO;QACP,OAAO;YAAE,QAAQ;YAAQ,cAAc;QAAO;QAC9C,OAAM;;;;;;AAGZ","debugId":null}},
+    {"offset": {"line": 40, "column": 0}, "map": {"version":3,"sources":["file:///Users/javier/Desktop/FAST_API/SMARTHOME_MANAGER/frontend/app/dashboard/valuation/page.tsx"],"sourcesContent":["import IdealistaWidget from \"@/components/property-value\"\n\nexport default function DashboardPage() {\n  return (\n    <main className=\"p-8\">\n      <h1 className=\"text-2xl font-semibold mb-4\">💰 Calcula el valor de tu vivienda</h1>\n      <IdealistaWidget />\n    </main>\n  )\n}\n\n\n"],"names":[],"mappings":";;;;;AAAA;;;AAEe,SAAS;IACtB,qBACE,8OAAC;QAAK,WAAU;;0BACd,8OAAC;gBAAG,WAAU;0BAA8B;;;;;;0BAC5C,8OAAC,2IAAe;;;;;;;;;;;AAGtB","debugId":null}}]
+}

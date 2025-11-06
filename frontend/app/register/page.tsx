@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label"
 import { apiClient } from "@/lib/api"
 import { Building2, Loader2 } from "lucide-react"
 import Link from "next/link"
-import { useAuth } from "@/lib/auth-context"
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -30,7 +29,7 @@ export default function RegisterPage() {
 
     try {
       await apiClient.register(formData)
-      router.push("/login?registered=true")
+      router.push("/dashboard")
     } catch (err) {
       setError("Error al registrar. El usuario o email ya existe.")
     } finally {
@@ -46,7 +45,7 @@ export default function RegisterPage() {
             <Building2 className="w-10 h-10 text-primary-foreground" />
           </div>
           <CardTitle className="text-3xl font-bold text-balance">Crear Cuenta</CardTitle>
-          <CardDescription className="text-base">Únete a PropManager AI hoy</CardDescription>
+          <CardDescription className="text-base">Únete a SmartHome Manager AI hoy</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">

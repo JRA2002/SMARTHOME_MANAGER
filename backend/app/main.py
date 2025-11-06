@@ -1,5 +1,5 @@
 from app.api import routes_property
-from fastapi import FastAPI, Request, status
+from fastapi import FastAPI, Request, status, Depends, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
@@ -9,6 +9,7 @@ from slowapi.errors import RateLimitExceeded
 from app.core.database import engine, Base
 from app.api import routes_chat, routes_predict_valor
 from app.core.config import settings
+from app.core.security import get_current_user
 
 limiter = Limiter(key_func=get_remote_address)
 
@@ -57,12 +58,14 @@ app.include_router(
 app.include_router(
     routes_chat.router,
     prefix="/api/v1/chat",
-    tags=["Chat IA"]
+    tags=["Chat IA"],
+    dependencies=[Depends(get_current_user)]
 )
 app.include_router(
     routes_predict_valor.router,
     prefix="/api/v1/predict-valor",
-    tags=["Predicción de Valor"]
+    tags=["Predicción de Valor"],
+    dependencies=[Depends(get_current_user)]
 )
 
 @app.get("/")

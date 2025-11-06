@@ -40,11 +40,12 @@ class ApiClient {
     }
 
     const data = await response.json()
+    console.log("Login response data:", data)
     localStorage.setItem("access_token", data.access_token)
     return data
   }
 
-  async register(data: RegisterData): Promise<User> {
+  async register(data: RegisterData): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
       method: "POST",
       headers: this.getHeaders(false),
@@ -54,8 +55,11 @@ class ApiClient {
     if (!response.ok) {
       throw new Error("Registration failed")
     }
-
-    return response.json()
+   await this.login({
+      email: data.email,
+      password: data.password,
+    })
+  
   }
 
   async getCurrentUser(): Promise<User> {
