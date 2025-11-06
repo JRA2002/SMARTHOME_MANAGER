@@ -12,6 +12,8 @@ class ChatEngine:
 
     _instance = None
     _lock = Lock()
+    db: Session
+    user_id: int
 
     def __new__(cls, *args, **kwargs):
         """Singleton: solo una instancia global"""
@@ -43,7 +45,7 @@ class ChatEngine:
     
         
     def _get_property_count(self) -> Dict:
-        """Obtiene el conteo de propiedades"""
+        
         count = self.db.query(func.count(Property.id)).filter(
             Property.user_id == self.user_id
         ).scalar()
