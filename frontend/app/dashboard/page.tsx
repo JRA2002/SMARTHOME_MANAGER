@@ -40,6 +40,7 @@ const stats = [
 ]
 
 export default function DashboardPage() {
+
   return (
     <DashboardLayout>
       <div className="space-y-8">

@@ -9,10 +9,11 @@ import { Badge } from "@/components/ui/badge"
 import { Plus, Pencil, Trash2, FileText, Calendar, User } from "lucide-react"
 import { RentalDialog } from "@/components/rental-dialog"
 import { DeleteDialog } from "@/components/delete-dialog"
-import { apiClient, type Rental } from "@/lib/api"
+import { apiClient} from "@/lib/api"
 import { useToast } from "@/hooks/use-toast"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
+import type { Rental } from "@/types/rental"
 
 export default function RentalsPage() {
   const [rentals, setRentals] = useState<Rental[]>([])
