@@ -30,6 +30,7 @@ from app.schemas.property_schema import (
 from app.schemas.dashboard_schema import DashboardSummary
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from app.api.routes_logs import log_action
 
 router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
@@ -245,6 +246,7 @@ async def create_property(
     db.add(new_property)
     db.commit()
     db.refresh(new_property)
+    log_action(db, current_user.id, "CREATE", "PROPERTY", new_property.id)
     
     return new_property
 
@@ -323,13 +325,14 @@ async def update_property(
     
     # Update only provided fields
     update_data = property_data.model_dump(exclude_unset=True)
+   
     for field, value in update_data.items():
         setattr(property, field, value)
     
     property.updated_at = datetime.utcnow()
     db.commit()
     db.refresh(property)
-    
+    log_action(db, current_user.id, "UPDATE", "PROPERTY", property.id)
     return property
 
 @router.delete("/properties/{property_id}", status_code=status.HTTP_200_OK)
@@ -354,7 +357,7 @@ async def delete_property(
     
     db.delete(property)
     db.commit()
-    
+    log_action(db, current_user.id, "DELETE", "PROPERTY", property.id)
     return {
         "success": True,
         "message": "Property deleted successfully"
@@ -387,7 +390,7 @@ async def create_rental(
     db.add(new_rental)
     db.commit()
     db.refresh(new_rental)
-    print("New rental created:", new_rental)
+    log_action(db, current_user.id, "CREATE", "RENTAL", new_rental.id)
     return new_rental
 
 @router.get("/rentals", response_model=PaginatedRentals)
@@ -426,7 +429,6 @@ async def get_rentals(
         total_pages=total_pages
     )
 
-
 @router.put("/rentals/{rental_id}", response_model=RentalResponse)
 @limiter.limit("30/minute")
 async def update_rental(
@@ -435,7 +437,7 @@ async def update_rental(
     rental_data: RentalUpdate,
     db: Session = Depends(get_db)
 ):
-    """Update rental"""
+
     print("Updating rental with data:", rental_id)
     print("rental data aqui:", rental_data),
     rental = db.query(Rental).filter(
@@ -448,7 +450,6 @@ async def update_rental(
             detail="Rental not found"
         )
     
-    # Update only provided fields
     update_data = rental_data.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(rental, field, value)
@@ -456,6 +457,7 @@ async def update_rental(
     rental.updated_at = datetime.utcnow()
     db.commit()
     db.refresh(rental)
+    log_action(db, rental.property.user_id, "UPDATE", "RENTAL", rental.id)
     
     return rental
 
@@ -466,7 +468,7 @@ async def delete_rental(
     rental_id: int,
     db: Session = Depends(get_db)
 ):
-    """Delete rental"""
+
     rental = db.query(Rental).filter(
         Rental.id == rental_id,
     ).first()
@@ -479,6 +481,7 @@ async def delete_rental(
     
     db.delete(rental)
     db.commit()
+    log_action(db, rental.property.user_id, "DELETE", "RENTAL", rental.id)
     
     return {
         "success": True,
@@ -495,8 +498,7 @@ async def create_expense(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Create new expense"""
-    # Verify property belongs to user
+
     property = db.query(Property).filter(
         Property.id == expense_data.property_id,
         Property.user_id == current_user.id
@@ -512,6 +514,7 @@ async def create_expense(
     db.add(new_expense)
     db.commit()
     db.refresh(new_expense)
+    log_action(db, current_user.id, "CREATE", "EXPENSE", new_expense.id)
     
     return new_expense
 
@@ -524,19 +527,16 @@ async def get_expenses(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get user's expenses with pagination"""
-    # Get user's property IDs
+
     property_ids = db.query(Property.id).filter(
         Property.user_id == current_user.id
     ).all()
     property_ids = [p[0] for p in property_ids]
     
-    # Get total count
     total = db.query(func.count(Expense.id)).filter(
         Expense.property_id.in_(property_ids)
     ).scalar()
     
-    # Get paginated results
     expenses = db.query(Expense).filter(
         Expense.property_id.in_(property_ids)
     ).offset(skip).limit(limit).all()
@@ -569,7 +569,6 @@ async def update_expense(
             detail="Rental not found"
         )
     
-    # Update only provided fields
     update_data = expense_data.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(expense, field, value)
@@ -577,6 +576,7 @@ async def update_expense(
     expense.updated_at = datetime.utcnow()
     db.commit()
     db.refresh(expense)
+    log_action(db, expense.property.user_id, "UPDATE", "EXPENSE", expense.id)
     
     return expense
 
@@ -600,6 +600,7 @@ async def delete_expense(
     
     db.delete(expense)
     db.commit()
+    log_action(db, expense.property.user_id, "DELETE", "EXPENSE", expense.id)
     
     return {
         "success": True,

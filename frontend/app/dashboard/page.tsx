@@ -85,7 +85,10 @@ export default function DashboardPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{stat.value}</div>
+              <div className="text-3xl font-bold">
+              {stat.name.toLowerCase().startsWith("valor" ) ||
+                stat.name.toLowerCase().startsWith("ingresos") ? new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(stat.value): stat.value}
+              </div>
                 <p className="text-xs text-muted-foreground mt-1">
                   <span className={`font-semibold ${Number(stat.change) >= 0 ? "text-green-600" : "text-red-600"}`}>{stat.change}%</span> vs mes anterior
                 </p>
