@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import Optional, List
 from app.models.property import PropertyType, PropertyStatus
 
-# Propiedad Schemas
 class PropertyBase(BaseModel):
     title: str
     address: str

@@ -213,6 +213,17 @@ class ApiClient {
         }
         return response.json();
     }
+    async getSummary() {
+        const response = await this.fetchWithAuth("/api/v1/summary");
+        if (!response.ok) {
+            throw new Error("Failed to fetch rentals");
+        }
+        const data = await response.json();
+        if (!data.value || !data.change) {
+            throw new Error("Invalid summary response format");
+        }
+        return data;
+    }
 }
 const apiClient = new ApiClient();
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {

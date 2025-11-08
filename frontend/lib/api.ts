@@ -4,6 +4,7 @@ import type { ValuationRequest, ValuationResponse } from "@/types/valuation"
 import type { ChatResponse } from "@/types/chat"
 import type { User, LoginCredentials, AuthResponse, RegisterData } from "@/types/auth"
 import type { Expense, ExpenseCreate } from "@/types/expense"
+import type { Summary } from "@/types/summary"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -237,6 +238,19 @@ class ApiClient {
       throw new Error("Failed to send chat message")
     }
     return response.json()
+  }
+
+  async getSummary(): Promise<Summary> {
+    const response = await this.fetchWithAuth("/api/v1/summary")
+    if (!response.ok) {
+      throw new Error("Failed to fetch rentals")
+    }
+    const data = await response.json()
+    if (!data.value || !data.change) {
+      throw new Error("Invalid summary response format")
+    }
+
+    return data as Summary
   }
 }
 

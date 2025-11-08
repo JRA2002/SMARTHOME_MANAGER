@@ -9,9 +9,8 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "PropManager AI - Gestión Inteligente de Propiedades",
+  title: "SmartHome Manager AI - Gestión Inteligente de Propiedades",
   description: "Sistema de gestión de propiedades con IA",
-  generator: "v0.app",
 }
 
 export default function RootLayout({

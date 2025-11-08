@@ -9,8 +9,9 @@ import { Badge } from "@/components/ui/badge"
 import { Plus, Pencil, Trash2, MapPin, Home } from "lucide-react"
 import { PropertyDialog } from "@/components/property-dialog"
 import { DeleteDialog } from "@/components/delete-dialog"
-import { apiClient, type Property } from "@/lib/api"
+import { apiClient} from "@/lib/api"
 import { useToast } from "@/hooks/use-toast"
+import type { Property } from "@/types/Property"
 
 export default function PropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([])

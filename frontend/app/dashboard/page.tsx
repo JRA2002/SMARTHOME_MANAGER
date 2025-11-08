@@ -3,44 +3,71 @@
 import { DashboardLayout } from "@/components/dashboard-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Building2, FileText, DollarSign, TrendingUp } from "lucide-react"
+import { useState, useEffect } from "react"
+import { apiClient } from "@/lib/api"
+import type { Summary } from "@/types/summary"
 
-const stats = [
-  {
-    name: "Total Propiedades",
-    value: "24",
-    change: "+12%",
-    icon: Building2,
-    color: "text-primary",
-    bgColor: "bg-primary/10",
-  },
-  {
-    name: "Alquileres Activos",
-    value: "18",
-    change: "+8%",
-    icon: FileText,
-    color: "text-accent",
-    bgColor: "bg-accent/10",
-  },
-  {
-    name: "Ingresos Mensuales",
-    value: "$45,230",
-    change: "+23%",
-    icon: DollarSign,
-    color: "text-chart-3",
-    bgColor: "bg-chart-3/10",
-  },
-  {
-    name: "Valor Portfolio",
-    value: "$2.4M",
-    change: "+15%",
-    icon: TrendingUp,
-    color: "text-chart-4",
-    bgColor: "bg-chart-4/10",
-  },
-]
+
 
 export default function DashboardPage() {
-
+  
+  const [summary, setSummary] = useState<Summary>({
+    value: [],
+    change: [],
+  });
+  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        const data = await apiClient.getSummary();
+        setSummary(data);
+      } catch (err) {
+        setError("Error fetching summary data");
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchSummary();
+  }, []);
+  
+  const stats = [
+    {
+      name: "Total Propiedades",
+      icon: Building2,
+      value: summary.value[0],
+      change: summary.change[0],
+      color: "text-primary",
+      bgColor: "bg-primary/10",
+    },
+    {
+      name: "Alquileres Activos",
+      icon: FileText,
+      value: summary.value[1],
+      change: summary.change[1],
+      color: "text-accent",
+      bgColor: "bg-accent/10",
+    },
+    {
+      name: "Ingresos Mensuales",
+      icon: DollarSign,
+      value: summary.value[2],
+      change: summary.change[2],
+      color: "text-chart-3",
+      bgColor: "bg-chart-3/10",
+    },
+    {
+      name: "Valor Portfolio",
+      icon: TrendingUp,
+      value: summary.value[3],
+      change: summary.change[3],
+      color: "text-chart-4",
+      bgColor: "bg-chart-4/10",
+    },
+  ]
   return (
     <DashboardLayout>
       <div className="space-y-8">
@@ -62,7 +89,7 @@ export default function DashboardPage() {
               <CardContent>
                 <div className="text-3xl font-bold">{stat.value}</div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  <span className="text-chart-3 font-semibold">{stat.change}</span> vs mes anterior
+                  <span className={`font-semibold ${Number(stat.change) >= 0 ? "text-green-600" : "text-red-600"}`}>{stat.change}%</span> vs mes anterior
                 </p>
               </CardContent>
             </Card>

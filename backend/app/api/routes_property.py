@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, extract
 from typing import List
 from datetime import datetime, timedelta
-
 from app.core.database import get_db
 from app.core.security import (
     get_current_user,
@@ -28,13 +27,100 @@ from app.schemas.property_schema import (
     PaginatedExpenses,
     ExpenseUpdate
 )
+from app.schemas.dashboard_schema import DashboardSummary
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
 router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
 
-# ============= AUTH ENDPOINTS =============
+
+@router.get("/summary", response_model=DashboardSummary)
+@limiter.limit("30/minute")
+def get_dashboard_summary(
+    request: Request,
+    current_user = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    user_id = current_user.id
+    value = []
+    change = []
+    today = datetime.utcnow()
+    current_month = today.month
+    current_year = today.year
+    previous_month = current_month - 1 if current_month > 1 else 12
+    previous_year = current_year if current_month > 1 else current_year - 1
+
+    total_properties = (
+        db.query(func.count(Property.id))
+        .filter(Property.user_id == user_id)
+        .scalar()
+        or 0
+    )
+
+    previous_properties = (
+        db.query(func.count(Property.id))
+        .filter(Property.user_id == user_id)
+        .filter(extract('month', Property.created_at) == previous_month)
+        .filter(extract('year', Property.created_at) == previous_year)
+        .scalar()
+        or 0
+    )
+
+    total_rentals = (
+        db.query(func.count(Rental.id))
+        .join(Property, Rental.property_id == Property.id)
+        .filter(Property.user_id == user_id)
+        .scalar()
+        or 0
+    )
+    
+    previous_rentals = (
+        db.query(func.count(Rental.id))
+        .join(Property, Rental.property_id == Property.id)
+        .filter(Property.user_id == user_id)
+        .filter(extract('month', Rental.start_date) == previous_month)
+        .filter(extract('year', Rental.start_date) == previous_year)
+        .scalar()
+        or 0
+    )
+
+    total_expenses = (
+    db.query(func.sum(Expense.amount))
+    .join(Property, Expense.property_id == Property.id)
+    .filter(Property.user_id == user_id)
+    .scalar()
+    or 0
+    )
+    
+    previous_expenses = (
+        db.query(func.sum(Expense.amount))
+        .join(Property, Expense.property_id == Property.id)
+        .filter(Property.user_id == user_id)
+        .filter(extract('month', Expense.date) == previous_month)
+        .filter(extract('year', Expense.date) == previous_year)
+        .scalar()
+        or 0
+    )
+    
+    def calculate_change(current, previous):
+        if not previous or previous == 0:
+            return 0.0
+        return round(((current - previous) / previous) * 100, 2)
+    
+    value.append(total_properties)
+    change.append(calculate_change(total_properties, previous_properties))
+    value.append(total_rentals)
+    change.append(calculate_change(total_rentals, previous_rentals))
+    value.append(total_expenses)
+    change.append(calculate_change(total_expenses, previous_expenses))
+    value.append(12)
+    change.append(0.0)
+    
+    print("Dashboard summary calculated:", value, change)
+    
+    return {"value": value, "change": change}
+    
 
 @router.post("/auth/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("5/minute")
@@ -150,7 +236,7 @@ async def get_properties(
 
     total_pages = (total + limit - 1) // limit
     current_page = (skip // limit) + 1
-
+   
     return PaginatedProperties(
         success=True,
         data=properties,
