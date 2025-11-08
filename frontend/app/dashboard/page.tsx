@@ -7,8 +7,6 @@ import { useState, useEffect } from "react"
 import { apiClient } from "@/lib/api"
 import type { Summary } from "@/types/summary"
 
-
-
 export default function DashboardPage() {
   
   const [summary, setSummary] = useState<Summary>({

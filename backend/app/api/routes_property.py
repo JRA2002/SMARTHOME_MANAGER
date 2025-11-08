@@ -48,8 +48,8 @@ def get_dashboard_summary(
     today = datetime.utcnow()
     current_month = today.month
     current_year = today.year
-    previous_month = current_month - 1 if current_month > 1 else 12
-    previous_year = current_year if current_month > 1 else current_year - 1
+    prev_month = current_month - 1 if current_month > 1 else 12
+    prev_year = current_year if current_month > 1 else current_year - 1
 
     total_properties = (
         db.query(func.count(Property.id))
@@ -61,8 +61,8 @@ def get_dashboard_summary(
     previous_properties = (
         db.query(func.count(Property.id))
         .filter(Property.user_id == user_id)
-        .filter(extract('month', Property.created_at) == previous_month)
-        .filter(extract('year', Property.created_at) == previous_year)
+        .filter(extract('month', Property.created_at) == prev_month)
+        .filter(extract('year', Property.created_at) == prev_year)
         .scalar()
         or 0
     )
@@ -79,26 +79,68 @@ def get_dashboard_summary(
         db.query(func.count(Rental.id))
         .join(Property, Rental.property_id == Property.id)
         .filter(Property.user_id == user_id)
-        .filter(extract('month', Rental.start_date) == previous_month)
-        .filter(extract('year', Rental.start_date) == previous_year)
+        .filter(extract('month', Rental.start_date) == prev_month)
+        .filter(extract('year', Rental.start_date) == prev_year)
         .scalar()
         or 0
     )
 
-    total_expenses = (
-    db.query(func.sum(Expense.amount))
-    .join(Property, Expense.property_id == Property.id)
-    .filter(Property.user_id == user_id)
-    .scalar()
-    or 0
+    total_rentals_current = (
+        db.query(func.sum(Rental.monthly_amount))
+        .join(Property, Rental.property_id == Property.id)
+        .filter(Property.user_id == user_id)
+        .filter(extract("year", Rental.start_date) == current_year)
+        .filter(extract("month", Rental.start_date) == current_month)
+        .scalar()
+        or 0
     )
-    
-    previous_expenses = (
+
+    total_expenses_current = (
         db.query(func.sum(Expense.amount))
         .join(Property, Expense.property_id == Property.id)
         .filter(Property.user_id == user_id)
-        .filter(extract('month', Expense.date) == previous_month)
-        .filter(extract('year', Expense.date) == previous_year)
+        .filter(extract("year", Expense.date) == current_year)
+        .filter(extract("month", Expense.date) == current_month)
+        .scalar()
+        or 0
+    )
+    
+    profit_current = total_rentals_current - total_expenses_current
+
+    total_rentals_prev = (
+        db.query(func.sum(Rental.monthly_amount))
+        .join(Property, Rental.property_id == Property.id)
+        .filter(Property.user_id == user_id)
+        .filter(extract("year", Rental.start_date) == prev_year)
+        .filter(extract("month", Rental.start_date) == prev_month)
+        .scalar()
+        or 0
+    )
+
+    profit_prev = total_rentals_prev - (
+        db.query(func.sum(Expense.amount))
+        .join(Property, Expense.property_id == Property.id)
+        .filter(Property.user_id == user_id)
+        .filter(extract("year", Expense.date) == prev_year)
+        .filter(extract("month", Expense.date) == prev_month)
+        .scalar()
+        or 0
+    )
+    
+    total_value_current = (
+        db.query(func.sum(Property.price))
+        .filter(Property.user_id == user_id)
+        .filter(extract("year", Property.updated_at) == current_year)
+        .filter(extract("month", Property.updated_at) == current_month)
+        .scalar()
+        or 0
+    )
+    
+    total_value_prev = (
+        db.query(func.sum(Property.price))
+        .filter(Property.user_id == user_id)
+        .filter(extract("year", Property.updated_at) == prev_year)
+        .filter(extract("month", Property.updated_at) == prev_month)
         .scalar()
         or 0
     )
@@ -112,12 +154,10 @@ def get_dashboard_summary(
     change.append(calculate_change(total_properties, previous_properties))
     value.append(total_rentals)
     change.append(calculate_change(total_rentals, previous_rentals))
-    value.append(total_expenses)
-    change.append(calculate_change(total_expenses, previous_expenses))
-    value.append(12)
-    change.append(0.0)
-    
-    print("Dashboard summary calculated:", value, change)
+    value.append(total_rentals_current - total_expenses_current)
+    change.append(calculate_change(profit_current, profit_prev))
+    value.append(total_value_current)
+    change.append(calculate_change(total_value_current, total_value_prev))
     
     return {"value": value, "change": change}
     
@@ -129,8 +169,6 @@ async def register(
     user_data: UserCreate,
     db: Session = Depends(get_db)
 ):
-    """Registrar nuevo usuario"""
-    # Check if user exists
     existing_user = db.query(User).filter(User.email == user_data.email).first()
     if existing_user:
         raise HTTPException(
@@ -159,7 +197,6 @@ async def login(
     credentials: UserLogin,
     db: Session = Depends(get_db)
 ):
-    """Iniciar sesión"""
     user = db.query(User).filter(User.email == credentials.email).first()
     
     if not user or not verify_password(credentials.password, user.hashed_password):
@@ -191,8 +228,6 @@ async def get_current_user_info(
 ):
     return current_user
 
-# ============= PROPIEDADES ENDPOINTS =============
-
 @router.post("/properties", response_model=PropertyResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("20/minute")
 async def create_property(
@@ -201,7 +236,7 @@ async def create_property(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Create new property"""
+   
     new_property = Property(
         **property_data.model_dump(),
         user_id=current_user.id
@@ -222,14 +257,11 @@ async def get_properties(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get user's properties with pagination"""
 
-    # Total de propiedades del usuario
     total = db.query(func.count(Property.id)).filter(
         Property.user_id == current_user.id
     ).scalar()
 
-    # Resultados paginados
     properties = db.query(Property).filter(
         Property.user_id == current_user.id
     ).offset(skip).limit(limit).all()
