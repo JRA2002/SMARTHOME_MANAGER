@@ -184,7 +184,7 @@ export default function RentalsPage() {
                             <Calendar className="h-4 w-4 text-muted-foreground" />
                             <div>
                               <div>{formatDate(rental.start_date)}</div>
-                              <div className="text-muted-foreground">{formatDate(rental.created_at)}</div>
+                              <div className="text-muted-foreground">{formatDate(rental.end_date ?? "sin fecha de fin")}</div>
                             </div>
                           </div>
                         </TableCell>

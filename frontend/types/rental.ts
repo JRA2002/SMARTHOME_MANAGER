@@ -8,7 +8,7 @@ export interface Rental {
   tenant_phone?: string
   monthly_amount: number
   start_date: string
-  end_date?: string | null
+  end_date: string | null
   deposit: number
   status: string
   created_at: string
