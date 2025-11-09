@@ -126,6 +126,14 @@ class ApiClient {
     return response.json()
   }
 
+  async updatePropertyStatus(propertyId: number, status: string): Promise<Response> {
+    return this.fetchWithAuth(`/api/v1/properties/${propertyId}/status`, {
+      method: "PUT",
+      body: JSON.stringify({ status }),
+    })
+  }
+  
+
   async deleteProperty(id: number): Promise<void> {
     const response = await this.fetchWithAuth(`/api/v1/properties/${id}`, {
       method: "DELETE",

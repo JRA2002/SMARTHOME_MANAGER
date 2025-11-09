@@ -419,6 +419,33 @@ async def update_property(
     log_action(db, current_user.id, "UPDATE", "PROPERTY", property.id)
     return property
 
+@router.put("/properties/{property_id}/status")
+def update_property_status(
+    request: Request,
+    property_id: int,
+    data: dict,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    new_status = data.get("status")
+    if not new_status:
+        raise HTTPException(status_code=400, detail="Missing status field")
+
+    property = (
+        db.query(Property)
+        .filter(Property.id == property_id, Property.user_id == current_user.id)
+        .first()
+    )
+    if not property:
+        raise HTTPException(status_code=404, detail="Property not found")
+
+    property.status = new_status
+    db.commit()
+    db.refresh(property)
+
+    return {"message": "Property status updated", "status": property.status}
+
+
 @router.delete("/properties/{property_id}", status_code=status.HTTP_200_OK)
 @limiter.limit("20/minute")
 async def delete_property(

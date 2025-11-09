@@ -12,6 +12,7 @@ import { DeleteDialog } from "@/components/delete-dialog"
 import { apiClient} from "@/lib/api"
 import { useToast } from "@/hooks/use-toast"
 import type { Property } from "@/types/Property"
+import { EditableStatusCell } from "@/components/editablestatuscell"
 
 export default function PropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([])
@@ -161,7 +162,14 @@ export default function PropertiesPage() {
                         </TableCell>
                         <TableCell className="capitalize">{property.type}</TableCell>
                         <TableCell className="font-semibold">${property.price?.toLocaleString() || "N/A"}</TableCell>
-                        <TableCell>{getStatusBadge(property.status)}</TableCell>
+                        <TableCell>
+                          <EditableStatusCell
+                            propertyId={property.id}
+                            initialStatus={property.status}
+                            onStatusChange={(newStatus) => console.log("Nuevo estado:", newStatus)}
+                          />
+                        </TableCell>
+
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
                             <Button variant="ghost" size="icon" onClick={() => handleEdit(property)}>
@@ -199,4 +207,3 @@ export default function PropertiesPage() {
     </DashboardLayout>
   )
 }
-
