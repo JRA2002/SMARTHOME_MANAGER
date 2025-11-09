@@ -2,6 +2,7 @@
 
 import { DashboardLayout } from "@/components/dashboard-layout"
 import { RecentActivities } from "@/components/recent-activities"
+import { NextExpirations } from "@/components/next-expirations"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Building2, FileText, DollarSign, TrendingUp } from "lucide-react"
 import { useState, useEffect } from "react"
@@ -67,6 +68,22 @@ export default function DashboardPage() {
       bgColor: "bg-chart-4/10",
     },
   ]
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <p>Loading...</p>
+      </DashboardLayout>
+    )
+  }
+
+  if (error) {
+    return (
+      <DashboardLayout>
+        <p>{error}</p>
+      </DashboardLayout>
+    )
+  }
   return (
     <DashboardLayout>
       <div className="space-y-8">
@@ -74,8 +91,6 @@ export default function DashboardPage() {
           <h1 className="text-4xl font-bold text-balance mb-2">Dashboard</h1>
           <p className="text-muted-foreground text-lg">Bienvenido a tu panel de gestión de propiedades</p>
         </div>
-
-        {/* Stats Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (
             <Card key={stat.name} className="border-2">
@@ -97,32 +112,9 @@ export default function DashboardPage() {
             </Card>
           ))}
         </div>
-
-        
-
-        {/* Recent Activity */}
         <div className="grid gap-6 lg:grid-cols-2">
         <RecentActivities />
-
-          <Card className="border-2">
-            <CardHeader>
-              <CardTitle>Próximos Vencimientos</CardTitle>
-              <CardDescription>Contratos y pagos pendientes</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="flex items-center gap-4 p-3 rounded-lg bg-muted/50">
-                    <div className="w-2 h-2 rounded-full bg-accent" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">Contrato - Propiedad #{i}</p>
-                      <p className="text-xs text-muted-foreground">Vence en {i * 3} días</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+        <NextExpirations />
         </div>
       </div>
     </DashboardLayout>

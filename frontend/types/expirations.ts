@@ -1,5 +1,7 @@
 export interface Expirations {
-    property_name: string;
+    rental_id: number;
+    property_id: number;
     tenant_name: string;
-    expiration_date: string;
+    monthly_amount: number;
+    end_date: string;
   }

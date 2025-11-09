@@ -238,7 +238,6 @@ class ApiClient {
             throw new Error("Failed to fetch recent activities");
         }
         const result = await response.json();
-        console.log("API Client - Recent Activities Result:", result);
         return result;
     }
     async getNextExpirations() {
@@ -247,8 +246,7 @@ class ApiClient {
             throw new Error("Failed to fetch next expirations");
         }
         const result = await response.json();
-        console.log("API Client - Next Expirations Result:", result);
-        return result;
+        return result.data;
     }
 }
 const apiClient = new ApiClient();

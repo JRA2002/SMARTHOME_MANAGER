@@ -63,7 +63,7 @@ def get_recent_activities(
         for a in activities
     ]
 
-@router.get("/next-expirations", summary="Obtener próximos vencimientos y pagos pendientes")
+@router.get("/next-expirations", summary="Obtener próximos vencimientos de alquileres y pagos de cuotas pendientes")
 def get_next_expirations(
     request: Request,
     db: Session = Depends(get_db),
@@ -83,41 +83,41 @@ def get_next_expirations(
         .limit(5)
         .all()
     )
-
-    # 💰 Pagos pendientes (status != 'completed')
-    pending_payments = (
-        db.query(Payment)
-        .join(Rental, Payment.rental_id == Rental.id)
-        .join(Property, Rental.property_id == Property.id)
-        .filter(Property.user_id == user_id)
-        .filter(Payment.status != "completed")
-        .order_by(Payment.payment_date.asc())
-        .limit(5)
-        .all()
-    )
+    print("Upcoming rentals:", upcoming_rentals)
+    # # 💰 Pagos pendientes (status != 'completed')
+    # pending_payments = (
+    #     db.query(Payment)
+    #     .join(Rental, Payment.rental_id == Rental.id)
+    #     .join(Property, Rental.property_id == Property.id)
+    #     .filter(Property.user_id == user_id)
+    #     .filter(Payment.status != "completed")
+    #     .order_by(Payment.payment_date.asc())
+    #     .limit(5)
+    #     .all()
+    # )
 
     return {
-        "upcoming_rentals": [
+        "data": [
             {
                 "rental_id": r.id,
-                "property_name": r.property.name,
+                "property_id": r.property.id,
                 "tenant_name": r.tenant_name,
                 "end_date": r.end_date,
                 "monthly_amount": r.monthly_amount,
             }
             for r in upcoming_rentals
         ],
-        "pending_payments": [
-            {
-                "payment_id": p.id,
-                "property_name": p.rental.property.name,
-                "tenant_name": p.rental.tenant_name,
-                "amount": p.amount,
-                "payment_date": p.payment_date,
-                "status": p.status,
-            }
-            for p in pending_payments
-        ],
+        # "pending_payments": [
+        #     {
+        #         "payment_id": p.id,
+        #         "property_name": p.rental.property.name,
+        #         "tenant_name": p.rental.tenant_name,
+        #         "amount": p.amount,
+        #         "payment_date": p.payment_date,
+        #         "status": p.status,
+        #     }
+        #     for p in pending_payments
+        # ],
     }
 
 @router.get("/summary", response_model=DashboardSummary)
