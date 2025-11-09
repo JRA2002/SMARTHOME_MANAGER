@@ -25,6 +25,7 @@ export function PropertyDialog({ open, onOpenChange, property, onSave }: Propert
   const [formData, setFormData] = useState({
     title: "",
     address: "",
+    city: "",
     type: "house" as "house" | "apartment" | "comercial" | "office" | "land",
     price: "",
     area: "",
@@ -39,6 +40,7 @@ export function PropertyDialog({ open, onOpenChange, property, onSave }: Propert
       setFormData({
         title: property.title,
         address: property.address,
+        city: property.city,
         type: property.type,
         price: property.price.toString(),
         area: property.area.toString(),
@@ -51,6 +53,7 @@ export function PropertyDialog({ open, onOpenChange, property, onSave }: Propert
       setFormData({
         title: "",
         address: "",
+        city: "",
         type: "house",
         price: "",
         area: "",
@@ -70,6 +73,7 @@ export function PropertyDialog({ open, onOpenChange, property, onSave }: Propert
       const data = {
         title: formData.title,
         address: formData.address,
+        city: formData.city,
         type: formData.type,
         price: Number.parseFloat(formData.price),
         area: Number.parseFloat(formData.area),
@@ -114,16 +118,27 @@ export function PropertyDialog({ open, onOpenChange, property, onSave }: Propert
               required
             />
           </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="address">Dirección *</Label>
-            <Input
-              id="address"
-              value={formData.address}
-              onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              placeholder="Calle Principal 123, Madrid"
-              required
-            />
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="address">Dirección *</Label>
+              <Input
+                id="address"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                placeholder="Calle Principal 456"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="address">Ciudad *</Label>
+              <Input
+                id="address"
+                value={formData.city}
+                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                placeholder="Madrid"
+                required
+              />
+            </div>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">

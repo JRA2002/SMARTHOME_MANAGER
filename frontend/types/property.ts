@@ -2,6 +2,7 @@ export interface Property {
     id: number
     title: string
     address: string
+    city: string
     type: "house" | "apartment" | "comercial" | "office" | "land"
     price: number
     area: number
@@ -18,6 +19,7 @@ export interface Property {
   export interface PropertyCreate {
     title: string
     address: string
+    city: string
     type: "house" | "apartment" | "comercial" | "office" | "land"
     price: number
     area: number

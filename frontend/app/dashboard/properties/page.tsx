@@ -155,7 +155,7 @@ export default function PropertiesPage() {
                             <div>
                               <div className="font-medium">{property.address}</div>
                               {property.address&& (
-                                <div className="text-sm text-muted-foreground">{property.address}</div>
+                                <div className="text-sm text-muted-foreground">{property.city}</div>
                               )}
                             </div>
                           </div>

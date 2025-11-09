@@ -24,6 +24,7 @@ class Property(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     title = Column(String, nullable=False)
     address = Column(String, nullable=False)
+    city = Column(String, nullable=False)
     type = Column(SQLEnum(PropertyType), nullable=False)
     status = Column(SQLEnum(PropertyStatus), default=PropertyStatus.AVAILABLE)
     price = Column(Float, nullable=False)

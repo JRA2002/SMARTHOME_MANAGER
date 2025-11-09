@@ -6,6 +6,7 @@ from app.models.property import PropertyType, PropertyStatus
 class PropertyBase(BaseModel):
     title: str
     address: str
+    city: str
     type: PropertyType
     price: float = Field(gt=0)
     area: float = Field(gt=0)
@@ -20,6 +21,7 @@ class PropertyCreate(PropertyBase):
 class PropertyUpdate(BaseModel):
     title: Optional[str] = None
     address: Optional[str] = None
+    city: Optional[str] = None
     type: Optional[PropertyType] = None
     price: Optional[float] = Field(None, gt=0)
     area: Optional[float] = Field(None, gt=0)
