@@ -5,6 +5,8 @@ import type { ChatResponse } from "@/types/chat"
 import type { User, LoginCredentials, AuthResponse, RegisterData } from "@/types/auth"
 import type { Expense, ExpenseCreate } from "@/types/expense"
 import type { Summary } from "@/types/summary"
+import type { Activity } from "@/types/activity"
+import type { Expirations } from "@/types/expirations"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -19,12 +21,10 @@ class ApiClient {
         headers["Authorization"] = `Bearer ${token}`
       }
     }
-
     return headers
   }
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-
     const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
       method: "POST",
       headers: {
@@ -60,7 +60,6 @@ class ApiClient {
       email: data.email,
       password: data.password,
     })
-  
   }
 
   async getCurrentUser(): Promise<User> {
@@ -71,7 +70,6 @@ class ApiClient {
     if (!response.ok) {
       throw new Error("Failed to get user")
     }
-
     return response.json()
   }
 
@@ -89,7 +87,6 @@ class ApiClient {
       window.location.href = "/login"
       throw new Error("Unauthorized")
     }
-
     return response
   }
 
@@ -251,6 +248,26 @@ class ApiClient {
     }
 
     return data as Summary
+  }
+
+  async getRecentActivities(): Promise<Activity[]> {
+    const response = await this.fetchWithAuth("/api/v1/recent-activities")
+    if (!response.ok) {
+      throw new Error("Failed to fetch recent activities")
+    }
+    const result = await response.json();
+    console.log("API Client - Recent Activities Result:", result);
+    return result;
+  }
+
+  async getNextExpirations(): Promise<Expirations[]> {
+    const response = await this.fetchWithAuth("/api/v1/next-expirations")
+    if (!response.ok) {
+      throw new Error("Failed to fetch next expirations")
+    }
+    const result = await response.json();
+    console.log("API Client - Next Expirations Result:", result);
+    return result;
   }
 }
 

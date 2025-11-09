@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
 from sqlalchemy.orm import Session
-from sqlalchemy import func, extract
+from sqlalchemy import func, extract, and_
 from typing import List
 from datetime import datetime, timedelta
 from app.core.database import get_db
@@ -11,7 +11,7 @@ from app.core.security import (
     create_access_token
 )
 from app.models.user import User
-from app.models.property import Property, Rental, Expense
+from app.models.property import Property, Rental, Expense, Payment
 from app.schemas.user_schema import Token, UserResponse, UserLogin, UserCreate
 from app.schemas.property_schema import (
     PropertyCreate,
@@ -31,10 +31,94 @@ from app.schemas.dashboard_schema import DashboardSummary
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from app.api.routes_logs import log_action
+from app.models.logs import ActivityLog
 
 router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
 
+@router.get("/recent-activities")
+def get_recent_activities(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Devuelve las últimas 4 actividades recientes del usuario autenticado
+    """
+    activities = (
+        db.query(ActivityLog)
+        .filter(ActivityLog.user_id == current_user.id)
+        .order_by(ActivityLog.timestamp.desc())
+        .limit(4)
+        .all()
+    )
+
+    # Puedes devolver un JSON limpio
+    return [
+        {
+            "action": a.action,
+            "entity": a.entity,
+            "entity_id": a.entity_id,
+            "timestamp": a.timestamp.isoformat()
+        }
+        for a in activities
+    ]
+
+@router.get("/next-expirations", summary="Obtener próximos vencimientos y pagos pendientes")
+def get_next_expirations(
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    user_id = current_user.id
+    now = datetime.utcnow()
+    next_month = now + timedelta(days=30)
+
+    # 🏠 Contratos de alquiler próximos a vencer (en los próximos 30 días)
+    upcoming_rentals = (
+        db.query(Rental)
+        .join(Property, Rental.property_id == Property.id)
+        .filter(Property.user_id == user_id)
+        .filter(and_(Rental.end_date != None, Rental.end_date >= now, Rental.end_date <= next_month))
+        .order_by(Rental.end_date.asc())
+        .limit(5)
+        .all()
+    )
+
+    # 💰 Pagos pendientes (status != 'completed')
+    pending_payments = (
+        db.query(Payment)
+        .join(Rental, Payment.rental_id == Rental.id)
+        .join(Property, Rental.property_id == Property.id)
+        .filter(Property.user_id == user_id)
+        .filter(Payment.status != "completed")
+        .order_by(Payment.payment_date.asc())
+        .limit(5)
+        .all()
+    )
+
+    return {
+        "upcoming_rentals": [
+            {
+                "rental_id": r.id,
+                "property_name": r.property.name,
+                "tenant_name": r.tenant_name,
+                "end_date": r.end_date,
+                "monthly_amount": r.monthly_amount,
+            }
+            for r in upcoming_rentals
+        ],
+        "pending_payments": [
+            {
+                "payment_id": p.id,
+                "property_name": p.rental.property.name,
+                "tenant_name": p.rental.tenant_name,
+                "amount": p.amount,
+                "payment_date": p.payment_date,
+                "status": p.status,
+            }
+            for p in pending_payments
+        ],
+    }
 
 @router.get("/summary", response_model=DashboardSummary)
 @limiter.limit("30/minute")

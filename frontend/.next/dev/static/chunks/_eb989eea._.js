@@ -224,6 +224,24 @@ class ApiClient {
         }
         return data;
     }
+    async getRecentActivities() {
+        const response = await this.fetchWithAuth("/api/v1/recent-activities");
+        if (!response.ok) {
+            throw new Error("Failed to fetch recent activities");
+        }
+        const result = await response.json();
+        console.log("API Client - Recent Activities Result:", result);
+        return result;
+    }
+    async getNextExpirations() {
+        const response = await this.fetchWithAuth("/api/v1/next-expirations");
+        if (!response.ok) {
+            throw new Error("Failed to fetch next expirations");
+        }
+        const result = await response.json();
+        console.log("API Client - Next Expirations Result:", result);
+        return result;
+    }
 }
 const apiClient = new ApiClient();
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {

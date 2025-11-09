@@ -156,9 +156,7 @@
     --color-red-50: #fef2f2;
     --color-red-300: #ffa3a3;
     --color-red-400: #ff6568;
-    --color-red-500: #fb2c36;
     --color-red-600: #e40014;
-    --color-green-500: #00c758;
     --color-green-600: #00a544;
     --color-black: #000;
     --color-white: #fff;
@@ -210,9 +208,7 @@
       --color-red-50: lab(96.5005% 4.18508 1.52328);
       --color-red-300: lab(76.5514% 36.422 15.5335);
       --color-red-400: lab(63.7053% 60.745 31.3109);
-      --color-red-500: lab(55.4814% 75.0732 48.8528);
       --color-red-600: lab(48.4493% 77.4328 61.5452);
-      --color-green-500: lab(70.5521% -66.5147 45.8073);
       --color-green-600: lab(59.0978% -58.6621 41.2579);
     }
   }
@@ -956,10 +952,6 @@
 
   .h-16 {
     height: calc(var(--spacing) * 16);
-  }
-
-  .h-64 {
-    height: calc(var(--spacing) * 64);
   }
 
   .h-\[1\.15rem\] {
@@ -2336,10 +2328,6 @@
     }
   }
 
-  .text-green-500 {
-    color: var(--color-green-500);
-  }
-
   .text-green-600 {
     color: var(--color-green-600);
   }
@@ -2368,10 +2356,6 @@
     .text-primary-foreground\/70 {
       color: color-mix(in oklab, var(--primary-foreground) 70%, transparent);
     }
-  }
-
-  .text-red-500 {
-    color: var(--color-red-500);
   }
 
   .text-red-600 {

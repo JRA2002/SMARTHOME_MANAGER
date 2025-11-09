@@ -1,6 +1,7 @@
 "use client"
 
 import { DashboardLayout } from "@/components/dashboard-layout"
+import { RecentActivities } from "@/components/recent-activities"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Building2, FileText, DollarSign, TrendingUp } from "lucide-react"
 import { useState, useEffect } from "react"
@@ -97,28 +98,11 @@ export default function DashboardPage() {
           ))}
         </div>
 
+        
+
         {/* Recent Activity */}
         <div className="grid gap-6 lg:grid-cols-2">
-          <Card className="border-2">
-            <CardHeader>
-              <CardTitle>Actividad Reciente</CardTitle>
-              <CardDescription>Últimas transacciones y eventos</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="flex items-center gap-4 p-3 rounded-lg bg-muted/50">
-                    <div className="w-2 h-2 rounded-full bg-primary" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">Pago recibido - Propiedad #{i}</p>
-                      <p className="text-xs text-muted-foreground">Hace {i} horas</p>
-                    </div>
-                    <span className="text-sm font-semibold text-chart-3">+$1,200</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+        <RecentActivities />
 
           <Card className="border-2">
             <CardHeader>
