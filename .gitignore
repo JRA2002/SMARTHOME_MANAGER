@@ -44,6 +44,8 @@ config.ini
 secrets.ini
 .env
 .env.local
+*.db
+*.sqlite3
 
 ### Logs and Temporary Files ###
 *.log
