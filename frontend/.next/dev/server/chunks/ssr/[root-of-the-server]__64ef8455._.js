@@ -105,6 +105,27 @@ class ApiClient {
         localStorage.removeItem("access_token");
         window.location.href = "/login";
     }
+    async updateProfile(data) {
+        console.log("data aqui", data);
+        const response = await this.fetchWithAuth("/api/v1/auth/update-profile", {
+            method: "PUT",
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) {
+            throw new Error("Failed to update profile");
+        }
+        return response.json();
+    }
+    async updatePassword(data) {
+        const response = await this.fetchWithAuth("/api/v1/auth/update-password", {
+            method: "PUT",
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) {
+            throw new Error("Failed to update password");
+        }
+        return response.json();
+    }
     async getProperties() {
         const response = await this.fetchWithAuth("/api/v1/properties");
         if (!response.ok) {

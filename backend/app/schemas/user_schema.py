@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 from typing import Optional
 
@@ -20,6 +20,23 @@ class UserResponse(UserBase):
     
     class Config:
         from_attributes = True
+        
+class UserUpdate(BaseModel):
+    id: int
+    fullname: Optional[str]
+    email: Optional[EmailStr]
+    
+class UserResponseUpdate(BaseModel):
+    fullname: Optional[str]
+    email: Optional[EmailStr]
+
+    class Config:
+        from_attributes = True
+        
+class PasswordUpdate(BaseModel):
+    currentPassword: str
+    newPassword: str
+    confirmPassword: str
 
 class Token(BaseModel):
     access_token: str

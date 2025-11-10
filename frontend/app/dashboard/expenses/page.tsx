@@ -9,10 +9,11 @@ import { Badge } from "@/components/ui/badge"
 import { Plus, Pencil, Trash2, DollarSign, TrendingDown, Calendar } from "lucide-react"
 import { ExpenseDialog } from "@/components/expense-dialog"
 import { DeleteDialog } from "@/components/delete-dialog"
-import { apiClient, type Expense } from "@/lib/api"
+import { apiClient } from "@/lib/api"
 import { useToast } from "@/hooks/use-toast"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
+import type { Expense } from "@/types/expense"
 
 export default function ExpensesPage() {
   const [expenses, setExpenses] = useState<Expense[]>([])

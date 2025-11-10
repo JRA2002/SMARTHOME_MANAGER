@@ -11,7 +11,7 @@ from app.core.security import (
     create_access_token
 )
 from app.models.user import User
-from app.models.property import Property, Rental, Expense, Payment
+from app.models.property import Property, Rental, Expense
 from app.schemas.user_schema import Token, UserResponse, UserLogin, UserCreate
 from app.schemas.property_schema import (
     PropertyCreate,
@@ -261,7 +261,6 @@ async def register(
             detail="El email ya está registrado"
         )
     
-    # Create new user
     hashed_password = get_password_hash(user_data.password)
     new_user = User(
         email=user_data.email,

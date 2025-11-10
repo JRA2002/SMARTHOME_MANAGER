@@ -2,7 +2,7 @@ import type { Property, PropertyCreate } from "@/types/Property"
 import type { Rental, RentalCreate } from "@/types/rental"
 import type { ValuationRequest, ValuationResponse } from "@/types/valuation"
 import type { ChatResponse } from "@/types/chat"
-import type { User, LoginCredentials, AuthResponse, RegisterData } from "@/types/auth"
+import type { User, LoginCredentials, AuthResponse, RegisterData, UserUpdate, PasswordData } from "@/types/auth"
 import type { Expense, ExpenseCreate } from "@/types/expense"
 import type { Summary } from "@/types/summary"
 import type { Activity } from "@/types/activity"
@@ -95,6 +95,29 @@ class ApiClient {
     window.location.href = "/login"
   }
 
+  async updateProfile(data: UserUpdate) {
+    console.log("data aqui", data)
+    const response = await this.fetchWithAuth("/api/v1/auth/update-profile", {
+      method: "PUT",
+      body: JSON.stringify(data),
+    })
+    if (!response.ok) {
+      throw new Error("Failed to update profile")
+    }
+    return response.json()
+  }
+
+  async updatePassword(data: PasswordData) {
+    const response = await this.fetchWithAuth("/api/v1/auth/update-password", {
+      method: "PUT",
+      body: JSON.stringify(data),
+    })
+    if (!response.ok) {
+      throw new Error("Failed to update password")
+    }
+    return response.json()
+  }
+  
   async getProperties(): Promise<Property[]> {
     const response = await this.fetchWithAuth("/api/v1/properties")
     if (!response.ok) {

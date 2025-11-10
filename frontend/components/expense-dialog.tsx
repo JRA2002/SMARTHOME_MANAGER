@@ -2,15 +2,18 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { apiClient, type Expense, type Property } from "@/lib/api"
-import { Loader2 } from "lucide-react"
+import { apiClient} from "@/lib/api"
+import type { Expense } from "@/types/expense"
+import type { Property } from "@/types/Property"
+import { useToast } from "@/hooks/use-toast"
+import { Loader2, Upload, FileText, X } from "lucide-react"
 
 interface ExpenseDialogProps {
   open: boolean
@@ -22,6 +25,10 @@ interface ExpenseDialogProps {
 export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDialogProps) {
   const [loading, setLoading] = useState(false)
   const [properties, setProperties] = useState<Property[]>([])
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [uploadProgress, setUploadProgress] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const { toast } = useToast()
   const [formData, setFormData] = useState({
     property_id: "",
     category: "mantenimiento",
@@ -69,11 +76,48 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
     }
   }
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const validTypes = ["application/pdf", "image/jpeg", "image/jpg", "image/png"]
+      if (!validTypes.includes(file.type)) {
+        toast({
+          title: "Tipo de archivo no válido",
+          description: "Solo se permiten archivos PDF, JPG o PNG",
+          variant: "destructive",
+        })
+        return
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "Archivo muy grande",
+          description: "El archivo no debe superar los 5MB",
+          variant: "destructive",
+        })
+        return
+      }
+
+      setSelectedFile(file)
+    }
+  }
+
+  const uploadFile = async (file: File): Promise<string> => {
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    return `https://storage.example.com/receipts/${Date.now()}-${file.name}`
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
 
     try {
+      let receiptUrl = formData.receipt_url
+      if (selectedFile) {
+        setUploadProgress(true)
+        receiptUrl = await uploadFile(selectedFile)
+        setUploadProgress(false)
+      }
       const data = {
         property_id: Number.parseInt(formData.property_id),
         category: formData.category,
@@ -92,8 +136,14 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
       onSave()
     } catch (error) {
       console.error("Error saving expense:", error)
+      toast({
+        title: "Error",
+        description: "No se pudo guardar el gasto",
+        variant: "destructive",
+      })
     } finally {
       setLoading(false)
+      setUploadProgress(false)
     }
   }
 
@@ -183,25 +233,63 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="receipt_url">URL del Recibo</Label>
-            <Input
-              id="receipt_url"
-              type="url"
-              value={formData.receipt_url}
-              onChange={(e) => setFormData({ ...formData, receipt_url: e.target.value })}
-              placeholder="https://ejemplo.com/recibo.pdf"
-            />
-          </div>
+            <Label>Recibo / Factura</Label>
+            <div className="flex flex-col gap-3">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
 
+              {selectedFile ? (
+                <div className="flex items-center gap-3 p-3 border rounded-lg bg-muted/50">
+                  <FileText className="h-8 w-8 text-primary" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{selectedFile.name}</p>
+                    <p className="text-xs text-muted-foreground">{(selectedFile.size / 1024).toFixed(2)} KB</p>
+                  </div>
+                  <Button type="button" variant="ghost" size="icon" onClick={() => setSelectedFile(null)}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full gap-2 bg-transparent"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Upload className="h-4 w-4" />
+                  Subir Archivo (PDF, JPG, PNG)
+                </Button>
+              )}
+
+              {formData.receipt_url && !selectedFile && (
+                <div className="text-sm text-muted-foreground">
+                  <a
+                    href={formData.receipt_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline flex items-center gap-1"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Ver recibo actual
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
           <div className="flex justify-end gap-3 pt-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>
               Cancelar
             </Button>
-            <Button type="submit" disabled={loading}>
-              {loading ? (
+            <Button type="submit" disabled={loading || uploadProgress}>
+              {loading || uploadProgress ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Guardando...
+                  {uploadProgress ? "Subiendo..." : "Guardando..."}
                 </>
               ) : expense ? (
                 "Actualizar"

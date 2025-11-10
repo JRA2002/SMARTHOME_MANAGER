@@ -173,6 +173,7 @@
     --container-md: 28rem;
     --container-lg: 32rem;
     --container-2xl: 42rem;
+    --container-4xl: 56rem;
     --text-xs: .75rem;
     --text-xs--line-height: calc(1 / .75);
     --text-sm: .875rem;
@@ -971,6 +972,10 @@
     height: 1.15rem;
   }
 
+  .h-\[50vh\] {
+    height: 50vh;
+  }
+
   .h-\[600px\] {
     height: 600px;
   }
@@ -1157,6 +1162,10 @@
 
   .max-w-2xl {
     max-width: var(--container-2xl);
+  }
+
+  .max-w-4xl {
+    max-width: var(--container-4xl);
   }
 
   .max-w-\[70\%\] {
@@ -1561,6 +1570,12 @@
     justify-self: flex-end;
   }
 
+  .truncate {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
   .overflow-auto {
     overflow: auto;
   }
@@ -1802,6 +1817,16 @@
     background-color: var(--chart-2);
   }
 
+  .bg-chart-2\/10 {
+    background-color: var(--chart-2);
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-chart-2\/10 {
+      background-color: color-mix(in oklab, var(--chart-2) 10%, transparent);
+    }
+  }
+
   .bg-chart-3 {
     background-color: var(--chart-3);
   }
@@ -1850,6 +1875,10 @@
 
   .bg-foreground {
     background-color: var(--foreground);
+  }
+
+  .bg-green-500 {
+    background-color: var(--color-green-500);
   }
 
   .bg-green-500\/10 {

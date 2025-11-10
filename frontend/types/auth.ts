@@ -9,12 +9,23 @@ export interface RegisterData {
   password: string
 }
 
+export interface PasswordData {
+  currentPassword: string
+  newPassword: string
+  confirmPassword: string
+}
+
 export interface User {
   id: number
   email: string
   fullname: string
   is_active: boolean
   created_at: string
+}
+
+export interface UserUpdate {
+  fullname?: string
+  email?: string
 }
 
 export interface AuthResponse {
