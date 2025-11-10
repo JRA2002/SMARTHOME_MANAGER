@@ -15,6 +15,7 @@ import { format } from "date-fns"
 import { es } from "date-fns/locale"
 import { apiClient } from "@/lib/api"
 
+
 export default function ProfilePage() {
   const { user } = useAuth()
   const { toast } = useToast()
@@ -49,7 +50,7 @@ export default function ProfilePage() {
 
     try {
     
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 2000))
       await apiClient.updateProfile(profileData)
 
       toast({

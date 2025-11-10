@@ -1944,20 +1944,20 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                             children: expense ? "Editar Gasto" : "Nuevo Gasto"
                         }, void 0, false, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 154,
+                            lineNumber: 155,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogDescription"], {
                             children: expense ? "Actualiza la información del gasto" : "Registra un nuevo gasto para tu propiedad"
                         }, void 0, false, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 155,
+                            lineNumber: 156,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/expense-dialog.tsx",
-                    lineNumber: 153,
+                    lineNumber: 154,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1972,7 +1972,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     children: "Propiedad *"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 162,
+                                    lineNumber: 163,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -1988,12 +1988,12 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                 placeholder: "Selecciona una propiedad"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/expense-dialog.tsx",
-                                                lineNumber: 168,
+                                                lineNumber: 169,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 167,
+                                            lineNumber: 168,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2006,24 +2006,24 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     ]
                                                 }, property.id, true, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 172,
+                                                    lineNumber: 173,
                                                     columnNumber: 19
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 170,
+                                            lineNumber: 171,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 163,
+                                    lineNumber: 164,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 161,
+                            lineNumber: 162,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2034,7 +2034,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     children: "Categoría *"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 181,
+                                    lineNumber: 182,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -2048,12 +2048,12 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             id: "category",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                 fileName: "[project]/components/expense-dialog.tsx",
-                                                lineNumber: 184,
+                                                lineNumber: 185,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 183,
+                                            lineNumber: 184,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2063,7 +2063,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     children: "Mantenimiento"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 187,
+                                                    lineNumber: 188,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2071,7 +2071,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     children: "Reparación"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 188,
+                                                    lineNumber: 189,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2079,7 +2079,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     children: "Servicios"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 189,
+                                                    lineNumber: 190,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2087,7 +2087,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     children: "Impuestos"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 190,
+                                                    lineNumber: 191,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2095,7 +2095,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     children: "Seguro"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 191,
+                                                    lineNumber: 192,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2103,25 +2103,25 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     children: "Otro"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 192,
+                                                    lineNumber: 193,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 186,
+                                            lineNumber: 187,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 182,
+                                    lineNumber: 183,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 180,
+                            lineNumber: 181,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2132,7 +2132,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     children: "Descripción *"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 198,
+                                    lineNumber: 199,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -2147,13 +2147,13 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     required: true
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 199,
+                                    lineNumber: 200,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 197,
+                            lineNumber: 198,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2167,7 +2167,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             children: "Monto *"
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 211,
+                                            lineNumber: 212,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -2183,13 +2183,13 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 212,
+                                            lineNumber: 213,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 210,
+                                    lineNumber: 211,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2200,7 +2200,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             children: "Fecha *"
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 224,
+                                            lineNumber: 225,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -2214,19 +2214,19 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 225,
+                                            lineNumber: 226,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 223,
+                                    lineNumber: 224,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 209,
+                            lineNumber: 210,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2236,7 +2236,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     children: "Recibo / Factura"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 236,
+                                    lineNumber: 237,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2250,7 +2250,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             className: "hidden"
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 238,
+                                            lineNumber: 239,
                                             columnNumber: 15
                                         }, this),
                                         selectedFile ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2260,7 +2260,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     className: "h-8 w-8 text-primary"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 248,
+                                                    lineNumber: 249,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2271,7 +2271,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                             children: selectedFile.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/expense-dialog.tsx",
-                                                            lineNumber: 250,
+                                                            lineNumber: 251,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2282,13 +2282,13 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/expense-dialog.tsx",
-                                                            lineNumber: 251,
+                                                            lineNumber: 252,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 249,
+                                                    lineNumber: 250,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2300,18 +2300,18 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/expense-dialog.tsx",
-                                                        lineNumber: 254,
+                                                        lineNumber: 255,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 253,
+                                                    lineNumber: 254,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 247,
+                                            lineNumber: 248,
                                             columnNumber: 17
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                             type: "button",
@@ -2323,14 +2323,14 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 264,
+                                                    lineNumber: 265,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Subir Archivo (PDF, JPG, PNG)"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 258,
+                                            lineNumber: 259,
                                             columnNumber: 17
                                         }, this),
                                         formData.receipt_url && !selectedFile && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2345,31 +2345,31 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/expense-dialog.tsx",
-                                                        lineNumber: 277,
+                                                        lineNumber: 278,
                                                         columnNumber: 21
                                                     }, this),
                                                     "Ver recibo actual"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/expense-dialog.tsx",
-                                                lineNumber: 271,
+                                                lineNumber: 272,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 270,
+                                            lineNumber: 271,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 237,
+                                    lineNumber: 238,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 235,
+                            lineNumber: 236,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2383,7 +2383,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 285,
+                                    lineNumber: 286,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2395,7 +2395,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                 className: "mr-2 h-4 w-4 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/expense-dialog.tsx",
-                                                lineNumber: 291,
+                                                lineNumber: 292,
                                                 columnNumber: 19
                                             }, this),
                                             uploadProgress ? "Subiendo..." : "Guardando..."
@@ -2403,30 +2403,30 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     }, void 0, true) : expense ? "Actualizar" : "Registrar Gasto"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 288,
+                                    lineNumber: 289,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 284,
+                            lineNumber: 285,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/expense-dialog.tsx",
-                    lineNumber: 160,
+                    lineNumber: 161,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/expense-dialog.tsx",
-            lineNumber: 152,
+            lineNumber: 153,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/components/expense-dialog.tsx",
-        lineNumber: 151,
+        lineNumber: 152,
         columnNumber: 5
     }, this);
 }
@@ -2698,6 +2698,7 @@ function ExpensesPage() {
     const loadExpenses = async ()=>{
         try {
             const data = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["apiClient"].getExpenses();
+            console.log("expense  :::", data);
             setExpenses(data);
         } catch (error) {
             toast({
@@ -2772,7 +2773,7 @@ function ExpensesPage() {
             children: labels[category] || category
         }, void 0, false, {
             fileName: "[project]/app/dashboard/expenses/page.tsx",
-            lineNumber: 108,
+            lineNumber: 110,
             columnNumber: 7
         }, this);
     };
@@ -2801,7 +2802,7 @@ function ExpensesPage() {
                                         children: "Gastos"
                                     }, void 0, false, {
                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                        lineNumber: 129,
+                                        lineNumber: 131,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2809,13 +2810,13 @@ function ExpensesPage() {
                                         children: "Registra y controla los gastos de tus propiedades"
                                     }, void 0, false, {
                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                        lineNumber: 130,
+                                        lineNumber: 132,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                lineNumber: 128,
+                                lineNumber: 130,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2827,20 +2828,20 @@ function ExpensesPage() {
                                         className: "h-5 w-5"
                                     }, void 0, false, {
                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                        lineNumber: 133,
+                                        lineNumber: 135,
                                         columnNumber: 13
                                     }, this),
                                     "Nuevo Gasto"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                lineNumber: 132,
+                                lineNumber: 134,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                        lineNumber: 127,
+                        lineNumber: 129,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2857,20 +2858,20 @@ function ExpensesPage() {
                                                 children: "Total Gastos"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 141,
+                                                lineNumber: 143,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__["DollarSign"], {
                                                 className: "h-5 w-5 text-chart-1"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 142,
+                                                lineNumber: 144,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                        lineNumber: 140,
+                                        lineNumber: 142,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2883,7 +2884,7 @@ function ExpensesPage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 145,
+                                                lineNumber: 147,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2891,19 +2892,19 @@ function ExpensesPage() {
                                                 children: "Todos los gastos registrados"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 146,
+                                                lineNumber: 148,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                        lineNumber: 144,
+                                        lineNumber: 146,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                lineNumber: 139,
+                                lineNumber: 141,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -2917,20 +2918,20 @@ function ExpensesPage() {
                                                 children: "Gastos Este Mes"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 152,
+                                                lineNumber: 154,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingDown$3e$__["TrendingDown"], {
                                                 className: "h-5 w-5 text-chart-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 153,
+                                                lineNumber: 155,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                        lineNumber: 151,
+                                        lineNumber: 153,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2947,7 +2948,7 @@ function ExpensesPage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 156,
+                                                lineNumber: 158,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2955,19 +2956,19 @@ function ExpensesPage() {
                                                 children: "Gastos del mes actual"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 167,
+                                                lineNumber: 169,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                        lineNumber: 155,
+                                        lineNumber: 157,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                lineNumber: 150,
+                                lineNumber: 152,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -2981,20 +2982,20 @@ function ExpensesPage() {
                                                 children: "Total Registros"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 173,
+                                                lineNumber: 175,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__["Calendar"], {
                                                 className: "h-5 w-5 text-chart-3"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 174,
+                                                lineNumber: 176,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                        lineNumber: 172,
+                                        lineNumber: 174,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -3004,7 +3005,7 @@ function ExpensesPage() {
                                                 children: expenses.length
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 177,
+                                                lineNumber: 179,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3012,25 +3013,25 @@ function ExpensesPage() {
                                                 children: "Gastos registrados"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 178,
+                                                lineNumber: 180,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                        lineNumber: 176,
+                                        lineNumber: 178,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                lineNumber: 171,
+                                lineNumber: 173,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                        lineNumber: 138,
+                        lineNumber: 140,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -3045,14 +3046,14 @@ function ExpensesPage() {
                                                 className: "h-5 w-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 186,
+                                                lineNumber: 188,
                                                 columnNumber: 15
                                             }, this),
                                             "Registro de Gastos"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                        lineNumber: 185,
+                                        lineNumber: 187,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
@@ -3063,13 +3064,13 @@ function ExpensesPage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                        lineNumber: 189,
+                                        lineNumber: 191,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                lineNumber: 184,
+                                lineNumber: 186,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -3078,7 +3079,7 @@ function ExpensesPage() {
                                     children: "Cargando gastos..."
                                 }, void 0, false, {
                                     fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                    lineNumber: 195,
+                                    lineNumber: 197,
                                     columnNumber: 15
                                 }, this) : expenses.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "text-center py-12",
@@ -3087,7 +3088,7 @@ function ExpensesPage() {
                                             className: "h-12 w-12 mx-auto text-muted-foreground mb-4"
                                         }, void 0, false, {
                                             fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                            lineNumber: 198,
+                                            lineNumber: 200,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3095,7 +3096,7 @@ function ExpensesPage() {
                                             children: "No hay gastos registrados"
                                         }, void 0, false, {
                                             fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                            lineNumber: 199,
+                                            lineNumber: 201,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3106,20 +3107,20 @@ function ExpensesPage() {
                                                     className: "h-4 w-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                    lineNumber: 201,
+                                                    lineNumber: 203,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Agregar Primer Gasto"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                            lineNumber: 200,
+                                            lineNumber: 202,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                    lineNumber: 197,
+                                    lineNumber: 199,
                                     columnNumber: 15
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "rounded-lg border",
@@ -3132,35 +3133,35 @@ function ExpensesPage() {
                                                             children: "Descripción"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                            lineNumber: 210,
+                                                            lineNumber: 212,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableHead"], {
                                                             children: "Propiedad"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                            lineNumber: 211,
+                                                            lineNumber: 213,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableHead"], {
                                                             children: "Categoría"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                            lineNumber: 212,
+                                                            lineNumber: 214,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableHead"], {
                                                             children: "Fecha"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                            lineNumber: 213,
+                                                            lineNumber: 215,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableHead"], {
                                                             children: "Monto"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                            lineNumber: 214,
+                                                            lineNumber: 216,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -3168,18 +3169,18 @@ function ExpensesPage() {
                                                             children: "Acciones"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                            lineNumber: 215,
+                                                            lineNumber: 217,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                    lineNumber: 209,
+                                                    lineNumber: 211,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 208,
+                                                lineNumber: 210,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableBody"], {
@@ -3191,12 +3192,12 @@ function ExpensesPage() {
                                                                     children: expense.description
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                    lineNumber: 222,
+                                                                    lineNumber: 224,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                lineNumber: 221,
+                                                                lineNumber: 223,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -3205,19 +3206,19 @@ function ExpensesPage() {
                                                                     children: expense.property?.address || `Propiedad #${expense.property_id}`
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                    lineNumber: 225,
+                                                                    lineNumber: 227,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                lineNumber: 224,
+                                                                lineNumber: 226,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableCell"], {
                                                                 children: getCategoryBadge(expense.category)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                lineNumber: 229,
+                                                                lineNumber: 231,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -3225,7 +3226,7 @@ function ExpensesPage() {
                                                                 children: formatDate(expense.date)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                lineNumber: 230,
+                                                                lineNumber: 232,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -3236,7 +3237,7 @@ function ExpensesPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                lineNumber: 231,
+                                                                lineNumber: 233,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -3252,12 +3253,12 @@ function ExpensesPage() {
                                                                                 className: "h-4 w-4"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                                lineNumber: 237,
+                                                                                lineNumber: 239,
                                                                                 columnNumber: 31
                                                                             }, this)
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                            lineNumber: 236,
+                                                                            lineNumber: 238,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3269,62 +3270,62 @@ function ExpensesPage() {
                                                                                 className: "h-4 w-4"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                                lineNumber: 245,
+                                                                                lineNumber: 247,
                                                                                 columnNumber: 31
                                                                             }, this)
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                            lineNumber: 239,
+                                                                            lineNumber: 241,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                    lineNumber: 235,
+                                                                    lineNumber: 237,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                                lineNumber: 234,
+                                                                lineNumber: 236,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, expense.id, true, {
                                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                        lineNumber: 220,
+                                                        lineNumber: 222,
                                                         columnNumber: 23
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                                lineNumber: 218,
+                                                lineNumber: 220,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                        lineNumber: 207,
+                                        lineNumber: 209,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                    lineNumber: 206,
+                                    lineNumber: 208,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                                lineNumber: 193,
+                                lineNumber: 195,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/dashboard/expenses/page.tsx",
-                        lineNumber: 183,
+                        lineNumber: 185,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                lineNumber: 126,
+                lineNumber: 128,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$expense$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ExpenseDialog"], {
@@ -3334,7 +3335,7 @@ function ExpensesPage() {
                 onSave: handleSave
             }, void 0, false, {
                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                lineNumber: 259,
+                lineNumber: 261,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$delete$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DeleteDialog"], {
@@ -3345,13 +3346,13 @@ function ExpensesPage() {
                 onConfirm: confirmDelete
             }, void 0, false, {
                 fileName: "[project]/app/dashboard/expenses/page.tsx",
-                lineNumber: 261,
+                lineNumber: 263,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/dashboard/expenses/page.tsx",
-        lineNumber: 125,
+        lineNumber: 127,
         columnNumber: 5
     }, this);
 }

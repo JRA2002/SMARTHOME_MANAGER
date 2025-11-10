@@ -14,6 +14,7 @@ import type { Expense } from "@/types/expense"
 import type { Property } from "@/types/Property"
 import { useToast } from "@/hooks/use-toast"
 import { Loader2, Upload, FileText, X } from "lucide-react"
+import { Toaster } from "@/components/ui/toaster"
 
 interface ExpenseDialogProps {
   open: boolean

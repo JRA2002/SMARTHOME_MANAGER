@@ -30,6 +30,7 @@ export default function ExpensesPage() {
   const loadExpenses = async () => {
     try {
       const data = await apiClient.getExpenses()
+      console.log("expense  :::", data)
       setExpenses(data)
     } catch (error) {
       toast({

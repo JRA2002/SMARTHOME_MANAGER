@@ -308,7 +308,7 @@ async def login(
 @limiter.limit("30/minute")
 async def get_current_user_info(
     request: Request,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
 ):
     return current_user
 
@@ -464,10 +464,12 @@ async def delete_property(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Property not found"
         )
-    
+    current_user_id = current_user.id
+    property_id = property.id
     db.delete(property)
     db.commit()
-    log_action(db, current_user.id, "DELETE", "PROPERTY", property.id)
+    log_action(db, current_user_id, "DELETE", "PROPERTY", property_id)
+    
     return {
         "success": True,
         "message": "Property deleted successfully"
@@ -588,10 +590,11 @@ async def delete_rental(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Rental not found"
         )
-    
+    user_id = rental.property.user_id
+  
     db.delete(rental)
     db.commit()
-    log_action(db, rental.property.user_id, "DELETE", "RENTAL", rental.id)
+    log_action(db, user_id, "DELETE", "RENTAL", rental_id)
     
     return {
         "success": True,
@@ -707,10 +710,13 @@ async def delete_expense(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Expense not found"
         )
+        
+    user_id = expense.property.user_id
+    expense_id_value = expense.id
     
     db.delete(expense)
     db.commit()
-    log_action(db, expense.property.user_id, "DELETE", "EXPENSE", expense.id)
+    log_action(db, user_id, "DELETE", "EXPENSE", expense_id_value)
     
     return {
         "success": True,
