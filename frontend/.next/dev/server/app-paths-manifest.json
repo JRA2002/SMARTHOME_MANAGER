@@ -6,5 +6,6 @@
   "/dashboard/rentals/page": "app/dashboard/rentals/page.js",
   "/dashboard/valuation/page": "app/dashboard/valuation/page.js",
   "/login/page": "app/login/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/register/page": "app/register/page.js"
 }

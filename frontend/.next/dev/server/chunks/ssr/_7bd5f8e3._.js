@@ -295,12 +295,169 @@ function ThemeToggle() {
     }, this);
 }
 }),
-"[project]/app/login/page.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
+"[project]/hooks/use-toast.ts [app-ssr] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "reducer",
+    ()=>reducer,
+    "toast",
+    ()=>toast,
+    "useToast",
+    ()=>useToast
+]);
+// Inspired by react-hot-toast library
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
+'use client';
+;
+const TOAST_LIMIT = 1;
+const TOAST_REMOVE_DELAY = 1000000;
+const actionTypes = {
+    ADD_TOAST: 'ADD_TOAST',
+    UPDATE_TOAST: 'UPDATE_TOAST',
+    DISMISS_TOAST: 'DISMISS_TOAST',
+    REMOVE_TOAST: 'REMOVE_TOAST'
+};
+let count = 0;
+function genId() {
+    count = (count + 1) % Number.MAX_SAFE_INTEGER;
+    return count.toString();
+}
+const toastTimeouts = new Map();
+const addToRemoveQueue = (toastId)=>{
+    if (toastTimeouts.has(toastId)) {
+        return;
+    }
+    const timeout = setTimeout(()=>{
+        toastTimeouts.delete(toastId);
+        dispatch({
+            type: 'REMOVE_TOAST',
+            toastId: toastId
+        });
+    }, TOAST_REMOVE_DELAY);
+    toastTimeouts.set(toastId, timeout);
+};
+const reducer = (state, action)=>{
+    switch(action.type){
+        case 'ADD_TOAST':
+            return {
+                ...state,
+                toasts: [
+                    action.toast,
+                    ...state.toasts
+                ].slice(0, TOAST_LIMIT)
+            };
+        case 'UPDATE_TOAST':
+            return {
+                ...state,
+                toasts: state.toasts.map((t)=>t.id === action.toast.id ? {
+                        ...t,
+                        ...action.toast
+                    } : t)
+            };
+        case 'DISMISS_TOAST':
+            {
+                const { toastId } = action;
+                // ! Side effects ! - This could be extracted into a dismissToast() action,
+                // but I'll keep it here for simplicity
+                if (toastId) {
+                    addToRemoveQueue(toastId);
+                } else {
+                    state.toasts.forEach((toast)=>{
+                        addToRemoveQueue(toast.id);
+                    });
+                }
+                return {
+                    ...state,
+                    toasts: state.toasts.map((t)=>t.id === toastId || toastId === undefined ? {
+                            ...t,
+                            open: false
+                        } : t)
+                };
+            }
+        case 'REMOVE_TOAST':
+            if (action.toastId === undefined) {
+                return {
+                    ...state,
+                    toasts: []
+                };
+            }
+            return {
+                ...state,
+                toasts: state.toasts.filter((t)=>t.id !== action.toastId)
+            };
+    }
+};
+const listeners = [];
+let memoryState = {
+    toasts: []
+};
+function dispatch(action) {
+    memoryState = reducer(memoryState, action);
+    listeners.forEach((listener)=>{
+        listener(memoryState);
+    });
+}
+function toast({ ...props }) {
+    const id = genId();
+    const update = (props)=>dispatch({
+            type: 'UPDATE_TOAST',
+            toast: {
+                ...props,
+                id
+            }
+        });
+    const dismiss = ()=>dispatch({
+            type: 'DISMISS_TOAST',
+            toastId: id
+        });
+    dispatch({
+        type: 'ADD_TOAST',
+        toast: {
+            ...props,
+            id,
+            open: true,
+            onOpenChange: (open)=>{
+                if (!open) dismiss();
+            }
+        }
+    });
+    return {
+        id: id,
+        dismiss,
+        update
+    };
+}
+function useToast() {
+    const [state, setState] = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"](memoryState);
+    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"](()=>{
+        listeners.push(setState);
+        return ()=>{
+            const index = listeners.indexOf(setState);
+            if (index > -1) {
+                listeners.splice(index, 1);
+            }
+        };
+    }, [
+        state
+    ]);
+    return {
+        ...state,
+        toast,
+        dismiss: (toastId)=>dispatch({
+                type: 'DISMISS_TOAST',
+                toastId
+            })
+    };
+}
+;
+}),
+"[project]/app/register/page.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
 __turbopack_context__.s([
     "default",
-    ()=>LoginPage
+    ()=>RegisterPage
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
@@ -309,11 +466,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/input.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/card.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/label.tsx [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$auth$2d$context$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/auth-context.tsx [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/api.ts [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$building$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Building2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/building-2.js [app-ssr] (ecmascript) <export default as Building2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-ssr] (ecmascript) <export default as Loader2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$theme$2d$toggle$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/theme-toggle.tsx [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$hooks$2f$use$2d$toast$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/hooks/use-toast.ts [app-ssr] (ecmascript)");
 "use client";
 ;
 ;
@@ -326,33 +484,33 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$theme$2d$toggl
 ;
 ;
 ;
-function LoginPage() {
-    const [email, setEmail] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
-    const [password, setPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+;
+function RegisterPage() {
+    const [formData, setFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
+        email: "",
+        fullname: "",
+        password: ""
+    });
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const { login } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$auth$2d$context$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuth"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
-    const searchParams = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSearchParams"])();
-    const [showSuccess, setShowSuccess] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (searchParams.get("registered") === "true") {
-            setShowSuccess(true);
-            setTimeout(()=>setShowSuccess(false), 6000);
-        }
-    }, [
-        searchParams
-    ]);
+    const { toast } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$hooks$2f$use$2d$toast$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useToast"])();
     const handleSubmit = async (e)=>{
         e.preventDefault();
         setError("");
         setLoading(true);
         try {
-            await login(email, password);
-            router.push("/dashboard");
+            await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["apiClient"].register(formData);
+            toast({
+                title: "¡Registro exitoso!",
+                description: "Tu cuenta ha sido creada. Ya puedes iniciar sesión.",
+                duration: 4000
+            });
+            setTimeout(()=>{
+                router.push("/login?registered=true");
+            }, 1500);
         } catch (err) {
-            setError("Credenciales inválidas. Por favor, intenta de nuevo.");
-        } finally{
+            setError("Error al registrar. El usuario o email ya existe.");
             setLoading(false);
         }
     };
@@ -362,13 +520,13 @@ function LoginPage() {
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "fixed top-4 right-4 z-50",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$theme$2d$toggle$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ThemeToggle"], {}, void 0, false, {
-                    fileName: "[project]/app/login/page.tsx",
-                    lineNumber: 53,
-                    columnNumber: 9
+                    fileName: "[project]/app/register/page.tsx",
+                    lineNumber: 52,
+                    columnNumber: 15
                 }, this)
             }, void 0, false, {
-                fileName: "[project]/app/login/page.tsx",
-                lineNumber: 52,
+                fileName: "[project]/app/register/page.tsx",
+                lineNumber: 51,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -382,35 +540,35 @@ function LoginPage() {
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$building$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Building2$3e$__["Building2"], {
                                     className: "w-10 h-10 text-primary-foreground"
                                 }, void 0, false, {
-                                    fileName: "[project]/app/login/page.tsx",
-                                    lineNumber: 58,
+                                    fileName: "[project]/app/register/page.tsx",
+                                    lineNumber: 57,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
-                                fileName: "[project]/app/login/page.tsx",
-                                lineNumber: 57,
+                                fileName: "[project]/app/register/page.tsx",
+                                lineNumber: 56,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardTitle"], {
                                 className: "text-3xl font-bold text-balance",
-                                children: "SmartHome Manager"
+                                children: "Crear Cuenta"
                             }, void 0, false, {
-                                fileName: "[project]/app/login/page.tsx",
-                                lineNumber: 60,
+                                fileName: "[project]/app/register/page.tsx",
+                                lineNumber: 59,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
                                 className: "text-base",
-                                children: "Gestión inteligente de propiedades inmobiliarias"
+                                children: "Únete a SmartHome Manager AI hoy"
                             }, void 0, false, {
-                                fileName: "[project]/app/login/page.tsx",
-                                lineNumber: 61,
+                                fileName: "[project]/app/register/page.tsx",
+                                lineNumber: 60,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
-                        fileName: "[project]/app/login/page.tsx",
-                        lineNumber: 56,
+                        fileName: "[project]/app/register/page.tsx",
+                        lineNumber: 55,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -423,30 +581,66 @@ function LoginPage() {
                                         className: "space-y-2",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
-                                                htmlFor: "email",
-                                                children: "Email"
+                                                htmlFor: "name",
+                                                children: "Nombre Completo"
                                             }, void 0, false, {
-                                                fileName: "[project]/app/login/page.tsx",
-                                                lineNumber: 66,
+                                                fileName: "[project]/app/register/page.tsx",
+                                                lineNumber: 65,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
-                                                id: "email",
+                                                id: "name",
                                                 type: "text",
-                                                placeholder: "email",
-                                                value: email,
-                                                onChange: (e)=>setEmail(e.target.value),
+                                                placeholder: "Juan Pérez",
+                                                value: formData.fullname,
+                                                onChange: (e)=>setFormData({
+                                                        ...formData,
+                                                        fullname: e.target.value
+                                                    }),
                                                 required: true,
                                                 className: "h-11"
                                             }, void 0, false, {
-                                                fileName: "[project]/app/login/page.tsx",
-                                                lineNumber: 67,
+                                                fileName: "[project]/app/register/page.tsx",
+                                                lineNumber: 66,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
-                                        fileName: "[project]/app/login/page.tsx",
-                                        lineNumber: 65,
+                                        fileName: "[project]/app/register/page.tsx",
+                                        lineNumber: 64,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "space-y-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
+                                                htmlFor: "email",
+                                                children: "Email"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/register/page.tsx",
+                                                lineNumber: 77,
+                                                columnNumber: 15
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
+                                                id: "email",
+                                                type: "email",
+                                                placeholder: "tu@email.com",
+                                                value: formData.email,
+                                                onChange: (e)=>setFormData({
+                                                        ...formData,
+                                                        email: e.target.value
+                                                    }),
+                                                required: true,
+                                                className: "h-11"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/register/page.tsx",
+                                                lineNumber: 78,
+                                                columnNumber: 15
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/register/page.tsx",
+                                        lineNumber: 76,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -456,35 +650,38 @@ function LoginPage() {
                                                 htmlFor: "password",
                                                 children: "Contraseña"
                                             }, void 0, false, {
-                                                fileName: "[project]/app/login/page.tsx",
-                                                lineNumber: 78,
+                                                fileName: "[project]/app/register/page.tsx",
+                                                lineNumber: 89,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
                                                 id: "password",
                                                 type: "password",
                                                 placeholder: "••••••••",
-                                                value: password,
-                                                onChange: (e)=>setPassword(e.target.value),
+                                                value: formData.password,
+                                                onChange: (e)=>setFormData({
+                                                        ...formData,
+                                                        password: e.target.value
+                                                    }),
                                                 required: true,
                                                 className: "h-11"
                                             }, void 0, false, {
-                                                fileName: "[project]/app/login/page.tsx",
-                                                lineNumber: 79,
+                                                fileName: "[project]/app/register/page.tsx",
+                                                lineNumber: 90,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
-                                        fileName: "[project]/app/login/page.tsx",
-                                        lineNumber: 77,
+                                        fileName: "[project]/app/register/page.tsx",
+                                        lineNumber: 88,
                                         columnNumber: 13
                                     }, this),
                                     error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "text-sm text-destructive bg-destructive/10 p-3 rounded-lg",
                                         children: error
                                     }, void 0, false, {
-                                        fileName: "[project]/app/login/page.tsx",
-                                        lineNumber: 89,
+                                        fileName: "[project]/app/register/page.tsx",
+                                        lineNumber: 100,
                                         columnNumber: 23
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -496,22 +693,22 @@ function LoginPage() {
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
                                                     className: "mr-2 h-5 w-5 animate-spin"
                                                 }, void 0, false, {
-                                                    fileName: "[project]/app/login/page.tsx",
-                                                    lineNumber: 93,
+                                                    fileName: "[project]/app/register/page.tsx",
+                                                    lineNumber: 104,
                                                     columnNumber: 19
                                                 }, this),
-                                                "Iniciando sesión..."
+                                                "Creando cuenta..."
                                             ]
-                                        }, void 0, true) : "Iniciar Sesión"
+                                        }, void 0, true) : "Crear Cuenta"
                                     }, void 0, false, {
-                                        fileName: "[project]/app/login/page.tsx",
-                                        lineNumber: 90,
+                                        fileName: "[project]/app/register/page.tsx",
+                                        lineNumber: 101,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
-                                fileName: "[project]/app/login/page.tsx",
-                                lineNumber: 64,
+                                fileName: "[project]/app/register/page.tsx",
+                                lineNumber: 63,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -519,47 +716,47 @@ function LoginPage() {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                         className: "text-muted-foreground",
-                                        children: "¿No tienes cuenta? "
+                                        children: "¿Ya tienes cuenta? "
                                     }, void 0, false, {
-                                        fileName: "[project]/app/login/page.tsx",
-                                        lineNumber: 102,
+                                        fileName: "[project]/app/register/page.tsx",
+                                        lineNumber: 113,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                        href: "/register",
+                                        href: "/login",
                                         className: "text-primary font-semibold hover:underline",
-                                        children: "Regístrate aquí"
+                                        children: "Inicia sesión"
                                     }, void 0, false, {
-                                        fileName: "[project]/app/login/page.tsx",
-                                        lineNumber: 103,
+                                        fileName: "[project]/app/register/page.tsx",
+                                        lineNumber: 114,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
-                                fileName: "[project]/app/login/page.tsx",
-                                lineNumber: 101,
+                                fileName: "[project]/app/register/page.tsx",
+                                lineNumber: 112,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
-                        fileName: "[project]/app/login/page.tsx",
-                        lineNumber: 63,
+                        fileName: "[project]/app/register/page.tsx",
+                        lineNumber: 62,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
-                fileName: "[project]/app/login/page.tsx",
-                lineNumber: 55,
+                fileName: "[project]/app/register/page.tsx",
+                lineNumber: 54,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
-        fileName: "[project]/app/login/page.tsx",
-        lineNumber: 51,
+        fileName: "[project]/app/register/page.tsx",
+        lineNumber: 50,
         columnNumber: 5
     }, this);
 }
 }),
 ];
 
-//# sourceMappingURL=_9f2fdf67._.js.map
+//# sourceMappingURL=_7bd5f8e3._.js.map

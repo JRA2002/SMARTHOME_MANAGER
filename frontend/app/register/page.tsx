@@ -12,6 +12,7 @@ import { apiClient } from "@/lib/api"
 import { Building2, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { useToast } from "@/hooks/use-toast"
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ export default function RegisterPage() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const { toast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -30,10 +32,16 @@ export default function RegisterPage() {
 
     try {
       await apiClient.register(formData)
-      router.push("/dashboard")
+      toast({
+        title: "¡Registro exitoso!",
+        description: "Tu cuenta ha sido creada. Ya puedes iniciar sesión.",
+        duration: 4000,
+      })
+      setTimeout(() => {
+        router.push("/login?registered=true")
+      }, 1500)
     } catch (err) {
       setError("Error al registrar. El usuario o email ya existe.")
-    } finally {
       setLoading(false)
     }
   }

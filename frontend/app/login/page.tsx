@@ -2,8 +2,8 @@
 
 import type React from "react"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,6 +12,8 @@ import { useAuth } from "@/lib/auth-context"
 import { Building2, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { CheckCircle2 } from "lucide-react"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -20,6 +22,15 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const { login } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const [showSuccess, setShowSuccess] = useState(false)
+
+  useEffect(() => {
+    if (searchParams.get("registered") === "true") {
+      setShowSuccess(true)
+      setTimeout(() => setShowSuccess(false), 6000)
+    }
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -50,6 +61,14 @@ export default function LoginPage() {
           <CardDescription className="text-base">Gestión inteligente de propiedades inmobiliarias</CardDescription>
         </CardHeader>
         <CardContent>
+        {showSuccess && (
+            <Alert className="mb-4 border-green-500 bg-green-500/10">
+              <CheckCircle2 className="h-4 w-4 text-green-500" />
+              <AlertDescription className="text-green-600 dark:text-green-400 font-medium">
+                ¡Registro exitoso! Ya puedes iniciar sesión con tu cuenta.
+              </AlertDescription>
+            </Alert>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
