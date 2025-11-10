@@ -8,6 +8,7 @@ import { Building2, FileText, DollarSign, TrendingUp } from "lucide-react"
 import { useState, useEffect } from "react"
 import { apiClient } from "@/lib/api"
 import type { Summary } from "@/types/summary"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 export default function DashboardPage() {
   

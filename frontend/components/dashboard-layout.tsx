@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/lib/auth-context"
+import { ThemeToggle } from "@/components/theme-toggle"
 import {
   Building2,
   LayoutDashboard,
@@ -53,7 +54,11 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
     "U"
 
   return (
+    
     <div className="min-h-screen bg-background">
+      <div className="fixed top-4 right-4 z-50">
+              <ThemeToggle />
+      </div>
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
