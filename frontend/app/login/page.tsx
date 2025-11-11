@@ -14,6 +14,7 @@ import Link from "next/link"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { CheckCircle2 } from "lucide-react"
+import Image from "next/image"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -55,7 +56,13 @@ export default function LoginPage() {
       <Card className="w-full max-w-md border-2 shadow-2xl">
         <CardHeader className="space-y-3 text-center">
           <div className="mx-auto w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-2">
-            <Building2 className="w-10 h-10 text-primary-foreground" />
+            <Image
+            src="https://res.cloudinary.com/drdcw81pd/image/upload/v1762873823/logo_smarthome_ctilfk.png"
+            alt="Logo"
+            width={90}
+            height={90}
+            className="object-contain"
+            />
           </div>
           <CardTitle className="text-3xl font-bold text-balance">SmartHome Manager</CardTitle>
           <CardDescription className="text-base">Gestión inteligente de propiedades inmobiliarias</CardDescription>

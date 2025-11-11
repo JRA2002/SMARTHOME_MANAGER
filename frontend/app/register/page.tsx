@@ -13,6 +13,7 @@ import { Building2, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useToast } from "@/hooks/use-toast"
+import Image from "next/image"
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -54,7 +55,13 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md border-2 shadow-2xl">
         <CardHeader className="space-y-3 text-center">
           <div className="mx-auto w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-2">
-            <Building2 className="w-10 h-10 text-primary-foreground" />
+            <Image
+                        src="https://res.cloudinary.com/drdcw81pd/image/upload/v1762873823/logo_smarthome_ctilfk.png"
+                        alt="Logo"
+                        width={90}
+                        height={90}
+                        className="object-contain"
+                        />
           </div>
           <CardTitle className="text-3xl font-bold text-balance">Crear Cuenta</CardTitle>
           <CardDescription className="text-base">Únete a SmartHome Manager AI hoy</CardDescription>

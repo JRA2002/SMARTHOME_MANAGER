@@ -6,6 +6,7 @@ import { usePathname, useRouter  } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/lib/auth-context"
+import Image from "next/image"
 import { ThemeToggle } from "@/components/theme-toggle"
 import {
   Building2,
@@ -58,7 +59,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
     
     <div className="min-h-screen bg-background">
       <div className="fixed top-4 right-4 z-50">
-              <ThemeToggle />
+        <ThemeToggle />
       </div>
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
@@ -76,8 +77,14 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
           {/* Logo */}
           <div className="flex items-center justify-between p-6 border-b border-border">
             <Link href="/dashboard" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                <Building2 className="w-6 h-6 text-primary-foreground" />
+              <div className="w-15 h-15 rounded-xl flex items-center justify-center">
+                <Image
+                            src="https://res.cloudinary.com/drdcw81pd/image/upload/v1762873823/logo_smarthome_ctilfk.png"
+                            alt="Logo"
+                            width={90}
+                            height={90}
+                            className="object-contain"
+                            />
               </div>
               <span className="text-xl font-bold text-balance">SmartHome Manager</span>
             </Link>
