@@ -44,6 +44,7 @@ config.ini
 secrets.ini
 .env
 .env.local
+!.env.example
 *.db
 *.sqlite3
 
@@ -57,3 +58,9 @@ logs/
 ### Deployment Specific ###
 *.pth
 .DS_Store
+
+# build output
+/.next
+/out
+.next
+.next/
