@@ -222,16 +222,16 @@ export function PropertyDialog({ open, onOpenChange, property, onSave }: Propert
             />
           </div>
 
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <Label htmlFor="image_url">URL de Imagen</Label>
             <Input
               id="image_url"
               type="url"
               value={formData.image_url}
               onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-              placeholder="https://ejemplo.com/imagen.jpg"
+              placeholder="https://imagen.com/imagen.jpg"
             />
-          </div>
+          </div> */}
 
           <div className="flex justify-end gap-3 pt-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>

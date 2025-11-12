@@ -36,7 +36,7 @@ const navigation = [
   { name: "Propiedades", href: "/dashboard/properties", icon: Home },
   { name: "Alquileres", href: "/dashboard/rentals", icon: FileText },
   { name: "Gastos", href: "/dashboard/expenses", icon: DollarSign },
-  { name: "Valoración IA", href: "/dashboard/valuation", icon: Sparkles },
+  // { name: "Valoración IA", href: "/dashboard/valuation", icon: Sparkles },
   { name: "Asistente IA", href: "/dashboard/chat", icon: MessageSquare },
 ]
 
