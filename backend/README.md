@@ -21,7 +21,7 @@ backend/
 ├── app/
 │   ├── main.py                 # Aplicación principal FastAPI
 │   ├── api/
-│   │   ├── routes_propiedades.py   # Endpoints de propiedades, auth, alquileres, gastos
+│   │   ├── routes_property.py   # Endpoints de propiedades, auth, alquileres, gastos
 │   │   ├── routes_chat.py          # Endpoints de chat IA
 │   │   └── routes_predict_valor.py # Endpoints de predicción de valor
 │   ├── core/
@@ -29,11 +29,11 @@ backend/
 │   │   ├── database.py         # Configuración de base de datos
 │   │   └── security.py         # Autenticación y seguridad JWT
 │   ├── models/
-│   │   ├── propiedad.py        # Modelos de Propiedad, Alquiler, Pago, Gasto
-│   │   └── usuario.py          # Modelo de Usuario
+│   │   ├── property.py        # Modelos de Propiedad, Alquiler, Pago, Gasto
+│   │   └── user.py          # Modelo de Usuario
 │   ├── schemas/
-│   │   ├── propiedad_schema.py # Schemas Pydantic de propiedades
-│   │   └── usuario_schema.py   # Schemas Pydantic de usuarios
+│   │   ├── property_schema.py # Schemas Pydantic de propiedades
+│   │   └── user_schema.py   # Schemas Pydantic de usuarios
 │   ├── ml/
 │   │   └── predictor.py        # Predictor de valor de propiedades
 │   └── utils/
@@ -74,7 +74,7 @@ La API usa JWT (JSON Web Tokens) para autenticación.
 
 ### Registro de Usuario
 \`\`\`bash
-POST /api/v1/propiedades/auth/register
+POST /api/v1/auth/register
 {
   "email": "usuario@ejemplo.com",
   "nombre": "Juan Pérez",
@@ -84,7 +84,7 @@ POST /api/v1/propiedades/auth/register
 
 ### Login
 \`\`\`bash
-POST /api/v1/propiedades/auth/login
+POST /api/v1/auth/login
 {
   "email": "usuario@ejemplo.com",
   "password": "contraseña123"
@@ -108,24 +108,24 @@ Authorization: Bearer {tu_token_aqui}
 ## 📋 Endpoints Principales
 
 ### Autenticación
-- `POST /api/v1/propiedades/auth/register` - Registrar usuario
-- `POST /api/v1/propiedades/auth/login` - Iniciar sesión
-- `GET /api/v1/propiedades/auth/me` - Obtener usuario actual
+- `POST /api/v1/auth/register` - Registrar usuario
+- `POST /api/v1/auth/login` - Iniciar sesión
+- `GET /api/v1/auth/me` - Obtener usuario actual
 
 ### Propiedades
-- `GET /api/v1/propiedades?skip=0&limit=10` - Listar propiedades (paginado)
-- `POST /api/v1/propiedades` - Crear propiedad
-- `GET /api/v1/propiedades/{id}` - Obtener propiedad
-- `PUT /api/v1/propiedades/{id}` - Actualizar propiedad
-- `DELETE /api/v1/propiedades/{id}` - Eliminar propiedad
+- `GET /api/v1/properties?skip=0&limit=10` - Listar propiedades (paginado)
+- `POST /api/v1/properties` - Crear propiedad
+- `GET /api/v1/properties/{id}` - Obtener propiedad
+- `PUT /api/v1/properties/{id}` - Actualizar propiedad
+- `DELETE /api/v1/properties/{id}` - Eliminar propiedad
 
 ### Alquileres
-- `GET /api/v1/propiedades/alquileres?skip=0&limit=10` - Listar alquileres
-- `POST /api/v1/propiedades/alquileres` - Crear alquiler
+- `GET /api/v1/rentals?skip=0&limit=10` - Listar alquileres
+- `POST /api/v1/rentals` - Crear alquiler
 
 ### Gastos
-- `GET /api/v1/propiedades/gastos?skip=0&limit=10` - Listar gastos
-- `POST /api/v1/propiedades/gastos` - Crear gasto
+- `GET /api/v1/expenses?skip=0&limit=10` - Listar gastos
+- `POST /api/v1/expenses` - Crear gasto
 
 ### Predicción de Valor IA
 - `POST /api/v1/predict-valor` - Predecir valor de propiedad
@@ -220,7 +220,7 @@ Para producción, considera:
 
 ### Crear una Propiedad
 \`\`\`bash
-curl -X POST "http://localhost:8000/api/v1/propiedades" \
+curl -X POST "http://localhost:8000/api/v1/properties" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{

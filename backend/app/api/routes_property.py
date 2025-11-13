@@ -69,6 +69,19 @@ def get_next_expirations(
     db: Session = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
+    
+    
+    """
+    Obtiene los próximos 5 vencimientos de alquileres para el usuario autenticado.
+    
+    Parameters:
+    request (Request): La petición HTTP actual.
+    db (Session): La sesión de la base de datos.
+    current_user (dict): El usuario autenticado actual.
+    
+    Returns:
+    dict: Un objeto JSON que contiene los próximos vencimientos de alquileres.
+    """
     user_id = current_user.id
     now = datetime.utcnow()
     next_month = now + timedelta(days=30)
@@ -127,6 +140,24 @@ def get_dashboard_summary(
     current_user = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+    """
+    Obtiene un resumen de la información del usuario autenticado.
+    
+    La respuesta contiene un objeto JSON con dos claves: "value" y "change".
+    La clave "value" contiene una lista de 5 valores que corresponden a:
+    - El total de propiedades del usuario
+    - El total de alquileres del usuario
+    - La ganancia total del usuario en el mes actual
+    - El valor total de las propiedades del usuario en el mes actual
+    - El valor total de las propiedades del usuario en el mes anterior
+    
+    La clave "change" contiene una lista de 5 valores que corresponden a:
+    - El cambio porcentual en el total de propiedades del usuario entre el mes actual y el anterior
+    - El cambio porcentual en el total de alquileres del usuario entre el mes actual y el anterior
+    - El cambio porcentual en la ganancia total del usuario entre el mes actual y el anterior
+    - El cambio porcentual en el valor total de las propiedades del usuario entre el mes actual y el anterior
+    - El cambio porcentual en el valor total de las propiedades del usuario entre el mes actual y el anterior
+    """
     user_id = current_user.id
     value = []
     change = []
@@ -254,6 +285,21 @@ async def register(
     user_data: UserCreate,
     db: Session = Depends(get_db)
 ):
+    """
+    Registra un nuevo usuario en la aplicación.
+
+    Parámetros:
+        user_data (UserCreate): datos del usuario a registrar
+
+    Respuesta:
+        UserResponse: datos del usuario registrado
+
+    Excepciones:
+        HTTPException: si el email ya está registrado
+
+    Límite de tasa:
+        5 solicitudes por minuto
+    """
     existing_user = db.query(User).filter(User.email == user_data.email).first()
     if existing_user:
         raise HTTPException(
@@ -281,6 +327,22 @@ async def login(
     credentials: UserLogin,
     db: Session = Depends(get_db)
 ):
+    """
+    Inicia sesión en la aplicación.
+
+    Parámetros:
+        credentials (UserLogin): email y contraseña del usuario
+
+    Respuesta:
+        Token: token de acceso y tipo de token
+
+    Excepciones:
+        HTTPException: si el email o contraseña son incorrectos
+        HTTPException: si el usuario no está activo
+
+    Límite de tasa:
+        10 solicitudes por minuto
+    """
     user = db.query(User).filter(User.email == credentials.email).first()
     
     if not user or not verify_password(credentials.password, user.hashed_password):

@@ -51,7 +51,6 @@ class PaginatedProperties(BaseModel):
     class Config:
         from_attributes = True
 
-# Rental Schemas
 class RentalBase(BaseModel):
     tenant_name: str
     tenant_email: str
@@ -93,8 +92,7 @@ class PaginatedRentals(BaseModel):
 
     class Config:
         from_attributes = True
-
-# Payment Schemas
+        
 class PaymentBase(BaseModel):
     amount: float = Field(gt=0)
     payment_date: datetime
@@ -113,7 +111,6 @@ class PaymentResponse(PaymentBase):
     class Config:
         from_attributes = True
 
-# Expense Schemas
 class ExpenseBase(BaseModel):
     category: str
     description: str
