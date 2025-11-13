@@ -35,7 +35,7 @@ async def analyze_pdf(file: UploadFile = File(...)):
                     text += page_text + "\n"
 
         prompt = f"""
-        Analiza el siguiente texto de una factura y devuelve un obejto JSON pero en category solo puede ser mantenimiento, alquilado o vendido, ademas el amount solo quiero el  numero y con estas claves:
+        Analiza el siguiente texto de una factura y devuelve un objeto JSON pero en category solo puede ser mantenimiento, alquilado o vendido, ademas el amount solo quiero el  numero y con estas claves:
         {{
             "category": "",
             "date": "",
@@ -69,4 +69,5 @@ async def analyze_pdf(file: UploadFile = File(...)):
         
 
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=500, detail=str(e))

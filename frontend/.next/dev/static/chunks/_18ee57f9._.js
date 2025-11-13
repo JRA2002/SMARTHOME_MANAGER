@@ -1873,6 +1873,8 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                 });
                 setSelectedFile(null);
                 setManualEntry(true);
+                setSelectedFile(null);
+                setManualEntry(true);
             } else {
                 const today = new Date().toISOString().split("T")[0];
                 setFormData({
@@ -1882,6 +1884,8 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                     amount: "",
                     date: today
                 });
+                setSelectedFile(null);
+                setManualEntry(false);
                 setSelectedFile(null);
                 setManualEntry(false);
             }
@@ -1899,18 +1903,18 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
         }
     };
     const analyzeReceiptWithAI = async (file)=>{
-        console.log("[v0] Starting AI analysis for file:", file.name);
         setAiProcessing(true);
-        console.log("[v0] aiProcessing state set to true");
         try {
-            // Simulate AI processing
             await new Promise((resolve)=>setTimeout(resolve, 2500));
+            const data = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].analyzeReceipt(file);
+            console.log("categoria", data.category);
+            const date = new Date(data.date).toISOString().split("T")[0];
             const today = new Date().toISOString().split("T")[0];
             const extractedData = {
-                description: `Gasto procesado desde ${file.name}`,
-                amount: "",
-                category: "mantenimiento",
-                date: today
+                description: data.description,
+                amount: data.amount,
+                category: data.category,
+                date: date || today
             };
             setFormData((prev)=>({
                     ...prev,
@@ -1919,13 +1923,11 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                     category: extractedData.category,
                     date: extractedData.date
                 }));
-            console.log("[v0] AI analysis completed");
             toast({
                 title: "Análisis completado",
                 description: "La IA ha procesado tu factura. Verifica los datos antes de guardar."
             });
         } catch (error) {
-            console.error("Error analyzing receipt:", error);
             toast({
                 title: "Error en el análisis",
                 description: "No se pudo analizar la factura automáticamente",
@@ -1937,7 +1939,6 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
     };
     const handleFileSelect = async (e)=>{
         const file = e.target.files?.[0];
-        console.log("[v0] File selected:", file?.name);
         if (file) {
             const validTypes = [
                 "application/pdf"
@@ -1973,6 +1974,14 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
             });
             return;
         }
+        if (selectedFile && !formData.property_id) {
+            toast({
+                title: "Propiedad requerida",
+                description: "Por favor selecciona una propiedad para el gasto",
+                variant: "destructive"
+            });
+            return;
+        }
         setLoading(true);
         try {
             if (selectedFile) {
@@ -1993,7 +2002,6 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
             }
             onSave();
         } catch (error) {
-            console.error("Error saving expense:", error);
             toast({
                 title: "Error",
                 description: "No se pudo guardar el gasto",
@@ -2004,7 +2012,6 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
             setUploadProgress(false);
         }
     };
-    console.log("[v0] Render - aiProcessing:", aiProcessing, "manualEntry:", manualEntry, "selectedFile:", selectedFile?.name);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
         open: open,
         onOpenChange: onOpenChange,
@@ -2022,12 +2029,12 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     className: "h-8 w-8 text-primary animate-pulse"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 221,
+                                    lineNumber: 223,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/expense-dialog.tsx",
-                                lineNumber: 220,
+                                lineNumber: 222,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2038,7 +2045,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                         children: "Analizando factura con IA"
                                     }, void 0, false, {
                                         fileName: "[project]/components/expense-dialog.tsx",
-                                        lineNumber: 224,
+                                        lineNumber: 226,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2046,31 +2053,31 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                         children: "Estamos extrayendo la información de tu documento..."
                                     }, void 0, false, {
                                         fileName: "[project]/components/expense-dialog.tsx",
-                                        lineNumber: 225,
+                                        lineNumber: 227,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/expense-dialog.tsx",
-                                lineNumber: 223,
+                                lineNumber: 225,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
                                 className: "h-6 w-6 animate-spin mx-auto text-primary"
                             }, void 0, false, {
                                 fileName: "[project]/components/expense-dialog.tsx",
-                                lineNumber: 227,
+                                lineNumber: 229,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/expense-dialog.tsx",
-                        lineNumber: 219,
+                        lineNumber: 221,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/expense-dialog.tsx",
-                    lineNumber: 218,
+                    lineNumber: 220,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogHeader"], {
@@ -2079,20 +2086,23 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                             children: expense ? "Editar Gasto" : "Nuevo Gasto"
                         }, void 0, false, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 233,
+                            lineNumber: 235,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogDescription"], {
-                            children: expense ? "Actualiza la información del gasto" : manualEntry ? "Completa los detalles del gasto" : "Sube tu factura o recibo para registrar el gasto"
-                        }, void 0, false, {
+                            children: [
+                                expense ? "Actualiza la información del gasto" : manualEntry ? "Completa los detalles del gasto" : "Sube tu factura o recibo para registrar el gasto",
+                                expense ? "Actualiza la información del gasto" : manualEntry ? "Completa los detalles del gasto" : "Sube tu factura o recibo para registrar el gasto"
+                            ]
+                        }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 234,
+                            lineNumber: 236,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/expense-dialog.tsx",
-                    lineNumber: 232,
+                    lineNumber: 234,
                     columnNumber: 9
                 }, this),
                 !manualEntry && !expense ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2110,12 +2120,12 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                 className: "h-8 w-8 text-primary"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/expense-dialog.tsx",
-                                                lineNumber: 248,
+                                                lineNumber: 255,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 247,
+                                            lineNumber: 254,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2123,7 +2133,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             children: "Sube tu Factura o Recibo"
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 250,
+                                            lineNumber: 257,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2131,7 +2141,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             children: "La IA extraerá automáticamente los datos de tu documento"
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 251,
+                                            lineNumber: 258,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2139,13 +2149,13 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             children: "Formatos: PDF (máx. 5MB)"
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 254,
+                                            lineNumber: 261,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 246,
+                                    lineNumber: 253,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2156,7 +2166,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     className: "hidden"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 257,
+                                    lineNumber: 264,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2170,20 +2180,20 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             className: "h-5 w-5"
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 272,
+                                            lineNumber: 279,
                                             columnNumber: 17
                                         }, this),
                                         "Seleccionar Archivo"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 265,
+                                    lineNumber: 272,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 245,
+                            lineNumber: 252,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2195,12 +2205,12 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                         className: "w-full border-t"
                                     }, void 0, false, {
                                         fileName: "[project]/components/expense-dialog.tsx",
-                                        lineNumber: 279,
+                                        lineNumber: 286,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 278,
+                                    lineNumber: 285,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2210,18 +2220,18 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                         children: "o"
                                     }, void 0, false, {
                                         fileName: "[project]/components/expense-dialog.tsx",
-                                        lineNumber: 282,
+                                        lineNumber: 289,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 281,
+                                    lineNumber: 288,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 277,
+                            lineNumber: 284,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2235,20 +2245,20 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     className: "h-4 w-4"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 293,
+                                    lineNumber: 300,
                                     columnNumber: 15
                                 }, this),
                                 "Ingresar Manualmente"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 286,
+                            lineNumber: 293,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/expense-dialog.tsx",
-                    lineNumber: 244,
+                    lineNumber: 251,
                     columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                     onSubmit: handleSubmit,
@@ -2261,7 +2271,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     className: "h-8 w-8 text-primary"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 301,
+                                    lineNumber: 308,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2272,7 +2282,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             children: selectedFile.name
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 303,
+                                            lineNumber: 310,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2283,13 +2293,13 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 304,
+                                            lineNumber: 311,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 302,
+                                    lineNumber: 309,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2305,18 +2315,18 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                         className: "h-4 w-4"
                                     }, void 0, false, {
                                         fileName: "[project]/components/expense-dialog.tsx",
-                                        lineNumber: 316,
+                                        lineNumber: 323,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 306,
+                                    lineNumber: 313,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 300,
+                            lineNumber: 307,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2327,7 +2337,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     children: "Propiedad *"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 322,
+                                    lineNumber: 329,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -2344,12 +2354,12 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                 placeholder: "Selecciona una propiedad"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/expense-dialog.tsx",
-                                                lineNumber: 329,
+                                                lineNumber: 336,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 328,
+                                            lineNumber: 335,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2362,24 +2372,24 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     ]
                                                 }, property.id, true, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 333,
+                                                    lineNumber: 340,
                                                     columnNumber: 21
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 331,
+                                            lineNumber: 338,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 323,
+                                    lineNumber: 330,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 321,
+                            lineNumber: 328,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2390,7 +2400,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     children: "Categoría *"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 342,
+                                    lineNumber: 349,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -2405,12 +2415,12 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             id: "category",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                 fileName: "[project]/components/expense-dialog.tsx",
-                                                lineNumber: 349,
+                                                lineNumber: 356,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 348,
+                                            lineNumber: 355,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2420,7 +2430,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     children: "Mantenimiento"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 352,
+                                                    lineNumber: 359,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2428,7 +2438,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     children: "Reparación"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 353,
+                                                    lineNumber: 360,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2436,7 +2446,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     children: "Servicios"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 354,
+                                                    lineNumber: 361,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2444,7 +2454,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     children: "Impuestos"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 355,
+                                                    lineNumber: 362,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2452,7 +2462,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     children: "Seguro"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 356,
+                                                    lineNumber: 363,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2460,25 +2470,25 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                     children: "Otro"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/expense-dialog.tsx",
-                                                    lineNumber: 357,
+                                                    lineNumber: 364,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 351,
+                                            lineNumber: 358,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 343,
+                                    lineNumber: 350,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 341,
+                            lineNumber: 348,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2492,7 +2502,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 363,
+                                    lineNumber: 370,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -2508,13 +2518,13 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     disabled: aiProcessing
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 364,
+                                    lineNumber: 371,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 362,
+                            lineNumber: 369,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2531,7 +2541,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 377,
+                                            lineNumber: 384,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2548,51 +2558,58 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             disabled: aiProcessing
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 378,
+                                            lineNumber: 385,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 376,
+                                    lineNumber: 383,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "space-y-2",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                            htmlFor: "date",
-                                            children: "Fecha *"
-                                        }, void 0, false, {
-                                            fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 391,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                            id: "date",
-                                            type: "date",
-                                            value: formData.date,
-                                            onChange: (e)=>setFormData({
-                                                    ...formData,
-                                                    date: e.target.value
-                                                }),
-                                            required: true,
-                                            disabled: aiProcessing
-                                        }, void 0, false, {
-                                            fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 392,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
+                                    className: "grid gap-4 md:grid-cols-2",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "space-y-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                htmlFor: "date",
+                                                children: "Fecha *"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/expense-dialog.tsx",
+                                                lineNumber: 399,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                id: "date",
+                                                type: "date",
+                                                value: formData.date,
+                                                onChange: (e)=>setFormData({
+                                                        ...formData,
+                                                        date: e.target.value
+                                                    }),
+                                                required: true,
+                                                disabled: aiProcessing
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/expense-dialog.tsx",
+                                                lineNumber: 400,
+                                                columnNumber: 17
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/components/expense-dialog.tsx",
+                                        lineNumber: 398,
+                                        columnNumber: 15
+                                    }, this)
+                                }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 390,
-                                    columnNumber: 15
+                                    lineNumber: 396,
+                                    columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 375,
+                            lineNumber: 382,
                             columnNumber: 13
                         }, this),
                         !selectedFile && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2602,7 +2619,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     children: "Recibo / Factura (Opcional)"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 405,
+                                    lineNumber: 414,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2613,7 +2630,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     className: "hidden"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 406,
+                                    lineNumber: 415,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2626,20 +2643,20 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/components/expense-dialog.tsx",
-                                            lineNumber: 419,
+                                            lineNumber: 428,
                                             columnNumber: 19
                                         }, this),
                                         "Subir Archivo (PDF)"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 413,
+                                    lineNumber: 422,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 404,
+                            lineNumber: 413,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2653,7 +2670,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 440,
+                                    lineNumber: 449,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2665,7 +2682,7 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                                 className: "mr-2 h-4 w-4 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/expense-dialog.tsx",
-                                                lineNumber: 451,
+                                                lineNumber: 460,
                                                 columnNumber: 21
                                             }, this),
                                             uploadProgress ? "Subiendo..." : "Guardando..."
@@ -2673,30 +2690,30 @@ function ExpenseDialog({ open, onOpenChange, expense, onSave }) {
                                     }, void 0, true) : expense ? "Actualizar" : "Registrar Gasto"
                                 }, void 0, false, {
                                     fileName: "[project]/components/expense-dialog.tsx",
-                                    lineNumber: 448,
+                                    lineNumber: 457,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/expense-dialog.tsx",
-                            lineNumber: 439,
+                            lineNumber: 448,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/expense-dialog.tsx",
-                    lineNumber: 298,
+                    lineNumber: 305,
                     columnNumber: 11
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/expense-dialog.tsx",
-            lineNumber: 216,
+            lineNumber: 218,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/components/expense-dialog.tsx",
-        lineNumber: 215,
+        lineNumber: 217,
         columnNumber: 5
     }, this);
 }

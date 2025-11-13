@@ -11,7 +11,6 @@ const API_BASE_URL = ("TURBOPACK compile-time value", "http://localhost:8000");
 class ApiClient {
     getHeaders(includeAuth = true, isFormData = false) {
         const headers = {};
-        // Solo poner JSON si NO es FormData
         if (!isFormData) {
             headers["Content-Type"] = "application/json";
         }
@@ -188,7 +187,6 @@ class ApiClient {
             throw new Error("Failed to fetch expenses");
         }
         const result = await response.json();
-        console.log("aqui esta los expenses", result);
         return result.data;
     }
     async createExpense(data) {

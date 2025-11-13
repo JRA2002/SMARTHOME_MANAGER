@@ -15,7 +15,6 @@ class ApiClient {
   private getHeaders(includeAuth = true, isFormData = false): HeadersInit {
     const headers: HeadersInit = {}
   
-    // Solo poner JSON si NO es FormData
     if (!isFormData) {
       headers["Content-Type"] = "application/json"
     }
@@ -220,7 +219,6 @@ class ApiClient {
       throw new Error("Failed to fetch expenses")
     }
     const result = await response.json();
-    console.log("aqui esta los expenses",result)
     return result.data;
   }
 

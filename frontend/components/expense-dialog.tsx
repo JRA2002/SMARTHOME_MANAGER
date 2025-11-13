@@ -86,20 +86,20 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
   }
 
   const analyzeReceiptWithAI = async (file: File) => {
-    console.log("[v0] Starting AI analysis for file:", file.name)
     setAiProcessing(true)
-    console.log("[v0] aiProcessing state set to true")
 
     try {
-      // Simulate AI processing
       await new Promise((resolve) => setTimeout(resolve, 2500))
-
+      const data = await apiClient.analyzeReceipt(file)
+      console.log("categoria",data.category)
+      const date = new Date(data.date).toISOString().split("T")[0]
       const today = new Date().toISOString().split("T")[0]
+
       const extractedData = {
-        description: `Gasto procesado desde ${file.name}`,
-        amount: "",
-        category: "mantenimiento",
-        date: today,
+        description: data.description,
+        amount: data.amount,
+        category: data.category,
+        date: date || today,
       }
 
       setFormData((prev) => ({
@@ -110,14 +110,12 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
         date: extractedData.date,
       }))
 
-      console.log("[v0] AI analysis completed")
-
       toast({
         title: "Análisis completado",
         description: "La IA ha procesado tu factura. Verifica los datos antes de guardar.",
       })
     } catch (error) {
-      console.error("Error analyzing receipt:", error)
+      
       toast({
         title: "Error en el análisis",
         description: "No se pudo analizar la factura automáticamente",
@@ -130,8 +128,6 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    console.log("[v0] File selected:", file?.name)
-
 
     if (file) {
       const validTypes = ["application/pdf"]
@@ -190,7 +186,6 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
         setUploadProgress(false)
       }
 
-
       const data = {
         property_id: Number.parseInt(formData.property_id),
         category: formData.category,
@@ -207,7 +202,6 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
 
       onSave()
     } catch (error) {
-      console.error("Error saving expense:", error)
       toast({
         title: "Error",
         description: "No se pudo guardar el gasto",
@@ -219,33 +213,8 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
     }
   }
 
-  console.log(
-    "[v0] Render - aiProcessing:",
-    aiProcessing,
-    "manualEntry:",
-    manualEntry,
-    "selectedFile:",
-    selectedFile?.name,
-  )
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
-        {aiProcessing && (
-          <div className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm flex items-center justify-center">
-            <div className="bg-card border rounded-lg p-8 shadow-lg max-w-sm text-center space-y-4">
-              <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <Sparkles className="h-8 w-8 text-primary animate-pulse" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-lg font-semibold">Analizando factura con IA</h3>
-                <p className="text-sm text-muted-foreground">Estamos extrayendo la información de tu documento...</p>
-              </div>
-              <Loader2 className="h-6 w-6 animate-spin mx-auto text-primary" />
-            </div>
-          </div>
-        )}
-
       <DialogContent className="max-w-2xl">
         {aiProcessing && (
           <div className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm flex items-center justify-center">
@@ -396,39 +365,7 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="category">Categoría *</Label>
-              <Select
-                value={formData.category}
-                onValueChange={(value) => setFormData({ ...formData, category: value })}
-                disabled={aiProcessing}
-              >
-                <SelectTrigger id="category">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="mantenimiento">Mantenimiento</SelectItem>
-                  <SelectItem value="reparacion">Reparación</SelectItem>
-                  <SelectItem value="servicios">Servicios</SelectItem>
-                  <SelectItem value="impuestos">Impuestos</SelectItem>
-                  <SelectItem value="seguro">Seguro</SelectItem>
-                  <SelectItem value="otro">Otro</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="description">Descripción {!selectedFile && "*"}</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Reparación de tubería en el baño principal"
-                rows={3}
-                required={!selectedFile}
-                disabled={aiProcessing}
-              />
-            </div>
             <div className="space-y-2">
               <Label htmlFor="description">Descripción {!selectedFile && "*"}</Label>
               <Textarea
@@ -457,19 +394,6 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
                 />
               </div>
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="amount">Monto {!selectedFile && "*"}</Label>
-                <Input
-                  id="amount"
-                  type="number"
-                  step="0.01"
-                  value={formData.amount}
-                  onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                  placeholder="150.00"
-                  required={!selectedFile}
-                  disabled={aiProcessing}
-                />
-              </div>
 
               <div className="space-y-2">
                 <Label htmlFor="date">Fecha *</Label>
@@ -483,17 +407,6 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
                 />
               </div>
             </div>
-              <div className="space-y-2">
-                <Label htmlFor="date">Fecha *</Label>
-                <Input
-                  id="date"
-                  type="date"
-                  value={formData.date}
-                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  required
-                  disabled={aiProcessing}
-                />
-              </div>
             </div>
 
             {!selectedFile && (
