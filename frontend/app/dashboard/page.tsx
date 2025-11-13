@@ -3,7 +3,7 @@
 import { DashboardLayout } from "@/components/dashboard-layout"
 import { RecentActivities } from "@/components/recent-activities"
 import { NextExpirations } from "@/components/next-expirations"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Building2, FileText, DollarSign, TrendingUp } from "lucide-react"
 import { useState, useEffect } from "react"
 import { apiClient } from "@/lib/api"

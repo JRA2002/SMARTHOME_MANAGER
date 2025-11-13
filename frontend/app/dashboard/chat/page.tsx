@@ -31,7 +31,6 @@ export default function ChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const { toast } = useToast()
 
-  // 👇 El historial se genera automáticamente desde `messages`
   const getHistory = () =>
     messages.map((msg) => ({
       role: msg.role,
@@ -56,19 +55,15 @@ export default function ChatPage() {
       timestamp: new Date(),
     }
 
-    // 1️⃣ Mostrar mensaje del usuario en el chat
     setMessages((prev) => [...prev, userMessage])
     setInput("")
     setLoading(true)
 
     try {
-      // 2️⃣ Crear historial actualizado
       const history = [...getHistory(), { role: "user", content: input }]
 
-      // 3️⃣ Enviar mensaje + historial al backend
       const response = await apiClient.sendChatMessage(input, history)
 
-      // 4️⃣ Agregar respuesta del asistente
       const assistantMessage: Message = {
         role: "assistant",
         content: response.response,
@@ -205,4 +200,3 @@ export default function ChatPage() {
     </DashboardLayout>
   )
 }
-

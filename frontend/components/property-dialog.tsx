@@ -255,4 +255,3 @@ export function PropertyDialog({ open, onOpenChange, property, onSave }: Propert
     </Dialog>
   )
 }
-

@@ -91,10 +91,9 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
     try {
       await new Promise((resolve) => setTimeout(resolve, 2500))
       const data = await apiClient.analyzeReceipt(file)
-      console.log("categoria",data.category)
+     
       const date = new Date(data.date).toISOString().split("T")[0]
       const today = new Date().toISOString().split("T")[0]
-
       const extractedData = {
         description: data.description,
         amount: data.amount,

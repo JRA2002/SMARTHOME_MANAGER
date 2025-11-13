@@ -577,7 +577,6 @@ const navigation = [
         href: "/dashboard/expenses",
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__["DollarSign"]
     },
-    // { name: "Valoración IA", href: "/dashboard/valuation", icon: Sparkles },
     {
         name: "Asistente IA",
         href: "/dashboard/chat",
@@ -598,12 +597,12 @@ function DashboardLayout({ children }) {
                 className: "fixed top-4 right-4 z-50",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$theme$2d$toggle$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ThemeToggle"], {}, void 0, false, {
                     fileName: "[project]/components/dashboard-layout.tsx",
-                    lineNumber: 62,
+                    lineNumber: 59,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/dashboard-layout.tsx",
-                lineNumber: 61,
+                lineNumber: 58,
                 columnNumber: 7
             }, this),
             sidebarOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -611,7 +610,7 @@ function DashboardLayout({ children }) {
                 onClick: ()=>setSidebarOpen(false)
             }, void 0, false, {
                 fileName: "[project]/components/dashboard-layout.tsx",
-                lineNumber: 66,
+                lineNumber: 63,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("aside", {
@@ -636,12 +635,12 @@ function DashboardLayout({ children }) {
                                                 className: "object-contain"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/dashboard-layout.tsx",
-                                                lineNumber: 81,
+                                                lineNumber: 78,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/dashboard-layout.tsx",
-                                            lineNumber: 80,
+                                            lineNumber: 77,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -649,13 +648,13 @@ function DashboardLayout({ children }) {
                                             children: "SmartHome Manager"
                                         }, void 0, false, {
                                             fileName: "[project]/components/dashboard-layout.tsx",
-                                            lineNumber: 89,
+                                            lineNumber: 86,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/dashboard-layout.tsx",
-                                    lineNumber: 79,
+                                    lineNumber: 76,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -667,18 +666,18 @@ function DashboardLayout({ children }) {
                                         className: "h-5 w-5"
                                     }, void 0, false, {
                                         fileName: "[project]/components/dashboard-layout.tsx",
-                                        lineNumber: 92,
+                                        lineNumber: 89,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/dashboard-layout.tsx",
-                                    lineNumber: 91,
+                                    lineNumber: 88,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/dashboard-layout.tsx",
-                            lineNumber: 78,
+                            lineNumber: 75,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
@@ -694,20 +693,20 @@ function DashboardLayout({ children }) {
                                             className: "h-5 w-5"
                                         }, void 0, false, {
                                             fileName: "[project]/components/dashboard-layout.tsx",
-                                            lineNumber: 112,
+                                            lineNumber: 109,
                                             columnNumber: 19
                                         }, this),
                                         item.name
                                     ]
                                 }, item.name, true, {
                                     fileName: "[project]/components/dashboard-layout.tsx",
-                                    lineNumber: 101,
+                                    lineNumber: 98,
                                     columnNumber: 17
                                 }, this);
                             })
                         }, void 0, false, {
                             fileName: "[project]/components/dashboard-layout.tsx",
-                            lineNumber: 97,
+                            lineNumber: 94,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -727,12 +726,12 @@ function DashboardLayout({ children }) {
                                                         children: userInitials
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/dashboard-layout.tsx",
-                                                        lineNumber: 125,
+                                                        lineNumber: 122,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/dashboard-layout.tsx",
-                                                    lineNumber: 124,
+                                                    lineNumber: 121,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -743,7 +742,7 @@ function DashboardLayout({ children }) {
                                                             children: user?.fullname || user?.email
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/dashboard-layout.tsx",
-                                                            lineNumber: 128,
+                                                            lineNumber: 125,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -751,24 +750,24 @@ function DashboardLayout({ children }) {
                                                             children: user?.email
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/dashboard-layout.tsx",
-                                                            lineNumber: 129,
+                                                            lineNumber: 126,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/dashboard-layout.tsx",
-                                                    lineNumber: 127,
+                                                    lineNumber: 124,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/dashboard-layout.tsx",
-                                            lineNumber: 123,
+                                            lineNumber: 120,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/dashboard-layout.tsx",
-                                        lineNumber: 122,
+                                        lineNumber: 119,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -779,12 +778,12 @@ function DashboardLayout({ children }) {
                                                 children: "Mi Cuenta"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/dashboard-layout.tsx",
-                                                lineNumber: 134,
+                                                lineNumber: 131,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                                 fileName: "[project]/components/dashboard-layout.tsx",
-                                                lineNumber: 135,
+                                                lineNumber: 132,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -794,19 +793,19 @@ function DashboardLayout({ children }) {
                                                         className: "mr-2 h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/dashboard-layout.tsx",
-                                                        lineNumber: 137,
+                                                        lineNumber: 134,
                                                         columnNumber: 19
                                                     }, this),
                                                     "Perfil"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/dashboard-layout.tsx",
-                                                lineNumber: 136,
+                                                lineNumber: 133,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                                 fileName: "[project]/components/dashboard-layout.tsx",
-                                                lineNumber: 140,
+                                                lineNumber: 137,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -817,42 +816,42 @@ function DashboardLayout({ children }) {
                                                         className: "mr-2 h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/dashboard-layout.tsx",
-                                                        lineNumber: 142,
+                                                        lineNumber: 139,
                                                         columnNumber: 19
                                                     }, this),
                                                     "Cerrar Sesión"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/dashboard-layout.tsx",
-                                                lineNumber: 141,
+                                                lineNumber: 138,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/dashboard-layout.tsx",
-                                        lineNumber: 133,
+                                        lineNumber: 130,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/dashboard-layout.tsx",
-                                lineNumber: 121,
+                                lineNumber: 118,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/dashboard-layout.tsx",
-                            lineNumber: 120,
+                            lineNumber: 117,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/dashboard-layout.tsx",
-                    lineNumber: 76,
+                    lineNumber: 73,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/dashboard-layout.tsx",
-                lineNumber: 70,
+                lineNumber: 67,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -870,25 +869,25 @@ function DashboardLayout({ children }) {
                                     className: "h-6 w-6"
                                 }, void 0, false, {
                                     fileName: "[project]/components/dashboard-layout.tsx",
-                                    lineNumber: 156,
+                                    lineNumber: 153,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/dashboard-layout.tsx",
-                                lineNumber: 155,
+                                lineNumber: 152,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "flex-1"
                             }, void 0, false, {
                                 fileName: "[project]/components/dashboard-layout.tsx",
-                                lineNumber: 158,
+                                lineNumber: 155,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/dashboard-layout.tsx",
-                        lineNumber: 154,
+                        lineNumber: 151,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -896,19 +895,19 @@ function DashboardLayout({ children }) {
                         children: children
                     }, void 0, false, {
                         fileName: "[project]/components/dashboard-layout.tsx",
-                        lineNumber: 162,
+                        lineNumber: 159,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/dashboard-layout.tsx",
-                lineNumber: 152,
+                lineNumber: 149,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/dashboard-layout.tsx",
-        lineNumber: 60,
+        lineNumber: 57,
         columnNumber: 5
     }, this);
 }
@@ -1891,20 +1890,20 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                             children: rental ? "Editar Alquiler" : "Nuevo Alquiler"
                         }, void 0, false, {
                             fileName: "[project]/components/rental-dialog.tsx",
-                            lineNumber: 110,
+                            lineNumber: 112,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogDescription"], {
                             children: rental ? "Actualiza la información del contrato" : "Crea un nuevo contrato de alquiler"
                         }, void 0, false, {
                             fileName: "[project]/components/rental-dialog.tsx",
-                            lineNumber: 111,
+                            lineNumber: 113,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/rental-dialog.tsx",
-                    lineNumber: 109,
+                    lineNumber: 111,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1919,7 +1918,7 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                     children: "Propiedad *"
                                 }, void 0, false, {
                                     fileName: "[project]/components/rental-dialog.tsx",
-                                    lineNumber: 118,
+                                    lineNumber: 120,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -1935,12 +1934,12 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                                 placeholder: "Selecciona una propiedad"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/rental-dialog.tsx",
-                                                lineNumber: 124,
+                                                lineNumber: 126,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 123,
+                                            lineNumber: 125,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -1953,24 +1952,24 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                                     ]
                                                 }, property.id, true, {
                                                     fileName: "[project]/components/rental-dialog.tsx",
-                                                    lineNumber: 128,
+                                                    lineNumber: 130,
                                                     columnNumber: 19
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 126,
+                                            lineNumber: 128,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/rental-dialog.tsx",
-                                    lineNumber: 119,
+                                    lineNumber: 121,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/rental-dialog.tsx",
-                            lineNumber: 117,
+                            lineNumber: 119,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1984,7 +1983,7 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                             children: "Nombre del Inquilino *"
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 138,
+                                            lineNumber: 140,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1998,13 +1997,13 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 139,
+                                            lineNumber: 141,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/rental-dialog.tsx",
-                                    lineNumber: 137,
+                                    lineNumber: 139,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2015,7 +2014,7 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                             children: "Email *"
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 149,
+                                            lineNumber: 151,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2030,19 +2029,19 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 150,
+                                            lineNumber: 152,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/rental-dialog.tsx",
-                                    lineNumber: 148,
+                                    lineNumber: 150,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/rental-dialog.tsx",
-                            lineNumber: 136,
+                            lineNumber: 138,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2053,7 +2052,7 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                     children: "Teléfono"
                                 }, void 0, false, {
                                     fileName: "[project]/components/rental-dialog.tsx",
-                                    lineNumber: 162,
+                                    lineNumber: 164,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2066,13 +2065,13 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                     placeholder: "+34 600 000 000"
                                 }, void 0, false, {
                                     fileName: "[project]/components/rental-dialog.tsx",
-                                    lineNumber: 163,
+                                    lineNumber: 165,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/rental-dialog.tsx",
-                            lineNumber: 161,
+                            lineNumber: 163,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2086,7 +2085,7 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                             children: "Fecha de Inicio *"
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 173,
+                                            lineNumber: 175,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2100,13 +2099,13 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 174,
+                                            lineNumber: 176,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/rental-dialog.tsx",
-                                    lineNumber: 172,
+                                    lineNumber: 174,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2117,7 +2116,7 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                             children: "Fecha de Fin"
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 184,
+                                            lineNumber: 186,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2130,19 +2129,19 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                                 })
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 185,
+                                            lineNumber: 187,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/rental-dialog.tsx",
-                                    lineNumber: 183,
+                                    lineNumber: 185,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/rental-dialog.tsx",
-                            lineNumber: 171,
+                            lineNumber: 173,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2156,7 +2155,7 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                             children: "Monto Mensual *"
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 196,
+                                            lineNumber: 198,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2172,13 +2171,13 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 197,
+                                            lineNumber: 199,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/rental-dialog.tsx",
-                                    lineNumber: 195,
+                                    lineNumber: 197,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2189,7 +2188,7 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                             children: "Depósito *"
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 209,
+                                            lineNumber: 211,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2205,19 +2204,19 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                             required: true
                                         }, void 0, false, {
                                             fileName: "[project]/components/rental-dialog.tsx",
-                                            lineNumber: 210,
+                                            lineNumber: 212,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/rental-dialog.tsx",
-                                    lineNumber: 208,
+                                    lineNumber: 210,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/rental-dialog.tsx",
-                            lineNumber: 194,
+                            lineNumber: 196,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2231,7 +2230,7 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/components/rental-dialog.tsx",
-                                    lineNumber: 223,
+                                    lineNumber: 225,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2243,7 +2242,7 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                                 className: "mr-2 h-4 w-4 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/rental-dialog.tsx",
-                                                lineNumber: 229,
+                                                lineNumber: 231,
                                                 columnNumber: 19
                                             }, this),
                                             "Guardando..."
@@ -2251,30 +2250,30 @@ function RentalDialog({ open, onOpenChange, rental, onSave }) {
                                     }, void 0, true) : rental ? "Actualizar" : "Crear Alquiler"
                                 }, void 0, false, {
                                     fileName: "[project]/components/rental-dialog.tsx",
-                                    lineNumber: 226,
+                                    lineNumber: 228,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/rental-dialog.tsx",
-                            lineNumber: 222,
+                            lineNumber: 224,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/rental-dialog.tsx",
-                    lineNumber: 116,
+                    lineNumber: 118,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/rental-dialog.tsx",
-            lineNumber: 108,
+            lineNumber: 110,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/components/rental-dialog.tsx",
-        lineNumber: 107,
+        lineNumber: 109,
         columnNumber: 5
     }, this);
 }

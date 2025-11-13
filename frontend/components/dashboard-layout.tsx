@@ -9,12 +9,10 @@ import { useAuth } from "@/lib/auth-context"
 import Image from "next/image"
 import { ThemeToggle } from "@/components/theme-toggle"
 import {
-  Building2,
   LayoutDashboard,
   Home,
   FileText,
   DollarSign,
-  Sparkles,
   MessageSquare,
   LogOut,
   Menu,
@@ -36,7 +34,6 @@ const navigation = [
   { name: "Propiedades", href: "/dashboard/properties", icon: Home },
   { name: "Alquileres", href: "/dashboard/rentals", icon: FileText },
   { name: "Gastos", href: "/dashboard/expenses", icon: DollarSign },
-  // { name: "Valoración IA", href: "/dashboard/valuation", icon: Sparkles },
   { name: "Asistente IA", href: "/dashboard/chat", icon: MessageSquare },
 ]
 

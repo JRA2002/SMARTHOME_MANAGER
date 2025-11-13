@@ -87,15 +87,6 @@ export default function PropertiesPage() {
     })
   }
 
-  const getStatusBadge = (status: string) => {
-    const variants: Record<string, "default" | "secondary" | "destructive"> = {
-      disponible: "default",
-      alquilada: "secondary",
-      mantenimiento: "destructive",
-    }
-    return <Badge variant={variants[status] || "default"}>{status}</Badge>
-  }
-
   return (
     <DashboardLayout>
       <div className="space-y-6">
