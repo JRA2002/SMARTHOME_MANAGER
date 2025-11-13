@@ -83,7 +83,7 @@ def get_next_expirations(
         .limit(5)
         .all()
     )
-    print("Upcoming rentals:", upcoming_rentals)
+    
     # # 💰 Pagos pendientes (status != 'completed')
     # pending_payments = (
     #     db.query(Payment)
@@ -555,7 +555,7 @@ async def update_rental(
     rental = db.query(Rental).filter(
         Rental.id == rental_id,
     ).first()
-    print("Rental to update:", rental)
+    
     if not rental:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

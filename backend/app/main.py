@@ -6,7 +6,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from app.core.database import engine, Base
-from app.api import routes_chat, routes_predict_valor, routes_property, routes_auth
+from app.api import routes_chat, routes_predict_valor, routes_property, routes_auth, routes_analize
 from app.core.config import settings
 from app.core.security import get_current_user
 
@@ -72,6 +72,12 @@ app.include_router(
     prefix="/api/v1/auth",
     tags=["Authenticacion"],
     dependencies=[Depends(get_current_user)]
+)
+
+app.include_router(
+    routes_analize.router,
+    prefix="/api/v1/analyze",
+    tags=["Analisis de archivos"],
 )
 @app.get("/")
 @limiter.limit("10/minute")

@@ -7,22 +7,30 @@ import type { Expense, ExpenseCreate } from "@/types/expense"
 import type { Summary } from "@/types/summary"
 import type { Activity } from "@/types/activity"
 import type { Expirations } from "@/types/expirations"
+import type { AnalyzeReceiptResponse } from "@/types/receipt"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
 class ApiClient {
-  private getHeaders(includeAuth = true): HeadersInit {
-    const headers: HeadersInit = {
-      "Content-Type": "application/json",
+  private getHeaders(includeAuth = true, isFormData = false): HeadersInit {
+    const headers: HeadersInit = {}
+  
+    // Solo poner JSON si NO es FormData
+    if (!isFormData) {
+      headers["Content-Type"] = "application/json"
     }
+  
     if (includeAuth) {
       const token = localStorage.getItem("access_token")
       if (token) {
         headers["Authorization"] = `Bearer ${token}`
       }
     }
+  
     return headers
   }
+  
+  
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
@@ -74,21 +82,21 @@ class ApiClient {
   }
 
   async fetchWithAuth(url: string, options: RequestInit = {}) {
+    const isFormData = options.body instanceof FormData
+  
+    const headers = {
+      ...this.getHeaders(true, isFormData),
+      ...options.headers, // sobrescribe si quieres
+    }
+  
     const response = await fetch(`${API_BASE_URL}${url}`, {
       ...options,
-      headers: {
-        ...this.getHeaders(),
-        ...options.headers,
-      },
+      headers,
     })
-
-    if (response.status === 401) {
-      localStorage.removeItem("access_token")
-      window.location.href = "/login"
-      throw new Error("Unauthorized")
-    }
+  
     return response
   }
+  
 
   logout() {
     localStorage.removeItem("access_token")
@@ -212,6 +220,7 @@ class ApiClient {
       throw new Error("Failed to fetch expenses")
     }
     const result = await response.json();
+    console.log("aqui esta los expenses",result)
     return result.data;
   }
 
@@ -300,23 +309,22 @@ class ApiClient {
    
     return result.data;
   }
-  async uploadFile(file: File): Promise<string> {
-    const formData = new FormData();
-    formData.append("file", file);
-  
-    const response = await this.fetchWithAuth("/api/v1/upload", {
+
+  async analyzeReceipt(data: File): Promise<AnalyzeReceiptResponse> {
+    const formData = new FormData()
+    formData.append("file", data)
+   
+    const response = await this.fetchWithAuth("/api/v1/analyze/read-pdf", {
       method: "POST",
       body: formData,
-    });
-  
+    })
     if (!response.ok) {
-      throw new Error("Failed to upload file");
+      throw new Error("Failed to analyze receipt")
     }
+    const result = await response.json()
   
-    const result = await response.json();
-    return result.url;
+    return result.data
   }
-  
 }
 
 export const apiClient = new ApiClient()

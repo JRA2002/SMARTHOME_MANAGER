@@ -150,7 +150,6 @@ class ExpenseUpdate(BaseModel):
     date: Optional[datetime] = None
     receipt_url: Optional[str] = None
 
-# Pagination
 class PaginatedResponse(BaseModel):
     success: bool = True
     data: List

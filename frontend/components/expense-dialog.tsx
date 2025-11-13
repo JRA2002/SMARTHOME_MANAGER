@@ -32,13 +32,13 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { toast } = useToast()
 
+
   const [formData, setFormData] = useState({
     property_id: "",
-    category: "mantenimiento",
+    category: "",
     description: "",
     amount: "",
     date: "",
-    receipt_url: "",
   })
 
   useEffect(() => {
@@ -55,20 +55,22 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
         description: expense.description,
         amount: expense.amount.toString(),
         date: expense.date.split("T")[0],
-        receipt_url: expense.receipt_url || "",
       })
+      setSelectedFile(null)
+      setManualEntry(true)
       setSelectedFile(null)
       setManualEntry(true)
     } else {
       const today = new Date().toISOString().split("T")[0]
       setFormData({
         property_id: "",
-        category: "mantenimiento",
+        category: "",
         description: "",
         amount: "",
         date: today,
-        receipt_url: "",
       })
+      setSelectedFile(null)
+      setManualEntry(false)
       setSelectedFile(null)
       setManualEntry(false)
     }
@@ -122,7 +124,6 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
         variant: "destructive",
       })
     } finally {
-      console.log("[v0] Setting aiProcessing to false")
       setAiProcessing(false)
     }
   }
@@ -131,12 +132,13 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
     const file = e.target.files?.[0]
     console.log("[v0] File selected:", file?.name)
 
+
     if (file) {
-      const validTypes = ["application/pdf", "image/jpeg", "image/jpg", "image/png"]
+      const validTypes = ["application/pdf"]
       if (!validTypes.includes(file.type)) {
         toast({
           title: "Tipo de archivo no válido",
-          description: "Solo se permiten archivos PDF, JPG o PNG",
+          description: "Solo se permiten archivos PDF",
           variant: "destructive",
         })
         return
@@ -154,14 +156,8 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
       setSelectedFile(file)
       setManualEntry(true)
 
-      // Call AI analysis
       await analyzeReceiptWithAI(file)
     }
-  }
-
-  const uploadFile = async (file: File): Promise<string> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    return `https://storage.example.com/receipts/${Date.now()}-${file.name}`
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -176,15 +172,24 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
       return
     }
 
+
+    if (selectedFile && !formData.property_id) {
+      toast({
+        title: "Propiedad requerida",
+        description: "Por favor selecciona una propiedad para el gasto",
+        variant: "destructive",
+      })
+      return
+    }
+
     setLoading(true)
 
     try {
-      let receiptUrl = formData.receipt_url
       if (selectedFile) {
         setUploadProgress(true)
-        receiptUrl = await uploadFile(selectedFile)
         setUploadProgress(false)
       }
+
 
       const data = {
         property_id: Number.parseInt(formData.property_id),
@@ -192,7 +197,6 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
         description: formData.description || "Gasto registrado desde archivo",
         amount: formData.amount ? Number.parseFloat(formData.amount) : 0,
         date: formData.date,
-        receipt_url: receiptUrl || undefined,
       }
 
       if (expense) {
@@ -242,9 +246,30 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
           </div>
         )}
 
+      <DialogContent className="max-w-2xl">
+        {aiProcessing && (
+          <div className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm flex items-center justify-center">
+            <div className="bg-card border rounded-lg p-8 shadow-lg max-w-sm text-center space-y-4">
+              <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                <Sparkles className="h-8 w-8 text-primary animate-pulse" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold">Analizando factura con IA</h3>
+                <p className="text-sm text-muted-foreground">Estamos extrayendo la información de tu documento...</p>
+              </div>
+              <Loader2 className="h-6 w-6 animate-spin mx-auto text-primary" />
+            </div>
+          </div>
+        )}
+
         <DialogHeader>
           <DialogTitle>{expense ? "Editar Gasto" : "Nuevo Gasto"}</DialogTitle>
           <DialogDescription>
+            {expense
+              ? "Actualiza la información del gasto"
+              : manualEntry
+                ? "Completa los detalles del gasto"
+                : "Sube tu factura o recibo para registrar el gasto"}
             {expense
               ? "Actualiza la información del gasto"
               : manualEntry
@@ -264,13 +289,13 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
                 <p className="text-sm text-muted-foreground max-w-sm">
                   La IA extraerá automáticamente los datos de tu documento
                 </p>
-                <p className="text-xs text-muted-foreground">Formatos: PDF, JPG, PNG (máx. 5MB)</p>
+                <p className="text-xs text-muted-foreground">Formatos: PDF (máx. 5MB)</p>
               </div>
 
               <input
                 ref={fileInputRef}
                 type="file"
-                accept=".pdf,.jpg,.jpeg,.png"
+                accept=".pdf"
                 onChange={handleFileSelect}
                 className="hidden"
               />
@@ -371,7 +396,39 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
                 </SelectContent>
               </Select>
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="category">Categoría *</Label>
+              <Select
+                value={formData.category}
+                onValueChange={(value) => setFormData({ ...formData, category: value })}
+                disabled={aiProcessing}
+              >
+                <SelectTrigger id="category">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mantenimiento">Mantenimiento</SelectItem>
+                  <SelectItem value="reparacion">Reparación</SelectItem>
+                  <SelectItem value="servicios">Servicios</SelectItem>
+                  <SelectItem value="impuestos">Impuestos</SelectItem>
+                  <SelectItem value="seguro">Seguro</SelectItem>
+                  <SelectItem value="otro">Otro</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="description">Descripción {!selectedFile && "*"}</Label>
+              <Textarea
+                id="description"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                placeholder="Reparación de tubería en el baño principal"
+                rows={3}
+                required={!selectedFile}
+                disabled={aiProcessing}
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="description">Descripción {!selectedFile && "*"}</Label>
               <Textarea
@@ -399,7 +456,33 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
                   disabled={aiProcessing}
                 />
               </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="amount">Monto {!selectedFile && "*"}</Label>
+                <Input
+                  id="amount"
+                  type="number"
+                  step="0.01"
+                  value={formData.amount}
+                  onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                  placeholder="150.00"
+                  required={!selectedFile}
+                  disabled={aiProcessing}
+                />
+              </div>
 
+              <div className="space-y-2">
+                <Label htmlFor="date">Fecha *</Label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={formData.date}
+                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                  required
+                  disabled={aiProcessing}
+                />
+              </div>
+            </div>
               <div className="space-y-2">
                 <Label htmlFor="date">Fecha *</Label>
                 <Input
@@ -419,7 +502,7 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept=".pdf,.jpg,.jpeg,.png"
+                  accept=".pdf"
                   onChange={handleFileSelect}
                   className="hidden"
                 />
@@ -430,10 +513,10 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <Upload className="h-4 w-4" />
-                  Subir Archivo (PDF, JPG, PNG)
+                  Subir Archivo (PDF)
                 </Button>
 
-                {formData.receipt_url && (
+                {/* {formData.receipt_url && (
                   <div className="text-sm text-muted-foreground">
                     <a
                       href={formData.receipt_url}
@@ -445,7 +528,7 @@ export function ExpenseDialog({ open, onOpenChange, expense, onSave }: ExpenseDi
                       Ver recibo actual
                     </a>
                   </div>
-                )}
+                )} */}
               </div>
             )}
 
