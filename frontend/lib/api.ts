@@ -29,8 +29,6 @@ class ApiClient {
     return headers
   }
   
-  
-
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
       method: "POST",
@@ -48,7 +46,7 @@ class ApiClient {
     }
 
     const data = await response.json()
-    console.log("Login response data:", data)
+  
     localStorage.setItem("access_token", data.access_token)
     return data
   }
