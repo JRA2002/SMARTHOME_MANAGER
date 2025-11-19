@@ -30,7 +30,7 @@ class ApiClient {
   }
   
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
+    const response = await fetch(`${API_BASE_URL}/api/v1/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +52,7 @@ class ApiClient {
   }
 
   async register(data: RegisterData): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
+    const response = await fetch(`${API_BASE_URL}/api/v1/register`, {
       method: "POST",
       headers: this.getHeaders(false),
       body: JSON.stringify(data),

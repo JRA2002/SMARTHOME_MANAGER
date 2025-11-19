@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
 from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from sqlalchemy import func, extract, and_
-from typing import List
 from datetime import datetime, timedelta
-from app.core.database import get_db
+from app.core.database_postgres import get_db
 from app.core.security import (
     get_current_user,
     get_password_hash,
@@ -36,6 +37,95 @@ from app.models.logs import ActivityLog
 router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
 
+@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@limiter.limit("5/minute")
+async def register(
+    request: Request,
+    user_data: UserCreate,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Registra un nuevo usuario en la aplicación.
+
+    Parámetros:
+        user_data (UserCreate): datos del usuario a registrar
+
+    Respuesta:
+        UserResponse: datos del usuario registrado
+
+    Excepciones:
+        HTTPException: si el email ya está registrado
+
+    Límite de tasa:
+        5 solicitudes por minuto
+    """
+    result = await db.execute(select(User).filter(User.email == user_data.email))
+    existing_user = result.scalars().first()
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El email ya está registrado"
+        )
+    
+    hashed_password = get_password_hash(user_data.password)
+    new_user = User(
+        email=user_data.email,
+        fullname=user_data.fullname,
+        hashed_password=hashed_password
+    )
+    
+    db.add(new_user)
+    await db.commit()
+    await db.refresh(new_user)
+    
+    return new_user
+
+@router.post("/login", response_model=Token)
+@limiter.limit("10/minute")
+async def login(
+    request: Request,
+    credentials: UserLogin,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Inicia sesión en la aplicación.
+
+    Parámetros:
+        credentials (UserLogin): email y contraseña del usuario
+
+    Respuesta:
+        Token: token de acceso y tipo de token
+
+    Excepciones:
+        HTTPException: si el email o contraseña son incorrectos
+        HTTPException: si el usuario no está activo
+
+    Límite de tasa:
+        10 solicitudes por minuto
+    """
+    result = await db.execute(select(User).filter(User.email == credentials.email))
+    user = result.scalars().first()
+    
+    if not user or not verify_password(credentials.password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Email o contraseña incorrectos",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    if not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Usuario inactivo"
+        )
+    
+    access_token_expires = timedelta(minutes=30)
+    access_token = create_access_token(
+        data={"sub": user.email},
+        expires_delta=access_token_expires
+    )
+    
+    return {"access_token": access_token, "token_type": "bearer"}
 @router.get("/recent-activities")
 def get_recent_activities(
     db: Session = Depends(get_db),
@@ -278,101 +368,7 @@ def get_dashboard_summary(
     return {"value": value, "change": change}
     
 
-@router.post("/auth/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-@limiter.limit("5/minute")
-async def register(
-    request: Request,
-    user_data: UserCreate,
-    db: Session = Depends(get_db)
-):
-    """
-    Registra un nuevo usuario en la aplicación.
 
-    Parámetros:
-        user_data (UserCreate): datos del usuario a registrar
-
-    Respuesta:
-        UserResponse: datos del usuario registrado
-
-    Excepciones:
-        HTTPException: si el email ya está registrado
-
-    Límite de tasa:
-        5 solicitudes por minuto
-    """
-    existing_user = db.query(User).filter(User.email == user_data.email).first()
-    if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="El email ya está registrado"
-        )
-    
-    hashed_password = get_password_hash(user_data.password)
-    new_user = User(
-        email=user_data.email,
-        fullname=user_data.fullname,
-        hashed_password=hashed_password
-    )
-    
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    
-    return new_user
-
-@router.post("/auth/login", response_model=Token)
-@limiter.limit("10/minute")
-async def login(
-    request: Request,
-    credentials: UserLogin,
-    db: Session = Depends(get_db)
-):
-    """
-    Inicia sesión en la aplicación.
-
-    Parámetros:
-        credentials (UserLogin): email y contraseña del usuario
-
-    Respuesta:
-        Token: token de acceso y tipo de token
-
-    Excepciones:
-        HTTPException: si el email o contraseña son incorrectos
-        HTTPException: si el usuario no está activo
-
-    Límite de tasa:
-        10 solicitudes por minuto
-    """
-    user = db.query(User).filter(User.email == credentials.email).first()
-    
-    if not user or not verify_password(credentials.password, user.hashed_password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Email o contraseña incorrectos",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    
-    if not user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Usuario inactivo"
-        )
-    
-    access_token_expires = timedelta(minutes=30)
-    access_token = create_access_token(
-        data={"sub": user.email},
-        expires_delta=access_token_expires
-    )
-    
-    return {"access_token": access_token, "token_type": "bearer"}
-
-@router.get("/auth/me", response_model=UserResponse)
-@limiter.limit("30/minute")
-async def get_current_user_info(
-    request: Request,
-    current_user: User = Depends(get_current_user),
-):
-    return current_user
 
 @router.post("/properties", response_model=PropertyResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("20/minute")

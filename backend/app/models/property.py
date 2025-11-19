@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Enu
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
-from app.core.database import Base
+from app.core.database_postgres import Base
 
 class PropertyType(str, enum.Enum):
     HOUSE = "house"

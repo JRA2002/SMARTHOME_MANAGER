@@ -1,14 +1,28 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi import APIRouter, Depends, HTTPException,Request
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from sqlalchemy.orm import Session
-from app.core.database import get_db
+from app.core.database_postgres import get_db
 from app.models.user import User
 from app.schemas.user_schema import UserUpdate, UserResponseUpdate, PasswordUpdate
 from app.core.security import get_current_user, get_password_hash
+from app.schemas.user_schema import UserResponse
+
+from app.core.security import (
+    get_current_user,
+    get_password_hash,
+)
 
 router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
+
+@router.get("/me", response_model=UserResponse)
+@limiter.limit("30/minute")
+async def get_current_user_info(
+    request: Request,
+    current_user: User = Depends(get_current_user),
+):
+    return current_user
 
 @router.put("/update-profile", response_model=UserResponseUpdate)
 def update_user(

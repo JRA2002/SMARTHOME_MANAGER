@@ -5,7 +5,7 @@ from typing import List, Optional
 from sqlalchemy import func
 from app.core.intent_detector import detect_intent, Intent
 from app.models.property import Property, Rental, Expense
-from app.core.database import get_db
+from app.core.database_postgres import get_db
 from app.core.security import get_current_user
 from app.models.user import User
 from app.utils.chat_engine import ChatEngine
