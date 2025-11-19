@@ -1,8 +1,7 @@
-# backend/app/api/pdf_reader.py
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from openai import OpenAI
 import pdfplumber
-import tempfile, os
+import tempfile
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from app.core.config import settings

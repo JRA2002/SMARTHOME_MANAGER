@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
-from sqlalchemy import func, extract, and_
+from sqlalchemy import func, extract, and_, select
 from datetime import datetime, timedelta
 from app.core.database_postgres import get_db
 from app.core.security import (
@@ -127,22 +126,21 @@ async def login(
     
     return {"access_token": access_token, "token_type": "bearer"}
 @router.get("/recent-activities")
-def get_recent_activities(
-    db: Session = Depends(get_db),
+async def get_recent_activities(
+    db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     """
     Devuelve las últimas 4 actividades recientes del usuario autenticado
     """
-    activities = (
-        db.query(ActivityLog)
+    activities_result = await db.execute(
+        select(ActivityLog)
         .filter(ActivityLog.user_id == current_user.id)
         .order_by(ActivityLog.timestamp.desc())
         .limit(4)
-        .all()
     )
-
-    # Puedes devolver un JSON limpio
+    activities = activities_result.scalars().all()
+    
     return [
         {
             "action": a.action,
@@ -154,9 +152,9 @@ def get_recent_activities(
     ]
 
 @router.get("/next-expirations", summary="Obtener próximos vencimientos de alquileres y pagos de cuotas pendientes")
-def get_next_expirations(
+async def get_next_expirations(
     request: Request,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
     
@@ -176,28 +174,17 @@ def get_next_expirations(
     now = datetime.utcnow()
     next_month = now + timedelta(days=30)
 
-    # 🏠 Contratos de alquiler próximos a vencer (en los próximos 30 días)
-    upcoming_rentals = (
-        db.query(Rental)
-        .join(Property, Rental.property_id == Property.id)
-        .filter(Property.user_id == user_id)
-        .filter(and_(Rental.end_date != None, Rental.end_date >= now, Rental.end_date <= next_month))
-        .order_by(Rental.end_date.asc())
-        .limit(5)
-        .all()
+    upcoming_rentals_result = (
+        await db.execute(
+            select(Rental)
+            .join(Property, Rental.property_id == Property.id)
+            .filter(Property.user_id == user_id)
+            .filter(and_(Rental.end_date != None, Rental.end_date >= now, Rental.end_date <= next_month))
+            .order_by(Rental.end_date.asc())
+            .limit(5)
+        )
     )
-    
-    # # 💰 Pagos pendientes (status != 'completed')
-    # pending_payments = (
-    #     db.query(Payment)
-    #     .join(Rental, Payment.rental_id == Rental.id)
-    #     .join(Property, Rental.property_id == Property.id)
-    #     .filter(Property.user_id == user_id)
-    #     .filter(Payment.status != "completed")
-    #     .order_by(Payment.payment_date.asc())
-    #     .limit(5)
-    #     .all()
-    # )
+    upcoming_rentals = upcoming_rentals_result.scalars().all()
 
     return {
         "data": [
@@ -209,26 +196,15 @@ def get_next_expirations(
                 "monthly_amount": r.monthly_amount,
             }
             for r in upcoming_rentals
-        ],
-        # "pending_payments": [
-        #     {
-        #         "payment_id": p.id,
-        #         "property_name": p.rental.property.name,
-        #         "tenant_name": p.rental.tenant_name,
-        #         "amount": p.amount,
-        #         "payment_date": p.payment_date,
-        #         "status": p.status,
-        #     }
-        #     for p in pending_payments
-        # ],
+        ]
     }
 
 @router.get("/summary", response_model=DashboardSummary)
 @limiter.limit("30/minute")
-def get_dashboard_summary(
+async def get_dashboard_summary(
     request: Request,
     current_user = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: AsyncSession = Depends(get_db)
 ):
     """
     Obtiene un resumen de la información del usuario autenticado.
@@ -256,100 +232,112 @@ def get_dashboard_summary(
     current_year = today.year
     prev_month = current_month - 1 if current_month > 1 else 12
     prev_year = current_year if current_month > 1 else current_year - 1
-
-    total_properties = (
-        db.query(func.count(Property.id))
-        .filter(Property.user_id == user_id)
-        .scalar()
-        or 0
-    )
-
-    previous_properties = (
-        db.query(func.count(Property.id))
-        .filter(Property.user_id == user_id)
-        .filter(extract('month', Property.created_at) == prev_month)
-        .filter(extract('year', Property.created_at) == prev_year)
-        .scalar()
-        or 0
-    )
-
-    total_rentals = (
-        db.query(func.count(Rental.id))
-        .join(Property, Rental.property_id == Property.id)
-        .filter(Property.user_id == user_id)
-        .scalar()
-        or 0
-    )
     
-    previous_rentals = (
-        db.query(func.count(Rental.id))
-        .join(Property, Rental.property_id == Property.id)
-        .filter(Property.user_id == user_id)
-        .filter(extract('month', Rental.start_date) == prev_month)
-        .filter(extract('year', Rental.start_date) == prev_year)
-        .scalar()
-        or 0
+    total_properties_result = (
+        await db.execute(
+            select(func.count(Property.id))
+            .filter(Property.user_id == user_id)
+        )
     )
+    total_properties = total_properties_result.scalar() or 0
 
-    total_rentals_current = (
-        db.query(func.sum(Rental.monthly_amount))
-        .join(Property, Rental.property_id == Property.id)
-        .filter(Property.user_id == user_id)
-        .filter(extract("year", Rental.start_date) == current_year)
-        .filter(extract("month", Rental.start_date) == current_month)
-        .scalar()
-        or 0
+    previous_properties_result = (
+        await db.execute(
+            select(func.count(Property.id))
+            .filter(Property.user_id == user_id)
+            .filter(extract('month', Property.created_at) == prev_month)
+            .filter(extract('year', Property.created_at) == prev_year)
+        )
     )
+    previous_properties = previous_properties_result.scalar() or 0
 
-    total_expenses_current = (
-        db.query(func.sum(Expense.amount))
-        .join(Property, Expense.property_id == Property.id)
-        .filter(Property.user_id == user_id)
-        .filter(extract("year", Expense.date) == current_year)
-        .filter(extract("month", Expense.date) == current_month)
-        .scalar()
-        or 0
+    total_rentals_result = (
+        await db.execute(
+            select(func.count(Rental.id))
+            .join(Property, Rental.property_id == Property.id)
+            .filter(Property.user_id == user_id)
+        )
     )
+    total_rentals = total_rentals_result.scalar() or 0
+    
+    previous_rentals_result = (
+        await db.execute(
+            select(func.count(Rental.id))
+            .join(Property, Rental.property_id == Property.id)
+            .filter(Property.user_id == user_id)
+            .filter(extract('month', Rental.start_date) == prev_month)
+            .filter(extract('year', Rental.start_date) == prev_year)
+        )
+    )
+    previous_rentals = previous_rentals_result.scalar() or 0
+
+    total_rentals_result = (
+        await db.execute(
+            select(func.sum(Rental.monthly_amount))
+            .join(Property, Rental.property_id == Property.id)
+            .filter(Property.user_id == user_id)
+            .filter(extract("year", Rental.start_date) == current_year)
+            .filter(extract("month", Rental.start_date) == current_month)
+        )
+    )
+ 
+    total_expenses_result = (
+        await db.execute(
+            select(func.sum(Expense.amount))
+            .join(Property, Expense.property_id == Property.id)
+            .filter(Property.user_id == user_id)
+            .filter(extract("year", Expense.date) == current_year)
+            .filter(extract("month", Expense.date) == current_month)
+        )
+    )
+    total_expenses_current = total_expenses_result.scalar() or 0
+    total_rentals_current = total_rentals_result.scalar() or 0
     
     profit_current = total_rentals_current - total_expenses_current
 
-    total_rentals_prev = (
-        db.query(func.sum(Rental.monthly_amount))
-        .join(Property, Rental.property_id == Property.id)
-        .filter(Property.user_id == user_id)
-        .filter(extract("year", Rental.start_date) == prev_year)
-        .filter(extract("month", Rental.start_date) == prev_month)
-        .scalar()
-        or 0
+    total_rentals_prev_result = (
+        await db.execute(
+            select(func.sum(Rental.monthly_amount))
+            .join(Property, Rental.property_id == Property.id)
+            .filter(Property.user_id == user_id)
+            .filter(extract("year", Rental.start_date) == prev_year)
+            .filter(extract("month", Rental.start_date) == prev_month)
+        )
     )
+    total_rentals_prev = total_rentals_prev_result.scalar() or 0
 
-    profit_prev = total_rentals_prev - (
-        db.query(func.sum(Expense.amount))
-        .join(Property, Expense.property_id == Property.id)
-        .filter(Property.user_id == user_id)
-        .filter(extract("year", Expense.date) == prev_year)
-        .filter(extract("month", Expense.date) == prev_month)
-        .scalar()
-        or 0
+    total_expenses_prev_result = (
+        await db.execute(
+            select(func.sum(Expense.amount))
+            .join(Property, Expense.property_id == Property.id)
+            .filter(Property.user_id == user_id)
+            .filter(extract("year", Expense.date) == prev_year)
+            .filter(extract("month", Expense.date) == prev_month)
+        )
     )
-    
-    total_value_current = (
-        db.query(func.sum(Property.price))
-        .filter(Property.user_id == user_id)
-        .filter(extract("year", Property.updated_at) == current_year)
-        .filter(extract("month", Property.updated_at) == current_month)
-        .scalar()
-        or 0
+    total_expenses_prev = total_expenses_prev_result.scalar() or 0
+
+    profit_prev = total_rentals_prev - total_expenses_prev
+
+    total_value_current_result = (
+        await db.execute(
+            select(func.sum(Property.price))
+            .filter(Property.user_id == user_id)
+            .filter(extract("year", Property.updated_at) == current_year)
+            .filter(extract("month", Property.updated_at) == current_month)
+        )
     )
-    
-    total_value_prev = (
-        db.query(func.sum(Property.price))
-        .filter(Property.user_id == user_id)
-        .filter(extract("year", Property.updated_at) == prev_year)
-        .filter(extract("month", Property.updated_at) == prev_month)
-        .scalar()
-        or 0
+    total_value_current = total_value_current_result.scalar() or 0
+
+    total_value_prev_result = (
+        await db.execute(
+            select(func.sum(Property.price))
+            .filter(Property.user_id == user_id)
+            .filter(extract("year", Property.updated_at) == prev_year)
+            .filter(extract("month", Property.updated_at) == prev_month)
+        )
     )
+    total_value_prev = total_value_prev_result.scalar() or 0
     
     def calculate_change(current, previous):
         if not previous or previous == 0:
@@ -367,9 +355,6 @@ def get_dashboard_summary(
     
     return {"value": value, "change": change}
     
-
-
-
 @router.post("/properties", response_model=PropertyResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("20/minute")
 async def create_property(
