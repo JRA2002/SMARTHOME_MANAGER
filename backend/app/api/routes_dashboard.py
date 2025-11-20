@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, extract, and_, select
 from sqlalchemy.orm import selectinload
@@ -14,17 +13,9 @@ from app.core.security import (
 from app.models.user import User
 from app.models.property import Property, Rental, Expense
 from app.schemas.user_schema import Token, UserResponse, UserLogin, UserCreate
-from app.schemas.property_schema import (
-    ExpenseCreate,
-    ExpenseResponse,
-    PaginatedRentals,
-    PaginatedExpenses,
-    ExpenseUpdate
-)
 from app.schemas.dashboard_schema import DashboardSummary
 from slowapi import Limiter
 from slowapi.util import get_remote_address
-from app.api.routes_logs import log_action
 from app.models.logs import ActivityLog
 
 router = APIRouter()
@@ -346,128 +337,3 @@ async def get_dashboard_summary(
     change.append(calculate_change(total_value_current, total_value_prev))
     
     return {"value": value, "change": change}
-    
-
-
-
-# ============= GASTOS ENDPOINTS =============
-
-@router.post("/expenses", response_model=ExpenseResponse, status_code=status.HTTP_201_CREATED)
-@limiter.limit("20/minute")
-async def create_expense(
-    request: Request,
-    expense_data: ExpenseCreate,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-
-    property = db.query(Property).filter(
-        Property.id == expense_data.property_id,
-        Property.user_id == current_user.id
-    ).first()
-    
-    if not property:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Property not found"
-        )
-    
-    new_expense = Expense(**expense_data.model_dump())
-    db.add(new_expense)
-    db.commit()
-    db.refresh(new_expense)
-    log_action(db, current_user.id, "CREATE", "EXPENSE", new_expense.id)
-    
-    return new_expense
-
-@router.get("/expenses", response_model=PaginatedExpenses)
-@limiter.limit("60/minute")
-async def get_expenses(
-    request: Request,
-    skip: int = Query(0, ge=0),
-    limit: int = Query(10, ge=1, le=100),
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-
-    property_ids = db.query(Property.id).filter(
-        Property.user_id == current_user.id
-    ).all()
-    property_ids = [p[0] for p in property_ids]
-    
-    total = db.query(func.count(Expense.id)).filter(
-        Expense.property_id.in_(property_ids)
-    ).scalar()
-    
-    expenses = db.query(Expense).filter(
-        Expense.property_id.in_(property_ids)
-    ).offset(skip).limit(limit).all()
-    
-    total_pages = (total + limit - 1) // limit
-    
-    return PaginatedExpenses(
-        success=True,
-        data=expenses,
-        total=total,
-        page=(skip // limit) + 1,
-        page_size=limit,
-        total_pages=total_pages
-    )
-
-@router.put("/expenses/{expense_id}", response_model=ExpenseResponse)
-@limiter.limit("30/minute")
-async def update_expense(
-    request: Request,
-    expense_id: int,
-    expense_data: ExpenseUpdate,
-    db: Session = Depends(get_db)
-):
-    expense = db.query(Expense).filter(
-        Expense.id == expense_id,
-    ).first()
-    if not expense:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Rental not found"
-        )
-    
-    update_data = expense_data.model_dump(exclude_unset=True)
-    for field, value in update_data.items():
-        setattr(expense, field, value)
-    
-    expense.updated_at = datetime.utcnow()
-    db.commit()
-    db.refresh(expense)
-    log_action(db, expense.property.user_id, "UPDATE", "EXPENSE", expense.id)
-    
-    return expense
-
-@router.delete("/expenses/{expense_id}", status_code=status.HTTP_200_OK)
-@limiter.limit("20/minute")
-async def delete_expense(
-    request: Request,
-    expense_id: int,
-    db: Session = Depends(get_db)
-):
-    
-    expense = db.query(Expense).filter(
-        Expense.id == expense_id,
-    ).first()
-    
-    if not expense:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Expense not found"
-        )
-        
-    user_id = expense.property.user_id
-    expense_id_value = expense.id
-    
-    db.delete(expense)
-    db.commit()
-    log_action(db, user_id, "DELETE", "EXPENSE", expense_id_value)
-    
-    return {
-        "success": True,
-        "message": "Expense deleted successfully"
-    }

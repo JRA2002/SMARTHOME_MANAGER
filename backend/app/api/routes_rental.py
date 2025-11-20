@@ -1,8 +1,7 @@
-from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException, Query
+from datetime import datetime
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette import status
 from starlette.requests import Request
 from app.core.database_postgres import get_db
 from app.core.security import get_current_user
@@ -10,7 +9,6 @@ from app.models.user import User
 from app.models.property import Property, Rental
 from app.schemas.property_schema import RentalCreate, RentalResponse, RentalUpdate, PaginatedRentals
 from app.api.routes_logs import log_action
-from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import selectinload
 
 from slowapi import Limiter
@@ -138,7 +136,6 @@ async def delete_rental(
     rental_id: int,
     db: AsyncSession = Depends(get_db)
 ):
-
     rental_result = await db.execute(
         select(Rental)
         .options(selectinload(Rental.property))
@@ -152,7 +149,7 @@ async def delete_rental(
             detail="Rental not found"
         )
     user_id = rental.property.user_id
-    print("borrando rental")
+  
     await db.delete(rental)
     await db.commit()
     await log_action(db, user_id, "DELETE", "RENTAL", rental_id)
