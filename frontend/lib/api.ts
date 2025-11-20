@@ -8,6 +8,7 @@ import type { Summary } from "@/types/summary"
 import type { Activity } from "@/types/activity"
 import type { Expirations } from "@/types/expirations"
 import type { AnalyzeReceiptResponse } from "@/types/receipt"
+import { getTokenFromCookie } from "@/lib/cookie-helper"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -20,12 +21,11 @@ class ApiClient {
     }
   
     if (includeAuth) {
-      const token = localStorage.getItem("access_token")
+      const token = getTokenFromCookie()
       if (token) {
         headers["Authorization"] = `Bearer ${token}`
       }
     }
-  
     return headers
   }
   
@@ -47,7 +47,7 @@ class ApiClient {
 
     const data = await response.json()
   
-    localStorage.setItem("access_token", data.access_token)
+    document.cookie = `access_token=${data.access_token}; path=/; max-age=86400`
     return data
   }
 
@@ -69,7 +69,7 @@ class ApiClient {
 
   async getCurrentUser(): Promise<User> {
     const response = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
-      headers: this.getHeaders(),
+      headers: this.getHeaders(true),
     })
 
     if (!response.ok) {
@@ -96,7 +96,7 @@ class ApiClient {
   
 
   logout() {
-    localStorage.removeItem("access_token")
+    document.cookie = "access_token=; path=/; max-age=0"
     window.location.href = "/login"
   }
 
@@ -161,7 +161,6 @@ class ApiClient {
     })
   }
   
-
   async deleteProperty(id: number): Promise<void> {
     const response = await this.fetchWithAuth(`/api/v1/properties/${id}`, {
       method: "DELETE",
@@ -274,7 +273,9 @@ class ApiClient {
   }
 
   async getSummary(): Promise<Summary> {
-    const response = await this.fetchWithAuth("/api/v1/summary")
+    const response = await this.fetchWithAuth("/api/v1/summary", {
+      headers: this.getHeaders(true),
+    })
     if (!response.ok) {
       throw new Error("Failed to fetch rentals")
     }
