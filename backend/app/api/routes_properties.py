@@ -190,9 +190,9 @@ async def delete_property(
     current_user_id = current_user.id
     property_id = property.id
     
-    db.delete(property)
+    await db.delete(property)
     await db.commit()
-    log_action(db, current_user_id, "DELETE", "PROPERTY", property_id)
+    await log_action(db, current_user_id, "DELETE", "PROPERTY", property_id)
     
     return {
         "success": True,

@@ -7,7 +7,7 @@ from app.core.database_postgres import get_db
 from app.core.security import get_current_user
 from app.models.user import User
 from app.models.property import Property, Rental
-from app.schemas.property_schema import RentalCreate, RentalResponse, RentalUpdate, PaginatedRentals
+from app.schemas.rental_schema import RentalCreate, RentalResponse, RentalUpdate, PaginatedRentals
 from app.api.routes_logs import log_action
 from sqlalchemy.orm import selectinload
 

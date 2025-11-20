@@ -37,8 +37,8 @@ class Property(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     # Relationships
-    rentals = relationship("Rental", back_populates="property")
-    expenses = relationship("Expense", back_populates="property")
+    rentals = relationship("Rental", cascade="all, delete-orphan", back_populates="property")
+    expenses = relationship("Expense", cascade="all, delete-orphan", back_populates="property")
 
 class Rental(Base):
     __tablename__ = "rentals"

@@ -7,7 +7,7 @@ from app.models.user import User
 from app.models.property import Property
 from app.models.property import Expense
 from datetime import datetime
-from app.schemas.property_schema import ExpenseCreate, ExpenseResponse, ExpenseUpdate, PaginatedExpenses
+from app.schemas.expense_schema import ExpenseCreate, ExpenseResponse, ExpenseUpdate, PaginatedExpenses
 from sqlalchemy.orm import selectinload
 
 from slowapi import Limiter
