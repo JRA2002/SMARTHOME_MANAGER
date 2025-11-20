@@ -83,7 +83,7 @@ class ApiClient {
   
     const headers = {
       ...this.getHeaders(true, isFormData),
-      ...options.headers, // sobrescribe si quieres
+      ...options.headers,
     }
   
     const response = await fetch(`${API_BASE_URL}${url}`, {

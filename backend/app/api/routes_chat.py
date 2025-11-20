@@ -65,7 +65,7 @@ async def chat(
         return {"response": f"Tus gastos totales registrados son de ${total_expenses:.2f}.", "suggestions": []}
     
     try:
-        chat_engine = ChatEngine(db, current_user.id)
+        chat_engine = ChatEngine(current_user.id)
         response = chat_engine.process_message(
             chat_data.message,
             chat_data.history

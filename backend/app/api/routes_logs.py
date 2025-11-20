@@ -2,7 +2,7 @@ from app.models.logs import ActivityLog
 from fastapi import HTTPException
 
 async def log_action(db, user_id, action, entity, entity_id):
-    
+    print("Loggiiiiiiig:", action, entity, entity_id)
     try:
         log_entry = ActivityLog(
             user_id=user_id,
@@ -11,9 +11,9 @@ async def log_action(db, user_id, action, entity, entity_id):
             entity_id=entity_id
         )
         db.add(log_entry)
-        db.commit()
+        await db.commit()
     except Exception as e:
-        db.rollback()
+        await db.rollback()
         raise HTTPException(
             status_code=500,
             detail=f"Error creating new ActivityLog: {str(e)}"

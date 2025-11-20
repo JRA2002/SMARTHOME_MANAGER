@@ -1,8 +1,4 @@
-from sqlalchemy.orm import Session
-from sqlalchemy import func
 from typing import List, Dict
-from datetime import datetime, timedelta
-from app.models.property import Property, Rental, Expense
 from openai import OpenAI
 from app.core.config import settings
 from threading import Lock
@@ -12,7 +8,6 @@ class ChatEngine:
 
     _instance = None
     _lock = Lock()
-    db: Session
     user_id: int
 
     def __new__(cls, *args, **kwargs):
