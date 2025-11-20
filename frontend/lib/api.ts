@@ -194,6 +194,7 @@ class ApiClient {
     const response = await this.fetchWithAuth(`/api/v1/rentals/${id}`, {
       method: "PUT",
       body: JSON.stringify(data),
+      headers: this.getHeaders(true),
     })
     if (!response.ok) {
       throw new Error("Failed to update rental")

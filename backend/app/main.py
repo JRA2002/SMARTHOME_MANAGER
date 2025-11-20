@@ -7,7 +7,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from app.core.database_postgres import engine, Base
-from app.api import routes_chat, routes_properties, routes_auth, routes_analize
+from app.api import routes_chat, routes_properties, routes_auth, routes_analize, routes_rental
 from app.core.config import settings
 from app.core.security import get_current_user
 
@@ -77,6 +77,13 @@ app.include_router(
     routes_properties.router,
     prefix="/api/v1/properties",
     tags=["Propiedades"],
+    dependencies=[Depends(get_current_user)]
+)
+
+app.include_router(
+    routes_rental.router,
+    prefix="/api/v1/rentals",
+    tags=["Alquileres"],
     dependencies=[Depends(get_current_user)]
 )
 

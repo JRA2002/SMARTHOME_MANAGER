@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, extract, and_, select
+from sqlalchemy.orm import selectinload
 from datetime import datetime, timedelta
 from app.core.database_postgres import get_db
 from app.core.security import (
@@ -14,9 +15,6 @@ from app.models.user import User
 from app.models.property import Property, Rental, Expense
 from app.schemas.user_schema import Token, UserResponse, UserLogin, UserCreate
 from app.schemas.property_schema import (
-    RentalResponse,
-    RentalCreate,
-    RentalUpdate,
     ExpenseCreate,
     ExpenseResponse,
     PaginatedRentals,
@@ -124,7 +122,7 @@ async def login(
 @router.get("/recent-activities")
 async def get_recent_activities(
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user = Depends(get_current_user)
 ):
     """
     Devuelve las últimas 4 actividades recientes del usuario autenticado
@@ -136,7 +134,7 @@ async def get_recent_activities(
         .limit(4)
     )
     activities = activities_result.scalars().all()
-    print("aquiiii", activities)
+   
     return [
         {
             "action": a.action,
@@ -149,9 +147,8 @@ async def get_recent_activities(
 
 @router.get("/next-expirations", summary="Obtener próximos vencimientos de alquileres y pagos de cuotas pendientes")
 async def get_next_expirations(
-    request: Request,
     db: AsyncSession = Depends(get_db),
-    current_user: dict = Depends(get_current_user)
+    current_user = Depends(get_current_user)
 ):
     
     
@@ -170,16 +167,15 @@ async def get_next_expirations(
     now = datetime.utcnow()
     next_month = now + timedelta(days=30)
 
-    upcoming_rentals_result = (
-        await db.execute(
+    upcoming_rentals_result = await db.execute(
             select(Rental)
+            .options(selectinload(Rental.property))
             .join(Property, Rental.property_id == Property.id)
             .filter(Property.user_id == user_id)
             .filter(and_(Rental.end_date != None, Rental.end_date >= now, Rental.end_date <= next_month))
             .order_by(Rental.end_date.asc())
             .limit(5)
         )
-    )
     upcoming_rentals = upcoming_rentals_result.scalars().all()
 
     return {
@@ -352,129 +348,7 @@ async def get_dashboard_summary(
     return {"value": value, "change": change}
     
 
-@router.post("/rentals", response_model=RentalResponse, status_code=status.HTTP_201_CREATED)
-@limiter.limit("20/minute")
-async def create_rental(
-    request: Request,
-    rental_data: RentalCreate,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """Create new rental"""
-    # Verify property belongs to user
-    property = db.query(Property).filter(
-        Property.id == rental_data.property_id,
-        Property.user_id == current_user.id
-    ).first()
-    
-    if not property:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Property not found"
-        )
-    
-    new_rental = Rental(**rental_data.model_dump())
-    db.add(new_rental)
-    db.commit()
-    db.refresh(new_rental)
-    log_action(db, current_user.id, "CREATE", "RENTAL", new_rental.id)
-    return new_rental
 
-@router.get("/rentals", response_model=PaginatedRentals)
-@limiter.limit("600/minute")
-async def get_rentals(
-    request: Request,
-    skip: int = Query(0, ge=0),
-    limit: int = Query(10, ge=1, le=100),
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """Get user's rentals with pagination"""
-    # Get user's property IDs
-    property_ids = db.query(Property.id).filter(
-        Property.user_id == current_user.id
-    ).all()
-    property_ids = [p[0] for p in property_ids]
-    
-    # Get total count
-    total = db.query(func.count(Rental.id)).filter(
-        Rental.property_id.in_(property_ids)
-    ).scalar()
-    
-    # Get paginated results
-    rentals = db.query(Rental).filter(
-        Rental.property_id.in_(property_ids)
-    ).offset(skip).limit(limit).all()
-    total_pages = (total + limit - 1) // limit
-   
-    return PaginatedRentals(
-        success=True,
-        data=rentals,
-        total=total,
-        page=(skip // limit) + 1,
-        page_size=limit,
-        total_pages=total_pages
-    )
-
-@router.put("/rentals/{rental_id}", response_model=RentalResponse)
-@limiter.limit("30/minute")
-async def update_rental(
-    request: Request,
-    rental_id: int,
-    rental_data: RentalUpdate,
-    db: Session = Depends(get_db)
-):
-
-    print("Updating rental with data:", rental_id)
-    print("rental data aqui:", rental_data),
-    rental = db.query(Rental).filter(
-        Rental.id == rental_id,
-    ).first()
-    
-    if not rental:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Rental not found"
-        )
-    
-    update_data = rental_data.model_dump(exclude_unset=True)
-    for field, value in update_data.items():
-        setattr(rental, field, value)
-    
-    rental.updated_at = datetime.utcnow()
-    db.commit()
-    db.refresh(rental)
-    log_action(db, rental.property.user_id, "UPDATE", "RENTAL", rental.id)
-    
-    return rental
-
-@router.delete("/rentals/{rental_id}", status_code=status.HTTP_200_OK)
-@limiter.limit("20/minute")
-async def delete_rental(
-    request: Request,
-    rental_id: int,
-    db: Session = Depends(get_db)
-):
-
-    rental = db.query(Rental).filter(
-        Rental.id == rental_id,
-    ).first()
-    
-    if not rental:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Rental not found"
-        )
-    user_id = rental.property.user_id
-  
-    db.delete(rental)
-    db.commit()
-    log_action(db, user_id, "DELETE", "RENTAL", rental_id)
-    
-    return {
-        "success": True,
-        "message": "Rental deleted successfully"
-    }
 
 # ============= GASTOS ENDPOINTS =============
 
