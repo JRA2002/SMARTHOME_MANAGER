@@ -42,38 +42,3 @@ class ChatEngine:
         history.append({"role": "assistant", "content": ai_message})
       
         return {"response": ai_message, "history": history}
-
-    
-    def generate_insights(self) -> List[Dict]:
-        """Genera insights automáticos del portfolio"""
-        insights = []
-        
-        # Total de propiedades
-        total_props = self.db.query(func.count(Property.id)).filter(
-            Property.user_id == self.user_id
-        ).scalar()
-        
-        insights.append({
-            "type": "info",
-            "title": "Portfolio",
-            "message": f"Tienes {total_props} propiedad{'es' if total_props != 1 else ''} en tu portfolio"
-        })
-        
-        # Ingresos mensuales
-        property_ids = [p[0] for p in self.db.query(Property.id).filter(
-            Property.user_id == self.user_id
-        ).all()]
-        
-        if property_ids:
-            ingresos = self.db.query(func.sum(Rental.monto_mensual)).filter(
-                Rental.propiedad_id.in_(property_ids),
-                Rental.estado == "activo"
-            ).scalar() or 0
-            
-            insights.append({
-                "type": "success",
-                "title": "Ingresos Mensuales",
-                "message": f"${ingresos:,.2f} en alquileres activos"
-            })
-        
-        return insights

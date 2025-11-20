@@ -1,7 +1,7 @@
 from app.models.logs import ActivityLog
 from fastapi import HTTPException
 
-def log_action(db, user_id, action, entity, entity_id):
+async def log_action(db, user_id, action, entity, entity_id):
     
     try:
         log_entry = ActivityLog(
