@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field
-from datetime import datetime
+from pydantic import BaseModel, Field, validator
+from datetime import datetime, timezone
 from typing import Optional, List
 
 class ExpenseBase(BaseModel):
@@ -8,6 +8,13 @@ class ExpenseBase(BaseModel):
     amount: float = Field(gt=0)
     date: datetime
     receipt_url: Optional[str] = None
+    
+    @validator("date")
+    def ensure_timezone(cls, v: datetime):
+        if v.tzinfo is None:
+            return v.replace(tzinfo=timezone.utc)
+        return v.astimezone(timezone.utc)
+
 
 class ExpenseCreate(ExpenseBase):
     property_id: int
@@ -19,6 +26,12 @@ class ExpenseResponse(ExpenseBase):
     
     class Config:
         from_attributes = True
+    
+    @validator("created_at")
+    def ensure_timezone(cls, v: datetime):
+        if v.tzinfo is None:
+            return v.replace(tzinfo=timezone.utc)
+        return v.astimezone(timezone.utc)
 
 class PaginatedExpenses(BaseModel):
     success: bool
@@ -37,3 +50,9 @@ class ExpenseUpdate(BaseModel):
     amount: Optional[float] = Field(None, gt=0)
     date: Optional[datetime] = None
     receipt_url: Optional[str] = None
+    
+    @validator("date")
+    def ensure_timezone(cls, v: datetime):
+        if v.tzinfo is None:
+            return v.replace(tzinfo=timezone.utc)
+        return v.astimezone(timezone.utc)

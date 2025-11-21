@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field
-from datetime import datetime
+from pydantic import BaseModel, Field, validator
+from datetime import datetime, timezone
 from typing import Optional, List
 
 class RentalBase(BaseModel):
@@ -10,6 +10,12 @@ class RentalBase(BaseModel):
     start_date: datetime
     end_date: Optional[datetime] = None
     deposit: float = Field(ge=0, default=0)
+    
+    @validator("start_date", "end_date")
+    def ensure_timezone(cls, v: datetime):
+        if v.tzinfo is None:
+            return v.replace(tzinfo=timezone.utc)
+        return v.astimezone(timezone.utc)
 
 class RentalCreate(RentalBase):
     property_id: int
@@ -22,6 +28,12 @@ class RentalResponse(RentalBase):
     
     class Config:
         from_attributes = True
+        
+    @validator("created_at")
+    def ensure_timezone(cls, v: datetime):
+        if v.tzinfo is None:
+            return v.replace(tzinfo=timezone.utc)
+        return v.astimezone(timezone.utc)
 
 class RentalUpdate(BaseModel):
     tenant_name: Optional[str] = None
@@ -32,6 +44,12 @@ class RentalUpdate(BaseModel):
     end_date: Optional[datetime] = None
     deposit: Optional[float] = Field(None, ge=0)
     status: Optional[str] = None
+    
+    @validator("start_date", "end_date")
+    def ensure_timezone(cls, v: datetime):
+        if v.tzinfo is None:
+            return v.replace(tzinfo=timezone.utc)
+        return v.astimezone(timezone.utc)
 
 class PaginatedRentals(BaseModel):
     success: bool

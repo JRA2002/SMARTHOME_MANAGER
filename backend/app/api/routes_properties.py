@@ -5,7 +5,7 @@ from app.api.routes_logs import log_action
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, select
-from datetime import datetime
+from datetime import datetime, timezone
 from app.core.database_postgres import get_db
 from app.core.security import get_current_user
 from app.models.user import User
@@ -128,7 +128,7 @@ async def update_property(
     for field, value in update_data.items():
         setattr(property, field, value)
     
-    property.updated_at = datetime.utcnow()
+    property.updated_at = datetime.now(timezone.utc)
     await db.commit()
     await db.refresh(property)
     log_action(db, current_user.id, "UPDATE", "PROPERTY", property.id)

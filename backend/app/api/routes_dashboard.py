@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, extract, and_, select
 from sqlalchemy.orm import selectinload
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from app.core.database_postgres import get_db
 from app.core.security import (
     get_current_user,
@@ -88,8 +88,6 @@ async def login(
     Límite de tasa:
         10 solicitudes por minuto
     """
-    default=datetime.now()
-    print("tiempode ahora", default)
     result = await db.execute(select(User).filter(User.email == credentials.email))
     user = result.scalars().first()
     
@@ -158,7 +156,7 @@ async def get_next_expirations(
     dict: Un objeto JSON que contiene los próximos vencimientos de alquileres.
     """
     user_id = current_user.id
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     next_month = now + timedelta(days=30)
 
     upcoming_rentals_result = await db.execute(
@@ -213,7 +211,7 @@ async def get_dashboard_summary(
     user_id = current_user.id
     value = []
     change = []
-    today = datetime.utcnow()
+    today = datetime.now(timezone.utc)
     current_month = today.month
     current_year = today.year
     prev_month = current_month - 1 if current_month > 1 else 12

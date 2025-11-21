@@ -6,7 +6,7 @@ from app.core.security import get_current_user
 from app.models.user import User
 from app.models.property import Property
 from app.models.property import Expense
-from datetime import datetime
+from datetime import datetime, timezone
 from app.schemas.expense_schema import ExpenseCreate, ExpenseResponse, ExpenseUpdate, PaginatedExpenses
 from sqlalchemy.orm import selectinload
 
@@ -117,7 +117,7 @@ async def update_expense(
     for field, value in update_data.items():
         setattr(expense, field, value)
     
-    expense.updated_at = datetime.utcnow()
+    expense.updated_at = datetime.now(timezone.utc)
     expense_id = expense.id
     expense_user_id = expense.property.user_id
     

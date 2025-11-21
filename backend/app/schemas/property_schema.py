@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field
-from datetime import datetime
+from pydantic import BaseModel, Field, validator
+from datetime import datetime, timezone
 from typing import Optional, List
 from app.models.property import PropertyType, PropertyStatus
 
@@ -39,6 +39,12 @@ class PropertyResponse(PropertyBase):
     
     class Config:
         from_attributes = True
+        
+    @validator("created_at", "updated_at")
+    def ensure_timezone(cls, v: datetime):
+        if v.tzinfo is None:
+            return v.replace(tzinfo=timezone.utc)
+        return v.astimezone(timezone.utc)
 
 class PaginatedProperties(BaseModel):
     success: bool
