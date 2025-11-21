@@ -27,14 +27,14 @@ async def update_user(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    result = db.execute(select(User).filter(User.id == current_user.id))
+    result = await db.execute(select(User).filter(User.id == current_user.id))
     user = result.scalars().first()
 
     if not user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
     if user_update.email and user_update.email != user.email:
-        result = db.execute(select(User).filter(User.email == user_update.email))
+        result = await db.execute(select(User).filter(User.email == user_update.email))
         existing_user = result.scalars().first()
         
         if existing_user:
@@ -56,7 +56,7 @@ async def update_password(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):  
-    result = db.execute(select(User).filter(User.id == current_user.id))
+    result = await db.execute(select(User).filter(User.id == current_user.id))
     user = result.scalars().first()
   
     if not user:

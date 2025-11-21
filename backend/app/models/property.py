@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Enum as SQLEnum
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, timezone
 import enum
 from app.core.database_postgres import Base
 
@@ -33,8 +33,8 @@ class Property(Base):
     bathrooms = Column(Integer, default=0)
     description = Column(String)
     image_url = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     
     # Relationships
     rentals = relationship("Rental", cascade="all, delete-orphan", back_populates="property")
@@ -53,7 +53,7 @@ class Rental(Base):
     end_date = Column(DateTime)
     deposit = Column(Float, default=0)
     status = Column(String, default="active")
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     
     # Relationships
     property = relationship("Property", back_populates="rentals")
@@ -69,7 +69,7 @@ class Payment(Base):
     payment_method = Column(String)
     status = Column(String, default="completed")
     notes = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     
     # Relationships
     rental = relationship("Rental", back_populates="payments")
@@ -84,7 +84,7 @@ class Expense(Base):
     amount = Column(Float, nullable=False)
     date = Column(DateTime, nullable=False)
     receipt_url = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     
     # Relationships
     property = relationship("Property", back_populates="expenses")

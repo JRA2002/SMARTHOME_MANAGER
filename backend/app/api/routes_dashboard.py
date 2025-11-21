@@ -88,6 +88,8 @@ async def login(
     Límite de tasa:
         10 solicitudes por minuto
     """
+    default=datetime.now()
+    print("tiempode ahora", default)
     result = await db.execute(select(User).filter(User.email == credentials.email))
     user = result.scalars().first()
     

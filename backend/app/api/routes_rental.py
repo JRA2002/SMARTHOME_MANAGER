@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -120,7 +120,7 @@ async def update_rental(
     for field, value in update_data.items():
         setattr(rental, field, value)
     
-    rental.updated_at = datetime.utcnow()
+    rental.updated_at = datetime.now(timezone.utc)
     rental_userid = rental.property.user_id
     
     await db.commit()

@@ -11,8 +11,8 @@ router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
 
 client = OpenAI(
-                    base_url=settings.BASE_URL_API_GROQ,
-                    api_key=settings.SECRET_KEY_API_GROQ
+            base_url=settings.BASE_URL_API_GROQ,
+            api_key=settings.SECRET_KEY_API_GROQ
                 )
 
 @router.post("/read-pdf")
