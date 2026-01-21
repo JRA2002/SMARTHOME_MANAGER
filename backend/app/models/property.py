@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Enum as SQLEnum
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, timezone
 import enum
 from app.core.database_postgres import Base
 
@@ -33,12 +33,12 @@ class Property(Base):
     bathrooms = Column(Integer, default=0)
     description = Column(String)
     image_url = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     
     # Relationships
-    rentals = relationship("Rental", back_populates="property")
-    expenses = relationship("Expense", back_populates="property")
+    rentals = relationship("Rental", cascade="all, delete-orphan", back_populates="property")
+    expenses = relationship("Expense", cascade="all, delete-orphan", back_populates="property")
 
 class Rental(Base):
     __tablename__ = "rentals"
@@ -49,11 +49,11 @@ class Rental(Base):
     tenant_email = Column(String, nullable=False)
     tenant_phone = Column(String)
     monthly_amount = Column(Float, nullable=False)
-    start_date = Column(DateTime, nullable=False)
-    end_date = Column(DateTime)
+    start_date = Column(DateTime(timezone=True), nullable=False)
+    end_date = Column(DateTime(timezone=True))
     deposit = Column(Float, default=0)
     status = Column(String, default="active")
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     
     # Relationships
     property = relationship("Property", back_populates="rentals")
@@ -65,11 +65,11 @@ class Payment(Base):
     id = Column(Integer, primary_key=True, index=True)
     rental_id = Column(Integer, ForeignKey("rentals.id"), nullable=False)
     amount = Column(Float, nullable=False)
-    payment_date = Column(DateTime, nullable=False)
+    payment_date = Column(DateTime(timezone=True), nullable=False)
     payment_method = Column(String)
     status = Column(String, default="completed")
     notes = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     
     # Relationships
     rental = relationship("Rental", back_populates="payments")
@@ -82,9 +82,9 @@ class Expense(Base):
     category = Column(String, nullable=False)
     description = Column(String, nullable=False)
     amount = Column(Float, nullable=False)
-    date = Column(DateTime, nullable=False)
+    date = Column(DateTime(timezone=True), nullable=False)
     receipt_url = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     
     # Relationships
     property = relationship("Property", back_populates="expenses")

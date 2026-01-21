@@ -1,8 +1,7 @@
-# backend/app/api/pdf_reader.py
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from openai import OpenAI
 import pdfplumber
-import tempfile, os
+import tempfile
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from app.core.config import settings
@@ -12,8 +11,8 @@ router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
 
 client = OpenAI(
-                    base_url=settings.BASE_URL_API_GROQ,
-                    api_key=settings.SECRET_KEY_API_GROQ
+            base_url=settings.BASE_URL_API_GROQ,
+            api_key=settings.SECRET_KEY_API_GROQ
                 )
 
 @router.post("/read-pdf")

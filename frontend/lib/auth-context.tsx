@@ -3,6 +3,8 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
 import { apiClient} from "./api"
 import type { User } from "@/types/auth"
+import { useRouter } from "next/navigation"
+import { getTokenFromCookie } from "@/lib/cookie-helper"
 
 interface AuthContextType {
   user: User | null
@@ -17,19 +19,23 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token")
+    const token = getTokenFromCookie()
+
     if (token) {
       apiClient
         .getCurrentUser()
         .then(setUser)
         .catch(() => {
-          localStorage.removeItem("access_token")
+          setUser(null)
+          document.cookie = "access_token=; path=/; max-age=0"
         })
         .finally(() => setLoading(false))
     } else {
       setLoading(false)
+      
     }
   }, [])
 
@@ -37,6 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await apiClient.login({ email, password })
     const userData = await apiClient.getCurrentUser()
     setUser(userData)
+    router.push("/dashboard")
   }
 
   const logout = () => {

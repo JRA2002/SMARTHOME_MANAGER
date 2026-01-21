@@ -1,17 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException,Request
 from slowapi import Limiter
 from slowapi.util import get_remote_address
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from app.core.database_postgres import get_db
 from app.models.user import User
 from app.schemas.user_schema import UserUpdate, UserResponseUpdate, PasswordUpdate
 from app.core.security import get_current_user, get_password_hash
 from app.schemas.user_schema import UserResponse
-
-from app.core.security import (
-    get_current_user,
-    get_password_hash,
-)
 
 router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
@@ -25,18 +21,22 @@ async def get_current_user_info(
     return current_user
 
 @router.put("/update-profile", response_model=UserResponseUpdate)
-def update_user(
+async def update_user(
     request: Request,
     user_update: UserUpdate,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    user = db.query(User).filter(User.id == current_user.id).first()
+    result = await db.execute(select(User).filter(User.id == current_user.id))
+    user = result.scalars().first()
+
     if not user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
     if user_update.email and user_update.email != user.email:
-        existing_user = db.query(User).filter(User.email == user_update.email).first()
+        result = await db.execute(select(User).filter(User.email == user_update.email))
+        existing_user = result.scalars().first()
+        
         if existing_user:
             raise HTTPException(status_code=400, detail="El email ya está en uso")
         user.email = user_update.email
@@ -45,18 +45,20 @@ def update_user(
         user.fullname = user_update.fullname
 
     db.add(user)
-    db.commit()
-    db.refresh(user)
+    await db.commit()
+    await db.refresh(user)
 
     return user
 
 @router.put("/update-password")
-def update_password(
+async def update_password(
     user_update: PasswordUpdate,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
-):
-    user = db.query(User).filter(User.id == current_user.id).first()
+):  
+    result = await db.execute(select(User).filter(User.id == current_user.id))
+    user = result.scalars().first()
+  
     if not user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
@@ -64,7 +66,7 @@ def update_password(
         user.hashed_password = get_password_hash(user_update.newPassword)
 
     db.add(user)
-    db.commit()
-    db.refresh(user)
+    await db.commit()
+    await db.refresh(user)
 
     return user

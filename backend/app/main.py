@@ -1,3 +1,4 @@
+from app.api import routes_dashboard
 from fastapi import FastAPI, Request, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -6,7 +7,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from app.core.database_postgres import engine, Base
-from app.api import routes_chat, routes_predict_valor, routes_property, routes_auth, routes_analize
+from app.api import routes_chat, routes_properties, routes_auth, routes_analize, routes_rental, routes_expenses
 from app.core.config import settings
 from app.core.security import get_current_user
 
@@ -48,20 +49,14 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 app.include_router(
-    routes_property.router,
+    routes_dashboard.router,
     prefix="/api/v1",
-    tags=["Propiedades"]
+    tags=["Dashboard"],
 )
 app.include_router(
     routes_chat.router,
     prefix="/api/v1/chat",
     tags=["Chat IA"],
-    dependencies=[Depends(get_current_user)]
-)
-app.include_router(
-    routes_predict_valor.router,
-    prefix="/api/v1/predict-valor",
-    tags=["Predicción de Valor"],
     dependencies=[Depends(get_current_user)]
 )
 
@@ -76,6 +71,27 @@ app.include_router(
     routes_analize.router,
     prefix="/api/v1/analyze",
     tags=["Analisis de archivos"],
+)
+
+app.include_router(
+    routes_properties.router,
+    prefix="/api/v1/properties",
+    tags=["Propiedades"],
+    dependencies=[Depends(get_current_user)]
+)
+
+app.include_router(
+    routes_rental.router,
+    prefix="/api/v1/rentals",
+    tags=["Alquileres"],
+    dependencies=[Depends(get_current_user)]
+)
+
+app.include_router(
+    routes_expenses.router,
+    prefix="/api/v1/expenses",
+    tags=["Gastos"],
+    dependencies=[Depends(get_current_user)]
 )
 
 @app.get("/")

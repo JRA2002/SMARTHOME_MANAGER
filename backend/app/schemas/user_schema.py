@@ -1,5 +1,5 @@
-from pydantic import BaseModel, EmailStr, Field
-from datetime import datetime
+from pydantic import BaseModel, EmailStr, validator
+from datetime import datetime, timezone
 from typing import Optional
 
 class UserBase(BaseModel):
@@ -20,6 +20,12 @@ class UserResponse(UserBase):
     
     class Config:
         from_attributes = True
+        
+    @validator("created_at")
+    def ensure_timezone(cls, v: datetime):
+        if v.tzinfo is None:
+            return v.replace(tzinfo=timezone.utc)
+        return v.astimezone(timezone.utc)
         
 class UserUpdate(BaseModel):
     id: int
