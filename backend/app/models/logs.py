@@ -2,7 +2,6 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from datetime import datetime, timezone
 from app.core.database_postgres import Base
 from sqlalchemy.orm import relationship
-from app.models.user import User
 
 class ActivityLog(Base):
     __tablename__ = "activity_logs"

@@ -1,5 +1,4 @@
 from pydantic_settings import BaseSettings
-from typing import List
 
 class Settings(BaseSettings):
     
@@ -11,12 +10,16 @@ class Settings(BaseSettings):
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
-    DATABASE_URL: str
     ALLOWED_ORIGINS: str
     RATE_LIMIT_PER_MINUTE: int
     
     BASE_URL_API_GROQ: str
     SECRET_KEY_API_GROQ: str
+    
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_DB: str
+    POSTGRES_PORT: int
     
     class Config:
         env_file = ".env"
