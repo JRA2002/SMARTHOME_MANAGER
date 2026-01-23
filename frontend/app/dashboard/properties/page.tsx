@@ -11,7 +11,7 @@ import { PropertyDialog } from "@/components/property-dialog"
 import { DeleteDialog } from "@/components/delete-dialog"
 import { apiClient} from "@/lib/api"
 import { useToast } from "@/hooks/use-toast"
-import type { Property } from "@/types/Property"
+import type { Property } from "@/types/property"
 import { EditableStatusCell } from "@/components/editablestatuscell"
 
 export default function PropertiesPage() {
