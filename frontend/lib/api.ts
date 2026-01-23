@@ -1,4 +1,4 @@
-import type { Property, PropertyCreate } from "@/types/property"
+import type { Property, PropertyCreate } from "@/types/Property"
 import type { Rental, RentalCreate } from "@/types/rental"
 import type { ValuationRequest, ValuationResponse } from "@/types/valuation"
 import type { ChatResponse } from "@/types/chat"
