@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     POSTGRES_DB: str
     POSTGRES_PORT: int
     
+    BACKEND_PORT: int
+    
     class Config:
         env_file = ".env"
         case_sensitive = True
